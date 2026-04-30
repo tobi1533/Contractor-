@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Private Market</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="nav">
+  <h3>Luxury Private Market</h3>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+  <h2>Add Listing</h2>
+
+  <input id="title" placeholder="Title (e.g. Luxury Villa)">
+  <textarea id="description" placeholder="Description"></textarea>
+  <input id="price" placeholder="Price">
+
+  <button onclick="addListing()">Add Listing</button>
+
+  <h2>Private Listings</h2>
+  <div id="listings"></div>
+
+</div>
+
+<script type="module">
+import { 
+  auth, db,
+  onAuthStateChanged, signOut,
+  collection, addDoc, getDocs 
+} from "./firebase.js";
+
+const listingsDiv = document.getElementById("listings");
+
+// 🔐 Protect page
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "index.html";
+  } else {
+    loadListings();
+  }
+});
+
+// ➕ Add Listing
+window.addListing = async function() {
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+
+  await addDoc(collection(db, "listings"), {
+    title,
+    description,
+    price,
+    createdAt: new Date()
+  });
+
+  alert("Listing added");
+  loadListings();
+};
+
+// 📦 Load Listings
+async function loadListings() {
+  listingsDiv.innerHTML = "";
+  const querySnapshot = await getDocs(collection(db, "listings"));
+
+  querySnapshot.forEach(doc => {
+    const data = doc.data();
+
+    listingsDiv.innerHTML += `
+      <div class="card">
+        <h3>${data.title}</h3>
+        <p>${data.description}</p>
+        <strong>${data.price}</strong>
+      </div>
+    `;
+  });
+}
+
+// 🚪 Logout
+window.logout = function() {
+  signOut(auth);
+};
+</script>
+
+</body>
+</html>
