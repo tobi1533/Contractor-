@@ -12,32 +12,25 @@
 </div>
 
 <script type="module">
-import { db, collection, getDocs } from "./firebase.js";
+querySnapshot.forEach(doc => {
+  const data = doc.data();
 
-const listingsDiv = document.getElementById("listings");
+  listingsDiv.innerHTML += `
+    <div class="card">
+      <img src="${data.image}" />
+      <h3>${data.title}</h3>
+      <p>${data.description}</p>
 
-async function loadListings() {
-  const querySnapshot = await getDocs(collection(db, "listings"));
+      <strong>₦${data.price}</strong>
 
-  querySnapshot.forEach(doc => {
-    const data = doc.data();
+      <br><br>
 
-    listingsDiv.innerHTML += `
-      <div class="card">
-        <img src="${data.image}" />
-        <h3>${data.title}</h3>
-        <p>${data.description}</p>
-        <strong>₦${data.price}</strong>
-        <br><br>
-        <a href="https://wa.me/234XXXXXXXXXX">
-          <button>Contact Seller</button>
-        </a>
-      </div>
-    `;
-  });
-}
-
-loadListings();
+      <a href="https://wa.me/234XXXXXXXXXX">
+        <button>Serious Buyer Only</button>
+      </a>
+    </div>
+  `;
+});
 </script>
 
 </body>
