@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Listing</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Add Luxury Listing</h2>
+
+  <input id="title" placeholder="Title">
+  <textarea id="description" placeholder="Description"></textarea>
+  <input id="price" placeholder="Price (₦)">
+  <input type="file" id="image">
+
+  <button onclick="uploadListing()">Upload Listing</button>
+</div>
+
+<script type="module">
+import { 
+  db, storage,
+  collection, addDoc,
+  ref, uploadBytes, getDownloadURL
+} from "./firebase.js";
+
+window.uploadListing = async function() {
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+  const file = document.getElementById("image").files[0];
+
+  if (!file) return alert("Select an image");
+
+  try {
+    // Upload image
+    const storageRef = ref(storage, "listings/" + Date.now());
+    await uploadBytes(storageRef, file);
+
+    const imageURL = await getDownloadURL(storageRef);
+
+    // Save to Firestore
+    await addDoc(collection(db, "listings"), {
+      title,
+      description,
+      price,
+      image: imageURL,
+      createdAt: new Date()
+    });
+
+    alert("Uploaded successfully");
+
+  } catch (err) {
+    alert(err.message);
+  }
+};
+</script>
+
+</body>
+</html>
