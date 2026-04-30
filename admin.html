@@ -16,7 +16,7 @@
 
 <img id="preview" style="display:none; margin-top:10px; border-radius:10px;" />
 
-<button onclick="uploadListing()">Upload Listing</button>
+<button id="uploadBtn">Upload Listing</button>
 </div>
 
 <script type="module">
@@ -26,8 +26,8 @@ import {
   ref, uploadBytes, getDownloadURL
 } from "./firebase.js";
 
-// ✅ Preview image
-window.previewImage = function() {
+// preview
+function previewImage() {
   const file = document.getElementById("image").files[0];
   const preview = document.getElementById("preview");
 
@@ -35,10 +35,12 @@ window.previewImage = function() {
     preview.src = URL.createObjectURL(file);
     preview.style.display = "block";
   }
-};
+}
 
-// ✅ Upload listing (ONLY ONE FUNCTION)
-window.uploadListing = async function() {
+// upload function
+async function uploadListing() {
+  console.log("BUTTON CLICKED");
+
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
   const price = document.getElementById("price").value;
@@ -51,15 +53,10 @@ window.uploadListing = async function() {
 
     const storageRef = ref(storage, "listings/" + Date.now());
 
-    console.log("Uploading image...");
     await uploadBytes(storageRef, file);
 
-    console.log("Getting download URL...");
     const imageURL = await getDownloadURL(storageRef);
 
-    console.log("Image URL:", imageURL);
-
-    console.log("Saving to Firestore...");
     await addDoc(collection(db, "listings"), {
       title,
       description,
@@ -70,18 +67,17 @@ window.uploadListing = async function() {
 
     alert("Upload successful");
 
-    // reset form
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("image").value = "";
-    document.getElementById("preview").style.display = "none";
-
   } catch (err) {
-    console.error("ERROR:", err);
-    alert("Error: " + err.message);
+    console.error(err);
+    alert(err.message);
   }
-};
+}
+
+// bind button AFTER page loads
+document.getElementById("uploadBtn").addEventListener("click", uploadListing);
+
+// bind preview properly
+document.getElementById("image").addEventListener("change", previewImage);
 </script>
 
 </body>
