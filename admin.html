@@ -9,12 +9,14 @@
 <div class="container">
   <h2>Add Luxury Listing</h2>
 
-  <input id="title" placeholder="Title">
-  <textarea id="description" placeholder="Description"></textarea>
-  <input id="price" placeholder="Price (₦)">
-  <input type="file" id="image">
+  <input id="title" placeholder="Luxury Title">
+<textarea id="description" placeholder="Full Description"></textarea>
+<input id="price" placeholder="Price (₦)">
+<input type="file" id="image" onchange="previewImage()">
 
-  <button onclick="uploadListing()">Upload Listing</button>
+<img id="preview" style="display:none; margin-top:10px; border-radius:10px;" />
+
+<button onclick="uploadListing()">Upload Listing</button>
 </div>
 
 <script type="module">
@@ -49,6 +51,60 @@ window.uploadListing = async function() {
     });
 
     alert("Uploaded successfully");
+
+  } catch (err) {
+    alert(err.message);
+  }
+};
+  // Preview before upload
+window.previewImage = function() {
+  const file = document.getElementById("image").files[0];
+  const preview = document.getElementById("preview");
+
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  }
+};
+
+// Upload listing
+window.uploadListing = async function() {
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+  const file = document.getElementById("image").files[0];
+
+  if (!file) return alert("Select an image");
+
+  try {
+    const btn = document.querySelector("button");
+    btn.innerText = "Uploading...";
+    btn.disabled = true;
+
+    const storageRef = ref(storage, "listings/" + Date.now());
+    await uploadBytes(storageRef, file);
+
+    const imageURL = await getDownloadURL(storageRef);
+
+    await addDoc(collection(db, "listings"), {
+      title,
+      description,
+      price,
+      image: imageURL,
+      createdAt: new Date()
+    });
+
+    alert("Luxury listing uploaded");
+
+    // Reset
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("preview").style.display = "none";
+
+    btn.innerText = "Upload Listing";
+    btn.disabled = false;
 
   } catch (err) {
     alert(err.message);
