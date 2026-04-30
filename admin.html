@@ -77,15 +77,19 @@ window.uploadListing = async function() {
   if (!file) return alert("Select an image");
 
   try {
-    const btn = document.querySelector("button");
-    btn.innerText = "Uploading...";
-    btn.disabled = true;
+    console.log("Starting upload...");
 
     const storageRef = ref(storage, "listings/" + Date.now());
+
+    console.log("Uploading image...");
     await uploadBytes(storageRef, file);
 
+    console.log("Getting download URL...");
     const imageURL = await getDownloadURL(storageRef);
 
+    console.log("Image URL:", imageURL);
+
+    console.log("Saving to Firestore...");
     await addDoc(collection(db, "listings"), {
       title,
       description,
@@ -94,20 +98,11 @@ window.uploadListing = async function() {
       createdAt: new Date()
     });
 
-    alert("Luxury listing uploaded");
-
-    // Reset
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("image").value = "";
-    document.getElementById("preview").style.display = "none";
-
-    btn.innerText = "Upload Listing";
-    btn.disabled = false;
+    alert("Upload successful");
 
   } catch (err) {
-    alert(err.message);
+    console.error("ERROR:", err);
+    alert("Error: " + err.message);
   }
 };
 </script>
