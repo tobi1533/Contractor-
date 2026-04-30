@@ -26,7 +26,18 @@ import {
   ref, uploadBytes, getDownloadURL
 } from "./firebase.js";
 
-// Upload listing
+// ✅ Preview image
+window.previewImage = function() {
+  const file = document.getElementById("image").files[0];
+  const preview = document.getElementById("preview");
+
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  }
+};
+
+// ✅ Upload listing (ONLY ONE FUNCTION)
 window.uploadListing = async function() {
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
@@ -58,6 +69,13 @@ window.uploadListing = async function() {
     });
 
     alert("Upload successful");
+
+    // reset form
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("preview").style.display = "none";
 
   } catch (err) {
     console.error("ERROR:", err);
