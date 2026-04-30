@@ -26,47 +26,6 @@ import {
   ref, uploadBytes, getDownloadURL
 } from "./firebase.js";
 
-window.uploadListing = async function() {
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const price = document.getElementById("price").value;
-  const file = document.getElementById("image").files[0];
-
-  if (!file) return alert("Select an image");
-
-  try {
-    // Upload image
-    const storageRef = ref(storage, "listings/" + Date.now());
-    await uploadBytes(storageRef, file);
-
-    const imageURL = await getDownloadURL(storageRef);
-
-    // Save to Firestore
-    await addDoc(collection(db, "listings"), {
-      title,
-      description,
-      price,
-      image: imageURL,
-      createdAt: new Date()
-    });
-
-    alert("Uploaded successfully");
-
-  } catch (err) {
-    alert(err.message);
-  }
-};
-  // Preview before upload
-window.previewImage = function() {
-  const file = document.getElementById("image").files[0];
-  const preview = document.getElementById("preview");
-
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
-  }
-};
-
 // Upload listing
 window.uploadListing = async function() {
   const title = document.getElementById("title").value;
