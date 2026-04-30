@@ -1,69 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Private Market</title>
+  <title>Private Luxury Market</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="nav">
-  <h3>Luxury Private Market</h3>
-  <button onclick="logout()">Logout</button>
-</div>
-
 <div class="container">
-
-  <h2>Add Listing</h2>
-
-  <input id="title" placeholder="Title (e.g. Luxury Villa)">
-  <textarea id="description" placeholder="Description"></textarea>
-  <input id="price" placeholder="Price">
-
-  <button onclick="addListing()">Add Listing</button>
-
-  <h2>Private Listings</h2>
-  <div id="listings"></div>
-
+  <h2>Exclusive Listings</h2>
+  <div id="listings" class="grid"></div>
 </div>
 
 <script type="module">
-import { 
-  auth, db,
-  onAuthStateChanged, signOut,
-  collection, addDoc, getDocs 
-} from "./firebase.js";
+import { db, collection, getDocs } from "./firebase.js";
 
 const listingsDiv = document.getElementById("listings");
 
-// 🔐 Protect page
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    window.location.href = "index.html";
-  } else {
-    loadListings();
-  }
-});
-
-// ➕ Add Listing
-window.addListing = async function() {
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const price = document.getElementById("price").value;
-
-  await addDoc(collection(db, "listings"), {
-    title,
-    description,
-    price,
-    createdAt: new Date()
-  });
-
-  alert("Listing added");
-  loadListings();
-};
-
-// 📦 Load Listings
 async function loadListings() {
-  listingsDiv.innerHTML = "";
   const querySnapshot = await getDocs(collection(db, "listings"));
 
   querySnapshot.forEach(doc => {
@@ -71,18 +24,20 @@ async function loadListings() {
 
     listingsDiv.innerHTML += `
       <div class="card">
+        <img src="${data.image}" />
         <h3>${data.title}</h3>
         <p>${data.description}</p>
-        <strong>${data.price}</strong>
+        <strong>₦${data.price}</strong>
+        <br><br>
+        <a href="https://wa.me/234XXXXXXXXXX">
+          <button>Contact Seller</button>
+        </a>
       </div>
     `;
   });
 }
 
-// 🚪 Logout
-window.logout = function() {
-  signOut(auth);
-};
+loadListings();
 </script>
 
 </body>
