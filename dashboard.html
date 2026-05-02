@@ -10,40 +10,78 @@
 <input id="name" placeholder="Product Name"><br><br>
 <input id="price" placeholder="Price"><br><br>
 <textarea id="desc" placeholder="Description"></textarea><br><br>
+
 <input type="file" id="images" multiple>
 <div id="previewContainer"></div>
-<button onclick="uploadImages()">Upload</button>
-  
+
+<br>
+<button id="uploadBtn">Upload</button>
+
 <script type="module">
 import { db } from './firebase.js';
 import { collection, addDoc } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* =========================
+   ELEMENTS
+========================= */
+const previewContainer = document.getElementById("previewContainer");
+const imageInput = document.getElementById("images");
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+imageInput.addEventListener("change", (e) => {
+  const files = e.target.files;
+
+  previewContainer.innerHTML = "";
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+
+    img.style.width = "100px";
+    img.style.height = "100px";
+    img.style.objectFit = "cover";
+    img.style.margin = "5px";
+    img.style.borderRadius = "8px";
+
+    previewContainer.appendChild(img);
+  }
+});
+
+/* =========================
+   UPLOAD PRODUCT
+========================= */
 document.getElementById("uploadBtn").addEventListener("click", async () => {
 
-  console.log("Button clicked");
+  console.log("Upload clicked");
 
-  const name = document.getElementById('name').value;
-  const price = document.getElementById('price').value;
-  const desc = document.getElementById('desc').value;
-  const files = document.getElementById('image').files;
+  const name = document.getElementById("name").value.trim();
+  const price = document.getElementById("price").value.trim();
+  const desc = document.getElementById("desc").value.trim();
+  const files = imageInput.files;
 
   let imageUrls = [];
 
-  // ✅ Validation
+  /* VALIDATION */
   if (!name || !price || !desc) {
     alert("Please fill all fields");
     return;
   }
 
-  if (files.length === 0) {
+  if (!files || files.length === 0) {
     alert("Please select at least one image");
     return;
   }
 
   try {
 
-    // ✅ Upload images to Cloudinary
+    /* =========================
+       UPLOAD IMAGES TO CLOUDINARY
+    ========================= */
     for (let i = 0; i < files.length; i++) {
 
       const formData = new FormData();
@@ -59,38 +97,39 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
       );
 
       const data = await res.json();
-      console.log("Cloudinary:", data);
+
+      console.log("Uploaded:", data);
 
       if (!data.secure_url) {
-        alert("Image upload failed");
-        return;
+        throw new Error("Image upload failed");
       }
 
       imageUrls.push(data.secure_url);
     }
 
-    console.log("Images uploaded:", imageUrls);
-
-    // ✅ Save to Firestore
+    /* =========================
+       SAVE TO FIRESTORE
+    ========================= */
     await addDoc(collection(db, "products"), {
-      name: name,
+      name,
       price: Number(price),
       description: desc,
-      imageUrls: imageUrls,
+      imageUrls,
       createdAt: new Date()
     });
 
-    alert("✅ Product uploaded successfully!");
+    alert("Product uploaded successfully!");
 
-    // ✅ Clear inputs
-    document.getElementById('name').value = "";
-    document.getElementById('price').value = "";
-    document.getElementById('desc').value = "";
-    document.getElementById('image').value = "";
+    /* RESET FORM */
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("desc").value = "";
+    imageInput.value = "";
+    previewContainer.innerHTML = "";
 
   } catch (err) {
-    console.error("ERROR:", err);
-    alert("❌ Upload failed. Check console.");
+    console.error("Upload Error:", err);
+    alert("Upload failed. Check console.");
   }
 
 });
