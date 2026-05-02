@@ -26,23 +26,25 @@ window.uploadProduct = async function () {
   const desc = document.getElementById('desc').value;
   const file = document.getElementById('image').files[0];
 
+  // validation
   if (!name || !price || !desc) {
-    alert("Fill all fields");
+    alert("Please fill all fields");
     return;
   }
 
   if (!file) {
-    alert("Select an image");
+    alert("Please select an image");
     return;
   }
 
   try {
-    // Upload to Cloudinary
+
+    // 1. Upload image to Cloudinary
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "Tobifatai");
 
-    const response = await fetch(
+    const cloudRes = await fetch(
       "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
       {
         method: "POST",
@@ -50,10 +52,10 @@ window.uploadProduct = async function () {
       }
     );
 
-    const data = await response.json();
-    const imageUrl = data.secure_url;
+    const cloudData = await cloudRes.json();
+    const imageUrl = cloudData.secure_url;
 
-    // Save to Firestore
+    // 2. Save product to Firestore
     await addDoc(collection(db, "products"), {
       name: name,
       price: Number(price),
@@ -64,7 +66,7 @@ window.uploadProduct = async function () {
 
     alert("Product uploaded successfully!");
 
-    // Clear inputs
+    // 3. Clear inputs
     document.getElementById('name').value = "";
     document.getElementById('price').value = "";
     document.getElementById('desc').value = "";
@@ -72,7 +74,7 @@ window.uploadProduct = async function () {
 
   } catch (err) {
     console.error(err);
-    alert("Upload failed");
+    alert("Upload failed. Check console for error.");
   }
 };
 
