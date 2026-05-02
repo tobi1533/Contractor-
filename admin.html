@@ -1,83 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Add Listing</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Admin Login</title>
 </head>
 <body>
 
-<div class="container">
-  <h2>Add Luxury Listing</h2>
+<h2>Admin Login</h2>
 
-  <input id="title" placeholder="Luxury Title">
-<textarea id="description" placeholder="Full Description"></textarea>
-<input id="price" placeholder="Price (₦)">
-<input type="file" id="image" onchange="previewImage()">
-
-<img id="preview" style="display:none; margin-top:10px; border-radius:10px;" />
-
-<button id="uploadBtn">Upload Listing</button>
-</div>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">Login</button>
 
 <script type="module">
-import { 
-  db, storage,
-  collection, addDoc,
-  ref, uploadBytes, getDownloadURL
-} from "./firebase.js";
+import { auth } from './firebase.js';
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// preview
-function previewImage() {
-  const file = document.getElementById("image").files[0];
-  const preview = document.getElementById("preview");
+window.login = function () {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
-  }
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login successful");
+      window.location.href = "dashboard.html";
+    })
+    .catch(err => alert(err.message));
 }
-
-// upload function
-async function uploadListing() {
-  console.log("BUTTON CLICKED");
-
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const price = document.getElementById("price").value;
-  const file = document.getElementById("image").files[0];
-
-  if (!file) return alert("Select an image");
-
-  try {
-    console.log("Starting upload...");
-
-    const storageRef = ref(storage, "listings/" + Date.now());
-
-    await uploadBytes(storageRef, file);
-
-    const imageURL = await getDownloadURL(storageRef);
-
-    await addDoc(collection(db, "listings"), {
-      title,
-      description,
-      price,
-      image: imageURL,
-      createdAt: new Date()
-    });
-
-    alert("Upload successful");
-
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-}
-
-// bind button AFTER page loads
-document.getElementById("uploadBtn").addEventListener("click", uploadListing);
-
-// bind preview properly
-document.getElementById("image").addEventListener("change", previewImage);
 </script>
 
 </body>
