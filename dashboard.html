@@ -10,10 +10,10 @@
 <input id="name" placeholder="Product Name"><br><br>
 <input id="price" placeholder="Price"><br><br>
 <textarea id="desc" placeholder="Description"></textarea><br><br>
-<input type="file" id="image" multiple><br><br>
-
-<button id="uploadBtn">Upload Product</button>
-
+<input type="file" id="images" multiple>
+<div id="previewContainer"></div>
+<button onclick="uploadImages()">Upload</button>
+  
 <script type="module">
 import { db } from './firebase.js';
 import { collection, addDoc } 
