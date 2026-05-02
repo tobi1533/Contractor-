@@ -10,16 +10,18 @@
 <input id="name" placeholder="Product Name"><br><br>
 <input id="price" placeholder="Price"><br><br>
 <textarea id="desc" placeholder="Description"></textarea><br><br>
-<input type="file" id="image" multiple>
+<input type="file" id="image" multiple><br><br>
 
-<button onclick="uploadProduct()">Upload Product</button>
+<button id="uploadBtn">Upload Product</button>
 
 <script type="module">
 import { db } from './firebase.js';
 import { collection, addDoc } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-window.uploadProduct = async function () {
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+
+  console.log("Button clicked");
 
   const name = document.getElementById('name').value;
   const price = document.getElementById('price').value;
@@ -39,8 +41,6 @@ window.uploadProduct = async function () {
     return;
   }
 
-  console.log("Uploading images...");
-
   try {
 
     // ✅ Upload images to Cloudinary
@@ -59,9 +59,7 @@ window.uploadProduct = async function () {
       );
 
       const data = await res.json();
-
-      // Debug
-      console.log("Cloudinary response:", data);
+      console.log("Cloudinary:", data);
 
       if (!data.secure_url) {
         alert("Image upload failed");
@@ -71,9 +69,9 @@ window.uploadProduct = async function () {
       imageUrls.push(data.secure_url);
     }
 
-    console.log("All images uploaded:", imageUrls);
+    console.log("Images uploaded:", imageUrls);
 
-    // ✅ Save product to Firestore
+    // ✅ Save to Firestore
     await addDoc(collection(db, "products"), {
       name: name,
       price: Number(price),
@@ -91,11 +89,12 @@ window.uploadProduct = async function () {
     document.getElementById('image').value = "";
 
   } catch (err) {
-    console.error("FULL ERROR:", err);
+    console.error("ERROR:", err);
     alert("❌ Upload failed. Check console.");
   }
-};
-      </script>
+
+});
+</script>
 
 </body>
 </html>
