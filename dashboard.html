@@ -41,20 +41,23 @@ let imageUrls = [];
   try {
 
     // 1. Upload image to Cloudinary
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "Tobifatai");
+    for (let i = 0; i < files.length; i++) {
 
-    const cloudRes = await fetch(
-      "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
-      {
-        method: "POST",
-        body: formData
-      }
-    );
+  const formData = new FormData();
+  formData.append("file", files[i]);
+  formData.append("upload_preset", "Tobifatai");
 
-    const cloudData = await cloudRes.json();
-    const imageUrl = cloudData.secure_url;
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  const data = await res.json();
+  imageUrls.push(data.secure_url);
+    }
 
     // 2. Save product to Firestore
     await addDoc(collection(db, "products"), {
