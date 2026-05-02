@@ -28,21 +28,45 @@ window.uploadProduct = async function () {
   if (!file) return alert("Select an image");
 
   // Upload image
-  const storageRef = ref(storage, 'products/' + file.name);
-  await uploadBytes(storageRef, file);
-  const imageUrl = await getDownloadURL(storageRef);
+  const file = document.getElementById("image").files[0];
+const title = document.getElementById("title").value;
+const price = document.getElementById("price").value;
+const description = document.getElementById("description").value;
 
-  // Save to Firestore
-  await addDoc(collection(db, "products"), {
-    name,
-    price,
-    desc,
-    image: imageUrl,
+if (!file) {
+  alert("Please select an image");
+  return;
+}
+
+// Upload to Cloudinary
+const formData = new FormData();
+formData.append("file", file);
+formData.append("upload_preset", "Tobifatai");
+
+fetch("https://api.cloudinary.com/v1_1/dpaltarvh/image/upload", {
+  method: "POST",
+  body: formData
+})
+.then(res => res.json())
+.then(data => {
+  const imageUrl = data.secure_url;
+
+  // Save to Firebase Firestore
+  return addDoc(collection(db, "products"), {
+    title: title,
+    price: Number(price),
+    description: description,
+    imageUrl: imageUrl,
     createdAt: new Date()
   });
-
-  alert("Product uploaded!");
-}
+})
+.then(() => {
+  alert("Product uploaded successfully!");
+})
+.catch(err => {
+  console.error(err);
+  alert("Upload failed");
+});
 </script>
 
 </body>
