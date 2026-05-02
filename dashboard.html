@@ -25,43 +25,55 @@ window.uploadProduct = async function () {
   const price = document.getElementById('price').value;
   const desc = document.getElementById('desc').value;
   const files = document.getElementById('image').files;
-let imageUrls = [];
 
-  // validation
+  let imageUrls = [];
+
+  // ✅ Validation
   if (!name || !price || !desc) {
     alert("Please fill all fields");
     return;
   }
 
   if (files.length === 0) {
-  alert("Please select at least one image");
-  return;
+    alert("Please select at least one image");
+    return;
   }
+
   console.log("Uploading images...");
-  }
 
   try {
 
-    // 1. Upload image to Cloudinary
+    // ✅ Upload images to Cloudinary
     for (let i = 0; i < files.length; i++) {
 
-  const formData = new FormData();
-  formData.append("file", files[i]);
-  formData.append("upload_preset", "Tobifatai");
+      const formData = new FormData();
+      formData.append("file", files[i]);
+      formData.append("upload_preset", "Tobifatai");
 
-  const res = await fetch(
-    "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
-    {
-      method: "POST",
-      body: formData
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+      const data = await res.json();
+
+      // Debug
+      console.log("Cloudinary response:", data);
+
+      if (!data.secure_url) {
+        alert("Image upload failed");
+        return;
+      }
+
+      imageUrls.push(data.secure_url);
     }
-  );
 
-  const data = await res.json();
-  imageUrls.push(data.secure_url);
-    }
+    console.log("All images uploaded:", imageUrls);
 
-    // 2. Save product to Firestore
+    // ✅ Save product to Firestore
     await addDoc(collection(db, "products"), {
       name: name,
       price: Number(price),
@@ -70,21 +82,20 @@ let imageUrls = [];
       createdAt: new Date()
     });
 
-    alert("Product uploaded successfully!");
+    alert("✅ Product uploaded successfully!");
 
-    // 3. Clear inputs
+    // ✅ Clear inputs
     document.getElementById('name').value = "";
     document.getElementById('price').value = "";
     document.getElementById('desc').value = "";
     document.getElementById('image').value = "";
 
   } catch (err) {
-    console.error(err);
-    alert("Upload failed. Check console for error.");
+    console.error("FULL ERROR:", err);
+    alert("❌ Upload failed. Check console.");
   }
 };
-
-</script>
+      </script>
 
 </body>
 </html>
