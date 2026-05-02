@@ -33,9 +33,10 @@ let imageUrls = [];
     return;
   }
 
-  if (!file) {
-    alert("Please select an image");
-    return;
+  if (files.length === 0) {
+  alert("Please select at least one image");
+  return;
+  }
   }
 
   try {
