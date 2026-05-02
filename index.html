@@ -22,7 +22,7 @@ async function loadProducts() {
 
     container.innerHTML += `
       <div>
-        <img src="${data.image}" width="200">
+        <img src="${data.imageUrl}" class="product-img" />
         <h3>${data.name}</h3>
         <p>${data.price}</p>
         <p>${data.desc}</p>
