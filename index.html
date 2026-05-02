@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Private Luxury Market</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Products</title>
 </head>
 <body>
 
-<div class="container">
-  <h2>Exclusive Listings</h2>
-  <div id="listings" class="grid"></div>
-</div>
+<h2>Products</h2>
+<div id="products"></div>
 
 <script type="module">
-querySnapshot.forEach(doc => {
-  const data = doc.data();
+import { db } from './firebase.js';
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  listingsDiv.innerHTML += `
-    <div class="card">
-      <img src="${data.image}" />
-      <h3>${data.title}</h3>
-      <p>${data.description}</p>
+const container = document.getElementById('products');
 
-      <strong>₦${data.price}</strong>
+async function loadProducts() {
+  const querySnapshot = await getDocs(collection(db, "products"));
 
-      <br><br>
+  querySnapshot.forEach(doc => {
+    const data = doc.data();
 
-      <a href="https://wa.me/234XXXXXXXXXX">
-        <button>Serious Buyer Only</button>
-      </a>
-    </div>
-  `;
-});
+    container.innerHTML += `
+      <div>
+        <img src="${data.image}" width="200">
+        <h3>${data.name}</h3>
+        <p>${data.price}</p>
+        <p>${data.desc}</p>
+      </div>
+    `;
+  });
+}
+
+loadProducts();
 </script>
 
 </body>
