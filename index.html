@@ -2,6 +2,25 @@
 <html>
 <head>
   <title>Products</title>
+
+  <style>
+    .product {
+      width: 250px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin: 10px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -10,7 +29,8 @@
 
 <script type="module">
 import { db } from './firebase.js';
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const container = document.getElementById('products');
 
@@ -21,11 +41,11 @@ async function loadProducts() {
     const data = doc.data();
 
     container.innerHTML += `
-      <div>
+      <div class="product">
         <img src="${data.imageUrl}" class="product-img" />
         <h3>${data.name}</h3>
-        <p>${data.price}</p>
-        <p>${data.desc}</p>
+        <p>₦${data.price}</p>
+        <p>${data.description}</p>
       </div>
     `;
   });
