@@ -4,20 +4,43 @@
   <title>Products</title>
 
   <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
     .product {
-      width: 250px;
+      width: 260px;
       padding: 10px;
       border: 1px solid #ddd;
       margin: 10px;
       display: inline-block;
       vertical-align: top;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
     .product-img {
       width: 100%;
-      height: 200px;
+      height: 180px;
       object-fit: cover;
       border-radius: 8px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .title {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+
+    .price {
+      color: green;
+      font-weight: bold;
+    }
+
+    .desc {
+      font-size: 14px;
+      color: #555;
     }
   </style>
 
@@ -25,6 +48,7 @@
 <body>
 
 <h2>Products</h2>
+
 <div id="products"></div>
 
 <script type="module">
@@ -32,20 +56,35 @@ import { db } from './firebase.js';
 import { collection, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const container = document.getElementById('products');
+const container = document.getElementById("products");
 
 async function loadProducts() {
   const querySnapshot = await getDocs(collection(db, "products"));
 
-  querySnapshot.forEach(doc => {
+  container.innerHTML = "";
+
+  querySnapshot.forEach((doc) => {
     const data = doc.data();
+
+    let imagesHTML = "";
+
+    // ✅ SAFE CHECK FOR IMAGES
+    if (Array.isArray(data.imageUrls) && data.imageUrls.length > 0) {
+      data.imageUrls.forEach((url) => {
+        if (url) {
+          imagesHTML += `<img src="${url}" class="product-img">`;
+        }
+      });
+    } else {
+      imagesHTML = `<div style="padding:10px;color:#999;">No image</div>`;
+    }
 
     container.innerHTML += `
       <div class="product">
-        <img src="${data.imageUrls}" class="product-img" />
-        <h3>${data.name}</h3>
-        <p>₦${data.price}</p>
-        <p>${data.description}</p>
+        ${imagesHTML}
+        <div class="title">${data.name || "No name"}</div>
+        <div class="price">₦${data.price || 0}</div>
+        <div class="desc">${data.description || ""}</div>
       </div>
     `;
   });
