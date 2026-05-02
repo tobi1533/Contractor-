@@ -24,7 +24,8 @@ window.uploadProduct = async function () {
   const name = document.getElementById('name').value;
   const price = document.getElementById('price').value;
   const desc = document.getElementById('desc').value;
-  const file = document.getElementById('image').files[0];
+  const files = document.getElementById('image').files;
+let imageUrls = [];
 
   // validation
   if (!name || !price || !desc) {
