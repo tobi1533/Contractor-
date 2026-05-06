@@ -301,6 +301,209 @@
       font-size: 14px;
       z-index: 10;
     }
+
+    /* Floating Contact Popup */
+    .floating-contact {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .contact-toggle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b35 0%, #3498db 100%);
+      color: white;
+      border: none;
+      font-size: 32px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .contact-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
+    }
+
+    .contact-toggle.active {
+      background: linear-gradient(135deg, #e55100 0%, #2980b9 100%);
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(0.8);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .social-links.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .social-link {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: white;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .social-link:hover::before {
+      left: 100%;
+    }
+
+    /* Social Media Colors */
+    .social-link.facebook {
+      background: #1877F2;
+    }
+
+    .social-link.facebook:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(24, 119, 242, 0.4);
+    }
+
+    .social-link.twitter {
+      background: #1DA1F2;
+    }
+
+    .social-link.twitter:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(29, 161, 242, 0.4);
+    }
+
+    .social-link.instagram {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .social-link.instagram:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .social-link.whatsapp {
+      background: #25D366;
+    }
+
+    .social-link.whatsapp:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+    }
+
+    .social-link.linkedin {
+      background: #0A66C2;
+    }
+
+    .social-link.linkedin:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(10, 102, 194, 0.4);
+    }
+
+    .social-link.email {
+      background: #EA4335;
+    }
+
+    .social-link.email:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(234, 67, 53, 0.4);
+    }
+
+    .social-link.youtube {
+      background: #FF0000;
+    }
+
+    .social-link.youtube:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
+    }
+
+    .social-link.telegram {
+      background: #0088cc;
+    }
+
+    .social-link.telegram:hover {
+      transform: scale(1.15) rotate(360deg);
+      box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
+    }
+
+    .contact-label {
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .floating-contact.active .contact-label {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .floating-contact {
+        right: 15px;
+        bottom: 15px;
+      }
+
+      .contact-toggle {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+
+      .social-link {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+    }
   </style>
 
 </head>
@@ -323,6 +526,69 @@
   </div>
 </div>
 
+<!-- Floating Contact Popup -->
+<div class="floating-contact" id="floatingContact">
+  <div class="contact-label">Contact Us</div>
+  <div class="social-links" id="socialLinks">
+    <!-- Add your social media links here -->
+    <!-- Replace 'YOUR_LINK_HERE' with your actual links -->
+    
+    <a href="https://www.facebook.com/your-page" target="_blank" class="social-link facebook" title="Facebook">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    </a>
+
+    <a href="https://www.twitter.com/your-handle" target="_blank" class="social-link twitter" title="Twitter">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.953 4.57a10 10 0 002.856-3.915 10 10 0 01-2.837.856 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+      </svg>
+    </a>
+
+    <a href="https://www.instagram.com/your-handle" target="_blank" class="social-link instagram" title="Instagram">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
+      </svg>
+    </a>
+
+    <a href="https://wa.me/1234567890" target="_blank" class="social-link whatsapp" title="WhatsApp">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.678.735 5.309 2.126 7.591L2.457 24l8.13-2.132c2.204 1.201 4.694 1.833 7.26 1.833 5.441 0 9.752-4.355 9.752-9.753 0-2.602-.675-5.038-1.96-7.130-1.285-2.092-3.13-3.863-5.383-4.9-2.254-1.038-4.732-1.509-7.255-1.509zm0-2a11.885 11.885 0 018.472 3.593c2.26 2.014 3.685 4.72 3.685 7.574 0 6.513-5.327 11.815-11.873 11.815-2.352 0-4.671-.619-6.728-1.79l-7.616 2.001 2.04-7.46C1.708 16.989 1 14.677 1 12.363 1 5.85 6.327.548 12.873.548c2.352 0 4.671.619 6.728 1.79"/>
+      </svg>
+    </a>
+
+    <a href="https://www.linkedin.com/in/your-profile" target="_blank" class="social-link linkedin" title="LinkedIn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.721-2.004 1.413-.103.25-.13.599-.13.948v5.444h-3.554s.05-8.836 0-9.759h3.554v1.381c.43-.66 1.201-1.6 2.922-1.6 2.135 0 3.752 1.394 3.752 4.385v5.593zM5.337 8.855c-1.144 0-1.915-.759-1.915-1.71 0-.952.77-1.71 1.916-1.71 1.144 0 1.915.759 1.915 1.71 0 .951-.771 1.71-1.915 1.71zm1.6 11.597H3.738V9.548h3.199v10.904zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+      </svg>
+    </a>
+
+    <a href="mailto:your-email@example.com" class="social-link email" title="Email">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+      </svg>
+    </a>
+
+    <a href="https://www.youtube.com/your-channel" target="_blank" class="social-link youtube" title="YouTube">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+    </a>
+
+    <a href="https://t.me/your-channel" target="_blank" class="social-link telegram" title="Telegram">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0011.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.365-1.337.175-.437-.148-1.33-.414-1.98-.742-.796-.331-1.512-.324-1.659.178-.147.502.422 1.053 1.148 1.595.684.525 1.856 1.21 2.877 1.91.173.129 1.671 1.073 1.671 1.073.46.3.635.556.61.947-.027.2-.285.651-.87 1.035-1.112.565-1.826.451-1.935-.715-.033-.543.467-1.68 1.186-2.806.165-.267.431-.678.558-.894 1.36-2.359 8.003-3.33 9.114-1.77.269.955-.13 2.585-1.847 3.257-.504.201-1.505.303-1.505.303l-.001-.001z"/>
+      </svg>
+    </a>
+  </div>
+
+  <button class="contact-toggle" id="contactToggle" title="Contact Us">
+    💬
+  </button>
+</div>
+
 <script type="module">
 import { db } from './firebase.js';
 import { collection, getDocs } 
@@ -335,6 +601,37 @@ const modalCounter = document.getElementById("modalCounter");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const closeBtn = document.getElementById("closeBtn");
+
+// Floating Contact functionality
+const contactToggle = document.getElementById("contactToggle");
+const socialLinks = document.getElementById("socialLinks");
+const floatingContact = document.getElementById("floatingContact");
+
+contactToggle.addEventListener("click", () => {
+  socialLinks.classList.toggle("active");
+  contactToggle.classList.toggle("active");
+  floatingContact.classList.toggle("active");
+});
+
+// Close contact menu when clicking outside
+document.addEventListener("click", (e) => {
+  if (!floatingContact.contains(e.target)) {
+    socialLinks.classList.remove("active");
+    contactToggle.classList.remove("active");
+    floatingContact.classList.remove("active");
+  }
+});
+
+// Close contact menu when a social link is clicked
+document.querySelectorAll(".social-link").forEach(link => {
+  link.addEventListener("click", () => {
+    setTimeout(() => {
+      socialLinks.classList.remove("active");
+      contactToggle.classList.remove("active");
+      floatingContact.classList.remove("active");
+    }, 200);
+  });
+});
 
 let currentProductImages = [];
 let currentImageIndex = 0;
