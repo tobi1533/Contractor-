@@ -215,7 +215,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.9);
       animation: fadeIn 0.3s ease;
     }
 
@@ -282,6 +282,7 @@
       font-weight: bold;
       cursor: pointer;
       transition: color 0.3s ease;
+      z-index: 100;
     }
 
     .modal-close:hover {
@@ -298,6 +299,7 @@
       padding: 10px 20px;
       border-radius: 20px;
       font-size: 14px;
+      z-index: 10;
     }
   </style>
 
@@ -312,9 +314,9 @@
 <div id="imageModal" class="modal">
   <div class="modal-content">
     <img id="modalImage" class="modal-image" src="" alt="Product image">
-    <button class="modal-nav modal-prev" onclick="changeImage(-1)">&#10094;</button>
-    <button class="modal-nav modal-next" onclick="changeImage(1)">&#10095;</button>
-    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <button class="modal-nav modal-prev" id="prevBtn">&#10094;</button>
+    <button class="modal-nav modal-next" id="nextBtn">&#10095;</button>
+    <span class="modal-close" id="closeBtn">&times;</span>
     <div class="modal-counter">
       <span id="modalCounter"></span>
     </div>
@@ -330,24 +332,32 @@ const container = document.getElementById("products");
 const modal = document.getElementById("imageModal");
 const modalImage = document.getElementById("modalImage");
 const modalCounter = document.getElementById("modalCounter");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const closeBtn = document.getElementById("closeBtn");
 
 let currentProductImages = [];
 let currentImageIndex = 0;
 
-window.openImageGallery = function(images, index) {
-  currentProductImages = images.filter(url => url); // Remove empty URLs
+// Open image gallery
+function openImageGallery(images, index = 0) {
+  currentProductImages = images.filter(url => url && url.trim() !== '');
   if (currentProductImages.length === 0) return;
   
   currentImageIndex = index;
   showImage();
   modal.style.display = "block";
-};
+  document.body.style.overflow = "hidden";
+}
 
-window.closeModal = function() {
+// Close modal
+function closeModal() {
   modal.style.display = "none";
-};
+  document.body.style.overflow = "auto";
+}
 
-window.changeImage = function(direction) {
+// Change image
+function changeImage(direction) {
   currentImageIndex += direction;
   if (currentImageIndex >= currentProductImages.length) {
     currentImageIndex = 0;
@@ -355,22 +365,30 @@ window.changeImage = function(direction) {
     currentImageIndex = currentProductImages.length - 1;
   }
   showImage();
-};
-
-function showImage() {
-  modalImage.src = currentProductImages[currentImageIndex];
-  modalCounter.textContent = `${currentImageIndex + 1} / ${currentProductImages.length}`;
 }
 
+// Show current image
+function showImage() {
+  if (currentProductImages.length > 0) {
+    modalImage.src = currentProductImages[currentImageIndex];
+    modalCounter.textContent = `${currentImageIndex + 1} / ${currentProductImages.length}`;
+  }
+}
+
+// Button event listeners
+prevBtn.addEventListener("click", () => changeImage(-1));
+nextBtn.addEventListener("click", () => changeImage(1));
+closeBtn.addEventListener("click", closeModal);
+
 // Close modal when clicking outside the image
-modal.onclick = function(event) {
+modal.addEventListener("click", (event) => {
   if (event.target === modal) {
     closeModal();
   }
-};
+});
 
 // Keyboard navigation
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', (event) => {
   if (modal.style.display === "block") {
     if (event.key === "ArrowLeft") changeImage(-1);
     if (event.key === "ArrowRight") changeImage(1);
@@ -388,12 +406,13 @@ async function loadProducts() {
 
     let mainImageHTML = "";
     let hasImages = Array.isArray(data.imageUrls) && data.imageUrls.length > 0;
-    let validImages = hasImages ? data.imageUrls.filter(url => url) : [];
+    let validImages = hasImages ? data.imageUrls.filter(url => url && url.trim() !== '') : [];
 
     // Main image display
     if (validImages.length > 0) {
+      const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
       mainImageHTML = `
-        <div class="image-container" onclick="openImageGallery(${JSON.stringify(validImages)}, 0)">
+        <div class="image-container" data-images="${imageDataJson}" style="cursor: pointer;">
           <img src="${validImages[0]}" class="product-img" alt="${data.name || 'Product'}">
           ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} photos</div>` : ''}
         </div>
@@ -414,6 +433,17 @@ async function loadProducts() {
         </div>
       </div>
     `;
+  });
+
+  // Add click event listeners to all image containers
+  document.querySelectorAll('.image-container').forEach((container) => {
+    container.addEventListener('click', (e) => {
+      const imagesJson = container.getAttribute('data-images');
+      if (imagesJson) {
+        const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
+        openImageGallery(images, 0);
+      }
+    });
   });
 }
 
