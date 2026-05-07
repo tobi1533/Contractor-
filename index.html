@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Products</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - Shop</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -10,16 +14,30 @@
       box-sizing: border-box;
     }
 
+    /* ===== ROOT COLOR VARIABLES ===== */
+    :root {
+      --primary: #FF6B35;
+      --primary-dark: #E55100;
+      --secondary: #3498DB;
+      --accent: #2ECC71;
+      --dark: #1a1a2e;
+      --darker: #0f1419;
+      --light: #F5F5F5;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-hover: rgba(255, 255, 255, 0.15);
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
       background-attachment: fixed;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
+      color: white;
     }
 
-    /* Animated background elements */
+    /* ===== ANIMATED BACKGROUND ===== */
     body::before {
       content: '';
       position: fixed;
@@ -28,20 +46,20 @@
       width: 100%;
       height: 100%;
       background: 
-        radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 20%, rgba(46, 204, 113, 0.08) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
-      animation: pulse 15s ease-in-out infinite;
+      animation: ambientPulse 15s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.8; }
+    @keyframes ambientPulse {
+      0%, 100% { opacity: 0.7; }
       50% { opacity: 1; }
     }
 
-    /* Blueprint grid pattern */
+    /* ===== BLUEPRINT GRID PATTERN ===== */
     body::after {
       content: '';
       position: fixed;
@@ -50,36 +68,211 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(0deg, transparent 24%, rgba(52, 152, 219, 0.05) 25%, rgba(52, 152, 219, 0.05) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, 0.05) 75%, rgba(52, 152, 219, 0.05) 76%, transparent 77%, transparent),
-        linear-gradient(90deg, transparent 24%, rgba(52, 152, 219, 0.05) 25%, rgba(52, 152, 219, 0.05) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, 0.05) 75%, rgba(52, 152, 219, 0.05) 76%, transparent 77%, transparent);
+        linear-gradient(0deg, transparent 24%, rgba(52, 152, 219, 0.03) 25%, rgba(52, 152, 219, 0.03) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, 0.03) 75%, rgba(52, 152, 219, 0.03) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(52, 152, 219, 0.03) 25%, rgba(52, 152, 219, 0.03) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, 0.03) 75%, rgba(52, 152, 219, 0.03) 76%, transparent 77%, transparent);
       background-size: 50px 50px;
       pointer-events: none;
       z-index: 0;
     }
 
+    /* ===== NAVIGATION BAR ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 2px solid rgba(255, 107, 53, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .nav-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    /* ===== HAMBURGER MENU BUTTON ===== */
+    .hamburger {
+      width: 50px;
+      height: 50px;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border: none;
+      border-radius: 10px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3);
+      position: relative;
+      z-index: 1001;
+    }
+
+    .hamburger:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 2.5px;
+      background: white;
+      margin: 5px 0;
+      display: block;
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(12px, 12px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      position: fixed;
+      top: 70px;
+      right: -300px;
+      width: 280px;
+      height: calc(100vh - 70px);
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 3px solid var(--primary);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+      transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      padding: 30px 20px;
+      overflow-y: auto;
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    .menu-item {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      margin: 10px 0;
+      background: transparent;
+      border: 2px solid rgba(255, 107, 53, 0.3);
+      border-radius: 10px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .menu-item:hover {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-color: var(--primary);
+      transform: translateX(-5px);
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+    }
+
+    .admin-login-btn {
+      background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+      border-color: #E74C3C;
+      margin-top: 20px;
+      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+    }
+
+    .admin-login-btn:hover {
+      background: linear-gradient(135deg, #C0392B 0%, #A93226 100%);
+      box-shadow: 0 12px 35px rgba(231, 76, 60, 0.5);
+    }
+
+    .admin-label {
+      display: block;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    /* ===== MAIN HEADING ===== */
     h2 {
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 40px 20px 20px;
+      padding: 100px 20px 40px;
       color: #fff;
       font-size: 48px;
-      font-weight: 700;
+      font-weight: 900;
       text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       letter-spacing: 2px;
-      background: linear-gradient(135deg, #ff6b35 0%, #3498db 100%);
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== PRODUCTS GRID ===== */
     #products {
       position: relative;
       z-index: 1;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 40px 20px 80px;
       gap: 30px;
     }
 
@@ -192,7 +385,7 @@
     }
 
     .price {
-      color: #ff6b35;
+      color: var(--primary);
       font-weight: 800;
       font-size: 20px;
       margin: 8px 0 10px 0;
@@ -206,17 +399,18 @@
       font-weight: 500;
     }
 
-    /* Modal for image gallery */
+    /* ===== IMAGE GALLERY MODAL ===== */
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
+      z-index: 2000;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.95);
       animation: fadeIn 0.3s ease;
+      backdrop-filter: blur(8px);
     }
 
     @keyframes fadeIn {
@@ -239,6 +433,7 @@
       object-fit: contain;
       border-radius: 10px;
       animation: zoomIn 0.3s ease;
+      box-shadow: 0 0 50px rgba(255, 107, 53, 0.5);
     }
 
     @keyframes zoomIn {
@@ -250,19 +445,21 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255, 107, 53, 0.9);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       color: white;
       border: none;
       padding: 15px 20px;
       cursor: pointer;
       font-size: 24px;
-      border-radius: 5px;
-      transition: background 0.3s ease;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 10;
+      box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
     }
 
     .modal-nav:hover {
-      background: rgba(255, 107, 53, 1);
+      transform: translateY(-50%) scale(1.15);
+      box-shadow: 0 10px 35px rgba(255, 107, 53, 0.6);
     }
 
     .modal-prev {
@@ -277,16 +474,18 @@
       position: absolute;
       top: 20px;
       right: 30px;
-      color: white;
+      color: var(--primary);
       font-size: 40px;
       font-weight: bold;
       cursor: pointer;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
       z-index: 100;
+      text-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
     }
 
     .modal-close:hover {
-      color: #ff6b35;
+      transform: scale(1.3) rotate(90deg);
+      text-shadow: 0 0 40px rgba(255, 107, 53, 0.8);
     }
 
     .modal-counter {
@@ -302,7 +501,7 @@
       z-index: 10;
     }
 
-    /* Floating Contact Popup */
+    /* ===== FLOATING CONTACT ===== */
     .floating-contact {
       position: fixed;
       right: 30px;
@@ -318,7 +517,7 @@
       width: 70px;
       height: 70px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #ff6b35 0%, #3498db 100%);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       color: white;
       border: none;
       font-size: 32px;
@@ -343,7 +542,7 @@
     }
 
     .contact-toggle.active {
-      background: linear-gradient(135deg, #e55100 0%, #2980b9 100%);
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #2980b9 100%);
     }
 
     .social-links {
@@ -394,34 +593,6 @@
       left: 100%;
     }
 
-    /* Social Media Colors */
-    .social-link.facebook {
-      background: #1877F2;
-    }
-
-    .social-link.facebook:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(24, 119, 242, 0.4);
-    }
-
-    .social-link.twitter {
-      background: #1DA1F2;
-    }
-
-    .social-link.twitter:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(29, 161, 242, 0.4);
-    }
-
-    .social-link.instagram {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .social-link.instagram:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-    }
-
     .social-link.whatsapp {
       background: #25D366;
     }
@@ -431,15 +602,6 @@
       box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
     }
 
-    .social-link.linkedin {
-      background: #0A66C2;
-    }
-
-    .social-link.linkedin:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(10, 102, 194, 0.4);
-    }
-
     .social-link.email {
       background: #EA4335;
     }
@@ -447,24 +609,6 @@
     .social-link.email:hover {
       transform: scale(1.15) rotate(360deg);
       box-shadow: 0 10px 30px rgba(234, 67, 53, 0.4);
-    }
-
-    .social-link.youtube {
-      background: #FF0000;
-    }
-
-    .social-link.youtube:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
-    }
-
-    .social-link.telegram {
-      background: #0088cc;
-    }
-
-    .social-link.telegram:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
     }
 
     .contact-label {
@@ -486,7 +630,22 @@
       opacity: 1;
     }
 
+    /* ===== MOBILE RESPONSIVE ===== */
     @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+
+      h2 {
+        font-size: 36px;
+        padding: 80px 20px 30px;
+      }
+
+      #products {
+        flex-direction: column;
+        align-items: center;
+      }
+
       .floating-contact {
         right: 15px;
         bottom: 15px;
@@ -504,10 +663,51 @@
         font-size: 20px;
       }
     }
+
+    /* ===== SMOOTH SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+      border-radius: 6px;
+      box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      box-shadow: 0 0 25px rgba(255, 107, 53, 0.6);
+    }
+
   </style>
 
 </head>
 <body>
+
+<!-- NAVIGATION BAR -->
+<nav>
+  <h1 class="nav-title">🛍️ Shop</h1>
+  <button class="hamburger" id="hamburger" title="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="menu-item" onclick="location.href='index.html'">Home</div>
+  <div class="menu-item" onclick="location.href='booking.html'">Booking</div>
+  <div class="menu-item" onclick="location.href='about.html'">About</div>
+  <div class="menu-item" onclick="location.href='contact.html'">Contact</div>
+  <div class="menu-item" onclick="location.href='gallery.html'">Gallery</div>
+  <div class="admin-label">👨‍💼 Owner Panel</div>
+  <a href="admin.html" class="menu-item admin-login-btn">🔐 Admin Login</a>
+</div>
 
 <h2>Products</h2>
 
@@ -530,56 +730,15 @@
 <div class="floating-contact" id="floatingContact">
   <div class="contact-label">Contact Us</div>
   <div class="social-links" id="socialLinks">
-    <!-- Add your social media links here -->
-    <!-- Replace 'YOUR_LINK_HERE' with your actual links -->
-    
-    <a href="https://www.facebook.com/your-page" target="_blank" class="social-link facebook" title="Facebook">
+    <a href="https://wa.me/2348110844173" target="_blank" class="social-link whatsapp" title="WhatsApp">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.678.735 5.309 2.126 7.591L2.457 24l8.13-2.132c2.204 1.201 4.694 1.833 7.26 1.833 5.441 0 9.752-4.355 9.752-9.753 0-2.602-.675-5.038-1.96-7.13-1.285-2.092-3.13-3.863-5.383-4.9-2.254-1.038-4.732-1.509-7.255-1.509zm0-2a11.885 11.885 0 018.472 3.593c2.26 2.014 3.685 4.72 3.685 7.574 0 6.513-5.327 11.815-11.873 11.815-2.352 0-4.671-.619-6.728-1.79l-7.616 2.001 2.04-7.46C1.708 16.989 1 14.677 1 12.363 1 5.85 6.327.548 12.873.548c2.352 0 4.671.619 6.728 1.79"/>
       </svg>
     </a>
 
-    <a href="https://www.twitter.com/your-handle" target="_blank" class="social-link twitter" title="Twitter">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M23.953 4.57a10 10 0 002.856-3.915 10 10 0 01-2.837.856 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-      </svg>
-    </a>
-
-    <a href="https://www.instagram.com/your-handle" target="_blank" class="social-link instagram" title="Instagram">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
-        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="currentColor" stroke-width="2"/>
-        <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
-      </svg>
-    </a>
-
-    <a href="https://wa.me/1234567890" target="_blank" class="social-link whatsapp" title="WhatsApp">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.678.735 5.309 2.126 7.591L2.457 24l8.13-2.132c2.204 1.201 4.694 1.833 7.26 1.833 5.441 0 9.752-4.355 9.752-9.753 0-2.602-.675-5.038-1.96-7.130-1.285-2.092-3.13-3.863-5.383-4.9-2.254-1.038-4.732-1.509-7.255-1.509zm0-2a11.885 11.885 0 018.472 3.593c2.26 2.014 3.685 4.72 3.685 7.574 0 6.513-5.327 11.815-11.873 11.815-2.352 0-4.671-.619-6.728-1.79l-7.616 2.001 2.04-7.46C1.708 16.989 1 14.677 1 12.363 1 5.85 6.327.548 12.873.548c2.352 0 4.671.619 6.728 1.79"/>
-      </svg>
-    </a>
-
-    <a href="https://www.linkedin.com/in/your-profile" target="_blank" class="social-link linkedin" title="LinkedIn">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.721-2.004 1.413-.103.25-.13.599-.13.948v5.444h-3.554s.05-8.836 0-9.759h3.554v1.381c.43-.66 1.201-1.6 2.922-1.6 2.135 0 3.752 1.394 3.752 4.385v5.593zM5.337 8.855c-1.144 0-1.915-.759-1.915-1.71 0-.952.77-1.71 1.916-1.71 1.144 0 1.915.759 1.915 1.71 0 .951-.771 1.71-1.915 1.71zm1.6 11.597H3.738V9.548h3.199v10.904zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
-      </svg>
-    </a>
-
-    <a href="mailto:your-email@example.com" class="social-link email" title="Email">
+    <a href="mailto:shangrilaviewhotel@gmail.com" class="social-link email" title="Email">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-      </svg>
-    </a>
-
-    <a href="https://www.youtube.com/your-channel" target="_blank" class="social-link youtube" title="YouTube">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-      </svg>
-    </a>
-
-    <a href="https://t.me/your-channel" target="_blank" class="social-link telegram" title="Telegram">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0011.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.365-1.337.175-.437-.148-1.33-.414-1.98-.742-.796-.331-1.512-.324-1.659.178-.147.502.422 1.053 1.148 1.595.684.525 1.856 1.21 2.877 1.91.173.129 1.671 1.073 1.671 1.073.46.3.635.556.61.947-.027.2-.285.651-.87 1.035-1.112.565-1.826.451-1.935-.715-.033-.543.467-1.68 1.186-2.806.165-.267.431-.678.558-.894 1.36-2.359 8.003-3.33 9.114-1.77.269.955-.13 2.585-1.847 3.257-.504.201-1.505.303-1.505.303l-.001-.001z"/>
       </svg>
     </a>
   </div>
@@ -594,15 +753,34 @@ import { db } from './firebase.js';
 import { collection, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const container = document.getElementById("products");
-const modal = document.getElementById("imageModal");
-const modalImage = document.getElementById("modalImage");
-const modalCounter = document.getElementById("modalCounter");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const closeBtn = document.getElementById("closeBtn");
+// ===== HAMBURGER MENU =====
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
 
-// Floating Contact functionality
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('active');
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('active');
+  }
+});
+
+// Close menu when a menu item is clicked
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    setTimeout(() => {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    }, 100);
+  });
+});
+
+// ===== FLOATING CONTACT FUNCTIONALITY =====
 const contactToggle = document.getElementById("contactToggle");
 const socialLinks = document.getElementById("socialLinks");
 const floatingContact = document.getElementById("floatingContact");
@@ -633,10 +811,18 @@ document.querySelectorAll(".social-link").forEach(link => {
   });
 });
 
+// ===== IMAGE GALLERY =====
+const container = document.getElementById("products");
+const modal = document.getElementById("imageModal");
+const modalImage = document.getElementById("modalImage");
+const modalCounter = document.getElementById("modalCounter");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const closeBtn = document.getElementById("closeBtn");
+
 let currentProductImages = [];
 let currentImageIndex = 0;
 
-// Open image gallery
 function openImageGallery(images, index = 0) {
   currentProductImages = images.filter(url => url && url.trim() !== '');
   if (currentProductImages.length === 0) return;
@@ -647,13 +833,11 @@ function openImageGallery(images, index = 0) {
   document.body.style.overflow = "hidden";
 }
 
-// Close modal
 function closeModal() {
   modal.style.display = "none";
   document.body.style.overflow = "auto";
 }
 
-// Change image
 function changeImage(direction) {
   currentImageIndex += direction;
   if (currentImageIndex >= currentProductImages.length) {
@@ -664,7 +848,6 @@ function changeImage(direction) {
   showImage();
 }
 
-// Show current image
 function showImage() {
   if (currentProductImages.length > 0) {
     modalImage.src = currentProductImages[currentImageIndex];
@@ -672,19 +855,16 @@ function showImage() {
   }
 }
 
-// Button event listeners
 prevBtn.addEventListener("click", () => changeImage(-1));
 nextBtn.addEventListener("click", () => changeImage(1));
 closeBtn.addEventListener("click", closeModal);
 
-// Close modal when clicking outside the image
 modal.addEventListener("click", (event) => {
   if (event.target === modal) {
     closeModal();
   }
 });
 
-// Keyboard navigation
 document.addEventListener('keydown', (event) => {
   if (modal.style.display === "block") {
     if (event.key === "ArrowLeft") changeImage(-1);
@@ -693,6 +873,7 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+// ===== LOAD PRODUCTS =====
 async function loadProducts() {
   const querySnapshot = await getDocs(collection(db, "products"));
 
@@ -705,7 +886,6 @@ async function loadProducts() {
     let hasImages = Array.isArray(data.imageUrls) && data.imageUrls.length > 0;
     let validImages = hasImages ? data.imageUrls.filter(url => url && url.trim() !== '') : [];
 
-    // Main image display
     if (validImages.length > 0) {
       const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
       mainImageHTML = `
@@ -732,7 +912,6 @@ async function loadProducts() {
     `;
   });
 
-  // Add click event listeners to all image containers
   document.querySelectorAll('.image-container').forEach((container) => {
     container.addEventListener('click', (e) => {
       const imagesJson = container.getAttribute('data-images');
