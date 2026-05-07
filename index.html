@@ -278,7 +278,7 @@
 
     .product {
       width: 300px;
-      height: 420px;
+      height: 480px;
       padding: 0;
       border: 2px solid rgba(255, 107, 53, 0.3);
       display: flex;
@@ -397,6 +397,43 @@
       color: #666;
       line-height: 1.5;
       font-weight: 500;
+      margin-bottom: 12px;
+      flex-grow: 1;
+    }
+
+    .order-btn {
+      width: 100%;
+      padding: 12px 15px;
+      background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+      background: linear-gradient(135deg, #20BA5A 0%, #1B9D4F 100%);
+    }
+
+    .order-btn:active {
+      transform: translateY(0);
+    }
+
+    .order-btn svg {
+      width: 18px;
+      height: 18px;
     }
 
     /* ===== IMAGE GALLERY MODAL ===== */
@@ -745,6 +782,9 @@ import { db } from './firebase.js';
 import { collection, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// WhatsApp Phone Number (Owner)
+const OWNER_PHONE = "2347034447700";
+
 // ===== HAMBURGER MENU =====
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -865,6 +905,21 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+// ===== WHATSAPP ORDER FUNCTION =====
+function sendOrderViaWhatsApp(productName, price) {
+  // Create the message
+  const message = `Hi! 👋\n\nI'm interested in the following product:\n\n📦 Product: ${productName}\n💰 Price: ₦${price}\n\nPlease let me know more details and availability. Thanks!`;
+  
+  // Encode the message for WhatsApp URL
+  const encodedMessage = encodeURIComponent(message);
+  
+  // Create WhatsApp URL
+  const whatsappURL = `https://wa.me/${OWNER_PHONE}?text=${encodedMessage}`;
+  
+  // Open WhatsApp
+  window.open(whatsappURL, '_blank');
+}
+
 // ===== LOAD PRODUCTS =====
 async function loadProducts() {
   const querySnapshot = await getDocs(collection(db, "products"));
@@ -899,6 +954,12 @@ async function loadProducts() {
             <div class="price">₦${data.price || 0}</div>
           </div>
           <div class="desc">${data.description || ""}</div>
+          <button class="order-btn" onclick="sendOrderViaWhatsApp('${data.name.replace(/'/g, "\\'")}', '${data.price}')">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.678.735 5.309 2.126 7.591L2.457 24l8.13-2.132c2.204 1.201 4.694 1.833 7.26 1.833 5.441 0 9.752-4.355 9.752-9.753 0-2.602-.675-5.038-1.96-7.13-1.285-2.092-3.13-3.863-5.383-4.9-2.254-1.038-4.732-1.509-7.255-1.509zm0-2a11.885 11.885 0 018.472 3.593c2.26 2.014 3.685 4.72 3.685 7.574 0 6.513-5.327 11.815-11.873 11.815-2.352 0-4.671-.619-6.728-1.79l-7.616 2.001 2.04-7.46C1.708 16.989 1 14.677 1 12.363 1 5.85 6.327.548 12.873.548c2.352 0 4.671.619 6.728 1.79"/>
+            </svg>
+            Order Now
+          </button>
         </div>
       </div>
     `;
