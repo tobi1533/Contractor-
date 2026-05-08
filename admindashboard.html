@@ -8,13 +8,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    /* ===== ROOT VARIABLES ===== */
     :root {
-      --primary:   #667eea;
+      --primary: #667eea;
+      --primary-dark: #5568d3;
       --secondary: #764ba2;
-      --danger:    #ff6b6b;
-      --dark:      #1e1e2e;
+      --accent: #f093fb;
+      --success: #4ade80;
+      --danger: #ff6b6b;
+      --light: #f8f9ff;
+      --dark: #1e1e2e;
+      --glass: rgba(255, 255, 255, 0.08);
     }
 
     body {
@@ -22,15 +32,20 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       padding: 20px;
+      position: relative;
     }
 
+    /* ===== ANIMATED BACKGROUND ===== */
     body::before {
       content: '';
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background:
-        radial-gradient(circle at 20% 50%, rgba(240,147,251,0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(102,126,234,0.12) 0%, transparent 50%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.12) 0%, transparent 50%);
       z-index: -1;
       animation: ambientPulse 15s ease-in-out infinite;
       pointer-events: none;
@@ -38,7 +53,7 @@
 
     @keyframes ambientPulse {
       0%, 100% { opacity: 0.6; }
-      50%       { opacity: 1; }
+      50% { opacity: 1; }
     }
 
     .container {
@@ -51,24 +66,38 @@
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ===== UPLOAD SECTION ===== */
     .upload-section {
-      background: rgba(255,255,255,0.95);
+      background: rgba(255, 255, 255, 0.95);
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
       height: fit-content;
       position: sticky;
       top: 20px;
-      border: 2px solid rgba(240,147,251,0.2);
+      border: 2px solid rgba(240, 147, 251, 0.2);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .upload-section h2,
-    .products-section h2 {
+    .upload-section:hover {
+      box-shadow: 
+        0 30px 80px rgba(102, 126, 234, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .upload-section h2 {
       font-family: 'Playfair Display', serif;
       color: var(--primary);
       margin-bottom: 25px;
@@ -88,21 +117,25 @@
       border-radius: 10px;
       font-family: inherit;
       font-size: 14px;
-      transition: all 0.3s ease;
-      background: rgba(248,249,255,0.8);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: rgba(248, 249, 255, 0.8);
     }
 
     input[type="text"]:focus,
     input[type="number"]:focus,
-    textarea:focus {
+    textarea:focus,
+    input[type="file"]:focus {
       outline: none;
       border-color: var(--primary);
       background: white;
-      box-shadow: 0 0 20px rgba(102,126,234,0.3);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
       transform: translateY(-2px);
     }
 
-    textarea { resize: vertical; min-height: 100px; }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
 
     #previewContainer {
       display: flex;
@@ -110,43 +143,24 @@
       gap: 10px;
       margin-bottom: 20px;
       padding: 15px;
-      background: rgba(102,126,234,0.05);
+      background: rgba(102, 126, 234, 0.05);
       border-radius: 10px;
       border: 2px dashed var(--primary);
-      min-height: 50px;
     }
 
     #previewContainer img {
-      width: 100px; height: 100px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       border-radius: 8px;
       border: 2px solid var(--primary);
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
     }
 
     #previewContainer img:hover {
       transform: scale(1.1);
-      box-shadow: 0 10px 25px rgba(102,126,234,0.3);
-    }
-
-    /* Progress bar */
-    #uploadProgress { display: none; margin-bottom: 16px; }
-    #uploadProgress p { font-size: 13px; color: var(--primary); font-weight: 600; margin-bottom: 6px; }
-
-    .progress-bar-track {
-      width: 100%; height: 8px;
-      background: #e0e0e0;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 10px;
-      transition: width 0.3s ease;
-      width: 0%;
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
     }
 
     #uploadBtn {
@@ -159,22 +173,39 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
     }
 
-    #uploadBtn:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(102,126,234,0.5); }
-    #uploadBtn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    #uploadBtn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
+    }
+
+    #uploadBtn:active {
+      transform: translateY(-1px);
+    }
 
     /* ===== PRODUCTS SECTION ===== */
     .products-section {
-      background: rgba(255,255,255,0.95);
+      background: rgba(255, 255, 255, 0.95);
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
-      border: 2px solid rgba(240,147,251,0.2);
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba(240, 147, 251, 0.2);
+    }
+
+    .products-section h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary);
+      margin-bottom: 25px;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 1px;
     }
 
     .products-list {
@@ -189,252 +220,356 @@
       overflow: hidden;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       background: white;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
       position: relative;
     }
 
     .product-card:hover {
       border-color: var(--primary);
-      box-shadow: 0 15px 50px rgba(102,126,234,0.2);
+      box-shadow: 0 15px 50px rgba(102, 126, 234, 0.2);
       transform: translateY(-6px);
     }
 
-    .product-card.is-sold { border-color: #e5e7eb; }
-    .product-card.is-sold:hover { border-color: #9ca3af; box-shadow: 0 15px 50px rgba(107,114,128,0.2); }
-
     .product-image {
-      width: 100%; height: 200px;
+      width: 100%;
+      height: 200px;
       object-fit: cover;
       background: #e0e0e0;
       transition: transform 0.3s ease;
-      display: block;
     }
 
-    .product-card:hover .product-image { transform: scale(1.05); }
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
 
-    .product-info { padding: 18px; }
+    .product-info {
+      padding: 18px;
+    }
 
-    .product-name  { font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 8px; word-break: break-word; }
-    .product-price { font-size: 22px; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
-    .product-desc  {
-      font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 12px;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    .product-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .product-price {
+      font-size: 22px;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .product-desc {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .product-images-gallery {
-      display: flex; gap: 5px;
+      display: flex;
+      gap: 5px;
       margin-bottom: 12px;
       overflow-x: auto;
       padding-bottom: 5px;
     }
 
     .product-images-gallery img {
-      width: 50px; height: 50px;
-      object-fit: cover; border-radius: 6px;
-      flex-shrink: 0; cursor: pointer;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+      cursor: pointer;
       border: 2px solid transparent;
       transition: all 0.3s;
     }
 
-    .product-images-gallery img:hover { border-color: var(--primary); transform: scale(1.1); }
+    .product-images-gallery img:hover {
+      border-color: var(--primary);
+      transform: scale(1.1);
+    }
 
-    .product-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .product-actions {
+      display: flex;
+      gap: 10px;
+    }
 
-    .edit-btn, .delete-btn, .sold-btn {
+    .edit-btn,
+    .delete-btn {
       flex: 1;
-      padding: 10px 6px;
-      color: white; border: none;
-      border-radius: 8px; cursor: pointer;
-      font-weight: 700; font-size: 12px;
+      padding: 10px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      text-transform: uppercase; letter-spacing: 0.5px;
-      min-width: 55px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .edit-btn {
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
     }
-    .edit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(102,126,234,0.5); }
+
+    .edit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+    }
 
     .delete-btn {
       background: linear-gradient(135deg, var(--danger) 0%, #fa5252 100%);
-      box-shadow: 0 5px 15px rgba(255,107,107,0.3);
-    }
-    .delete-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,107,107,0.5); }
-
-    .sold-btn {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      box-shadow: 0 5px 15px rgba(245,158,11,0.3);
-    }
-    .sold-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245,158,11,0.5); }
-    .sold-btn.active { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); box-shadow: 0 5px 15px rgba(107,114,128,0.3); }
-    .sold-btn.active:hover { box-shadow: 0 10px 25px rgba(107,114,128,0.5); }
-
-    /* ===== SOLD OVERLAY ===== */
-    .sold-overlay {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.52);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10; border-radius: 12px;
-      animation: fadeIn 0.3s ease;
-      pointer-events: none;
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
     }
 
-    .sold-badge {
-      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-      color: white;
-      font-family: 'Playfair Display', serif;
-      font-size: 32px; font-weight: 900;
-      letter-spacing: 6px;
-      padding: 12px 32px;
-      border-radius: 6px;
-      transform: rotate(-8deg);
-      box-shadow: 0 8px 30px rgba(239,68,68,0.7), inset 0 1px 0 rgba(255,255,255,0.2);
-      border: 3px solid rgba(255,255,255,0.9);
-      text-transform: uppercase;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    .delete-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.5);
     }
 
-    /* ===== STATES ===== */
-    .empty-state { text-align: center; padding: 60px 20px; color: #999; }
-    .empty-state-icon { font-size: 48px; margin-bottom: 15px; }
-    .empty-state p { font-size: 16px; font-weight: 500; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
 
-    .loading { text-align: center; padding: 40px; color: var(--primary); font-size: 16px; grid-column: 1 / -1; }
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .empty-state p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--primary);
+      font-size: 16px;
+    }
 
     .spinner {
       border: 3px solid #e0e0e0;
       border-top: 3px solid var(--primary);
       border-radius: 50%;
-      width: 40px; height: 40px;
+      width: 40px;
+      height: 40px;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 15px;
     }
 
-    @keyframes spin    { to { transform: rotate(360deg); } }
-    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-    /* ===== MODAL ===== */
+    /* ===== EDIT MODAL ===== */
     .modal {
       display: none;
-      position: fixed; z-index: 2000;
-      left: 0; top: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(8px);
       animation: fadeIn 0.3s ease;
       overflow-y: auto;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .modal-content {
       background: white;
-      margin: 50px auto; padding: 40px;
-      border-radius: 16px; width: 90%; max-width: 500px;
-      box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+      margin: 50px auto;
+      padding: 40px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
       border: 2px solid var(--primary);
       animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 15px;
     }
 
     .modal-header h2 {
       font-family: 'Playfair Display', serif;
-      color: var(--primary); font-size: 26px; font-weight: 900; margin: 0;
+      color: var(--primary);
+      font-size: 26px;
+      font-weight: 900;
+      margin: 0;
     }
 
     .modal-close {
-      font-size: 32px; cursor: pointer; color: var(--danger);
+      font-size: 32px;
+      cursor: pointer;
+      color: var(--danger);
       transition: all 0.3s ease;
-      width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%; background: rgba(255,107,107,0.1);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 107, 107, 0.1);
     }
-    .modal-close:hover { transform: rotate(90deg) scale(1.15); background: rgba(255,107,107,0.2); }
+
+    .modal-close:hover {
+      transform: rotate(90deg) scale(1.15);
+      background: rgba(255, 107, 107, 0.2);
+    }
 
     .modal-form input,
-    .modal-form textarea {
-      width: 100%; padding: 12px 14px; margin-bottom: 15px;
-      border: 2px solid #e0e0e0; border-radius: 10px;
-      font-family: inherit; font-size: 14px; transition: all 0.3s ease;
+    .modal-form textarea,
+    .modal-form select {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
     }
 
     .modal-form input:focus,
-    .modal-form textarea:focus {
-      outline: none; border-color: var(--primary);
-      box-shadow: 0 0 15px rgba(102,126,234,0.3);
+    .modal-form textarea:focus,
+    .modal-form select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
     }
 
-    .modal-actions { display: flex; gap: 10px; margin-top: 25px; }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 25px;
+    }
 
-    .modal-save, .modal-cancel {
-      flex: 1; padding: 12px; border: none;
-      border-radius: 10px; font-weight: 700; cursor: pointer;
-      transition: all 0.3s ease; text-transform: uppercase;
-      letter-spacing: 0.5px; font-size: 14px;
+    .modal-save,
+    .modal-cancel {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 14px;
     }
 
     .modal-save {
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white; box-shadow: 0 8px 20px rgba(102,126,234,0.3);
+      color: white;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
     }
-    .modal-save:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(102,126,234,0.5); }
 
-    .modal-cancel { background: #f0f0f0; color: var(--dark); border: 2px solid #e0e0e0; }
-    .modal-cancel:hover { background: #e0e0e0; transform: translateY(-2px); }
+    .modal-save:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+    }
+
+    .modal-cancel {
+      background: #f0f0f0;
+      color: var(--dark);
+      border: 2px solid #e0e0e0;
+    }
+
+    .modal-cancel:hover {
+      background: #e0e0e0;
+      transform: translateY(-2px);
+    }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
-      .container { grid-template-columns: 1fr; }
-      .upload-section { position: static; }
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .upload-section {
+        position: static;
+      }
     }
+
     @media (max-width: 600px) {
-      .products-list { grid-template-columns: 1fr; }
-      .upload-section, .products-section { padding: 20px; }
-      .modal-content { width: 95%; margin: 100px auto; padding: 25px; }
+      .products-list {
+        grid-template-columns: 1fr;
+      }
+
+      .upload-section,
+      .products-section {
+        padding: 20px;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 100px auto;
+        padding: 25px;
+      }
     }
   </style>
+
 </head>
 <body>
 
 <div class="container">
-
   <!-- UPLOAD SECTION -->
   <div class="upload-section">
     <h2>Add Product</h2>
-    <input id="name"  type="text"   placeholder="Product Name">
-    <input id="price" type="number" placeholder="Price">
+    <input id="name" placeholder="Product Name" type="text">
+    <input id="price" placeholder="Price" type="number">
     <textarea id="desc" placeholder="Description"></textarea>
-    <input type="file" id="images" multiple accept="image/*">
+    <input type="file" id="images" multiple>
     <div id="previewContainer"></div>
-    <div id="uploadProgress">
-      <p id="progressText">Uploading images…</p>
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" id="progressFill"></div>
-      </div>
-    </div>
     <button id="uploadBtn">📤 Upload Product</button>
   </div>
 
-  <!-- PRODUCTS LIST -->
+  <!-- PRODUCTS LIST SECTION -->
   <div class="products-section">
     <h2>Your Products</h2>
     <div id="productsList" class="products-list">
       <div class="loading">
         <div class="spinner"></div>
-        <p>Loading products…</p>
+        <p>Loading products...</p>
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- EDIT MODAL -->
@@ -445,11 +580,11 @@
       <span class="modal-close" id="closeModal">&times;</span>
     </div>
     <form class="modal-form" id="editForm">
-      <input type="text"   id="editName"  placeholder="Product Name" required>
-      <input type="number" id="editPrice" placeholder="Price"        required>
-      <textarea            id="editDesc"  placeholder="Description"  required></textarea>
+      <input type="text" id="editName" placeholder="Product Name" required>
+      <input type="number" id="editPrice" placeholder="Price" required>
+      <textarea id="editDesc" placeholder="Description" required></textarea>
       <div class="modal-actions">
-        <button type="button" class="modal-save"   id="saveEditBtn">💾 Save Changes</button>
+        <button type="button" class="modal-save" id="saveEditBtn">💾 Save Changes</button>
         <button type="button" class="modal-cancel" id="cancelEditBtn">Cancel</button>
       </div>
     </form>
@@ -457,160 +592,185 @@
 </div>
 
 <script type="module">
+import { db } from './firebase.js';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  /* ===== FIREBASE — all imports inline, no external firebase.js needed ===== */
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, getDoc, updateDoc, doc as fsDoc }
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getStorage, ref, uploadBytesResumable, getDownloadURL }
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+/* ===== ELEMENTS ===== */
+const previewContainer = document.getElementById("previewContainer");
+const imageInput = document.getElementById("images");
+const productsList = document.getElementById("productsList");
+const editModal = document.getElementById("editModal");
+const closeModalBtn = document.getElementById("closeModal");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const saveEditBtn = document.getElementById("saveEditBtn");
 
-  const firebaseConfig = {
-    apiKey:            "AIzaSyDhwIAmuZrY5Xqo6Ql7LDKxrPiklpG5GTE",
-    authDomain:        "shangrila-booking.firebaseapp.com",
-    projectId:         "shangrila-booking",
-    storageBucket:     "shangrila-booking.firebasestorage.app",
-    messagingSenderId: "981170210173",
-    appId:             "1:981170210173:web:4d74cb3f6109fe1c0a3814"
-  };
+let currentEditingProductId = null;
 
-  const app     = initializeApp(firebaseConfig);
-  const db      = getFirestore(app);
-  const storage = getStorage(app);
-
-  /* ===== DOM REFS ===== */
-  const previewContainer = document.getElementById("previewContainer");
-  const imageInput       = document.getElementById("images");
-  const productsList     = document.getElementById("productsList");
-  const editModal        = document.getElementById("editModal");
-  const progressWrap     = document.getElementById("uploadProgress");
-  const progressFill     = document.getElementById("progressFill");
-  const progressText     = document.getElementById("progressText");
-  const uploadBtn        = document.getElementById("uploadBtn");
-
-  let currentEditingId = null;
-
-  /* ===== IMAGE PREVIEW ===== */
-  imageInput.addEventListener("change", (e) => {
-    previewContainer.innerHTML = "";
-    for (const file of e.target.files) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      previewContainer.appendChild(img);
-    }
-  });
-
-  /* ===== UPLOAD ONE IMAGE TO FIREBASE STORAGE ===== */
-  function uploadImage(file, index, total) {
-    return new Promise((resolve, reject) => {
-      const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-      const task       = uploadBytesResumable(storageRef, file);
-
-      task.on("state_changed",
-        (snap) => {
-          const pct     = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-          const overall = Math.round(((index + pct / 100) / total) * 100);
-          progressFill.style.width   = overall + "%";
-          progressText.textContent   = `Uploading image ${index + 1} of ${total} (${pct}%)…`;
-        },
-        reject,
-        async () => {
-          const url = await getDownloadURL(task.snapshot.ref);
-          resolve(url);
-        }
-      );
-    });
+/* ===== IMAGE PREVIEW ===== */
+imageInput.addEventListener("change", (e) => {
+  const files = e.target.files;
+  previewContainer.innerHTML = "";
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    previewContainer.appendChild(img);
   }
+});
 
-  /* ===== UPLOAD PRODUCT ===== */
-  uploadBtn.addEventListener("click", async () => {
-    const name  = document.getElementById("name").value.trim();
-    const price = document.getElementById("price").value.trim();
-    const desc  = document.getElementById("desc").value.trim();
-    const files = imageInput.files;
-
-    if (!name || !price || !desc) {
-      alert("Please fill in all fields.");
+/* ===== LOAD PRODUCTS FROM FIRESTORE ===== */
+async function loadProducts() {
+  try {
+    productsList.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading products...</p></div>';
+    
+    const querySnapshot = await getDocs(collection(db, "products"));
+    
+    if (querySnapshot.empty) {
+      productsList.innerHTML = `
+        <div class="empty-state" style="grid-column: 1/-1;">
+          <div class="empty-state-icon">📦</div>
+          <p>No products yet. Add your first product!</p>
+        </div>
+      `;
       return;
     }
 
-    uploadBtn.disabled    = true;
-    uploadBtn.textContent = "Uploading…";
+    productsList.innerHTML = "";
+    
+    querySnapshot.forEach((doc) => {
+      const product = doc.data();
+      const productId = doc.id;
+      
+      const productCard = document.createElement("div");
+      productCard.className = "product-card";
+      
+      const firstImage = product.imageUrls && product.imageUrls.length > 0 
+        ? product.imageUrls[0] 
+        : "https://via.placeholder.com/280x200?text=No+Image";
+      
+      const imagesGalleryHTML = product.imageUrls && product.imageUrls.length > 0
+        ? `<div class="product-images-gallery">
+             ${product.imageUrls.map(url => `<img src="${url}" alt="product" title="Click to view">`).join('')}
+           </div>`
+        : '';
+      
+      productCard.innerHTML = `
+        <img src="${firstImage}" alt="${product.name}" class="product-image">
+        <div class="product-info">
+          <div class="product-name">${product.name}</div>
+          <div class="product-price">₦${Number(product.price).toLocaleString()}</div>
+          <div class="product-desc">${product.description}</div>
+          ${imagesGalleryHTML}
+          <div class="product-actions">
+            <button class="edit-btn" data-product-id="${productId}">✏️ Edit</button>
+            <button class="delete-btn" data-product-id="${productId}">🗑️ Delete</button>
+          </div>
+        </div>
+      `;
+      
+      productsList.appendChild(productCard);
+    });
 
-    try {
-      let imageUrls = [];
-
-      if (files.length > 0) {
-        progressWrap.style.display = "block";
-        for (let i = 0; i < files.length; i++) {
-          const url = await uploadImage(files[i], i, files.length);
-          imageUrls.push(url);
-        }
-        progressWrap.style.display = "none";
-        progressFill.style.width   = "0%";
-      }
-
-      await addDoc(collection(db, "products"), {
-        name,
-        price:       Number(price),
-        description: desc,
-        imageUrls,
-        sold:        false,
-        createdAt:   new Date()
+    // Add event listeners
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const productId = e.target.dataset.productId;
+        openEditModal(productId);
       });
+    });
 
-      alert("Product uploaded successfully!");
-      document.getElementById("name").value  = "";
-      document.getElementById("price").value = "";
-      document.getElementById("desc").value  = "";
-      imageInput.value           = "";
-      previewContainer.innerHTML = "";
-      loadProducts();
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        const productId = e.target.dataset.productId;
+        if (confirm("Are you sure you want to delete this product?")) {
+          await deleteProduct(productId);
+        }
+      });
+    });
 
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert("Upload failed: " + err.message);
-      progressWrap.style.display = "none";
+  } catch (err) {
+    console.error("Error loading products:", err);
+    productsList.innerHTML = `
+      <div class="empty-state" style="grid-column: 1/-1;">
+        <p>Error loading products. Please refresh.</p>
+      </div>
+    `;
+  }
+}
+
+/* ===== OPEN EDIT MODAL ===== */
+async function openEditModal(productId) {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    let product = null;
+    
+    querySnapshot.forEach((doc) => {
+      if (doc.id === productId) {
+        product = doc.data();
+      }
+    });
+
+    if (product) {
+      currentEditingProductId = productId;
+      document.getElementById("editName").value = product.name;
+      document.getElementById("editPrice").value = product.price;
+      document.getElementById("editDesc").value = product.description;
+      editModal.style.display = "block";
+    }
+  } catch (err) {
+    console.error("Error opening edit modal:", err);
+  }
+}
+
+/* ===== CLOSE EDIT MODAL ===== */
+function closeEditModal() {
+  editModal.style.display = "none";
+  currentEditingProductId = null;
+}
+
+/* ===== SAVE EDIT ===== */
+saveEditBtn.addEventListener("click", async () => {
+  try {
+    const name = document.getElementById("editName").value.trim();
+    const price = document.getElementById("editPrice").value.trim();
+    const desc = document.getElementById("editDesc").value.trim();
+
+    if (!name || !price || !desc) {
+      alert("Please fill all fields");
+      return;
     }
 
-    uploadBtn.disabled    = false;
-    uploadBtn.textContent = "📤 Upload Product";
-  });
+    await updateDoc(doc(db, "products", currentEditingProductId), {
+      name,
+      price: Number(price),
+      description: desc
+    });
 
-  /* ===== LOAD PRODUCTS ===== */
-  async function loadProducts() {
-    try {
-      productsList.innerHTML = `
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Loading products…</p>
-        </div>`;
+    alert("Product updated successfully!");
+    closeEditModal();
+    loadProducts();
+  } catch (err) {
+    console.error("Update Error:", err);
+    alert("Failed to update product. Check console.");
+  }
+});
 
-      const snap = await getDocs(collection(db, "products"));
+/* ===== DELETE PRODUCT ===== */
+async function deleteProduct(productId) {
+  try {
+    await deleteDoc(doc(db, "products", productId));
+    alert("Product deleted successfully!");
+    loadProducts();
+  } catch (err) {
+    console.error("Delete Error:", err);
+    alert("Failed to delete product. Check console.");
+  }
+}
 
-      if (snap.empty) {
-        productsList.innerHTML = `
-          <div class="empty-state" style="grid-column:1/-1">
-            <div class="empty-state-icon">📦</div>
-            <p>No products yet. Add your first product!</p>
-          </div>`;
-        return;
-      }
-
-      productsList.innerHTML = "";
-
-      snap.forEach((docSnap) => {
-        const p         = docSnap.data();
-        const productId = docSnap.id;
-        const isSold    = p.sold === true;
-
-        const card = document.createElement("div");
-        card.className = `product-card${isSold ? " is-sold" : ""}`;
-
-        const firstImage = p.imageUrls && p.imageUrls.length > 0
-          ? p.imageUrls[0]
-          : "https://via.placeholder.com/280x200?text=No+Image";
-
-        const galleryHTML = p.imageUrls && p.imageUrls.length > 0
-          ? `<div class="produ
+/* ===== UPLOAD PRODUCT ===== */
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  console.log("Upload clicked");
+  const name = document.getElementById("name").value.trim();
+  const price = document.getElementById("price").value.trim();
+  const desc = document.getElementById("desc").value.trim();
+  const files
