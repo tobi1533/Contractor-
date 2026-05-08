@@ -44,44 +44,83 @@ button {
   font-weight:bold;
 }
 
+/* =========================
+   UPDATED LIST VIEW LAYOUT
+========================= */
+
 .product {
-  border:1px solid #eee;
-  padding:10px;
-  margin:10px 0;
-  border-radius:10px;
-  position:relative;
-}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 
-img {
-  width:80px;
-  height:80px;
-  object-fit:cover;
-  margin:5px;
-  border-radius:6px;
-}
+  border: 1px solid #eee;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  position: relative;
 
-.gallery {
-  display:flex;
-  flex-wrap:wrap;
+  background: white;
 }
 
 /* SOLD BADGE */
 .sold-badge {
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:red;
-  color:white;
-  padding:5px 10px;
-  font-weight:bold;
-  border-radius:6px;
-  font-size:12px;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: red;
+  color: white;
+  padding: 3px 6px;
+  font-size: 10px;
+  border-radius: 4px;
 }
 
-/* BUTTONS */
+/* IMAGE STRIP */
+.gallery {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+  max-width: 140px;
+  overflow-x: auto;
+}
+
+.gallery img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* TEXT */
+.product b {
+  display: block;
+  font-size: 14px;
+}
+
+.product p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #555;
+}
+
+.price {
+  font-weight: 600;
+  color: #333;
+  font-size: 13px;
+}
+
+/* ACTIONS RIGHT SIDE */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
 .actions button {
-  margin-right:5px;
-  margin-top:5px;
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 6px;
 }
 
 .sold-btn {
@@ -219,24 +258,23 @@ async function load(){
 
     div.innerHTML = `
       ${soldBadge}
-      <b>${p.name}</b><br>
-      ₦${p.price}<br>
-      <p>${p.description}</p>
 
       <div class="gallery">
         ${(p.imageUrls||[]).map(u=>`<img src="${u}">`).join("")}
       </div>
 
+      <div>
+        <b>${p.name}</b>
+        <div class="price">₦${p.price}</div>
+        <p>${p.description}</p>
+      </div>
+
       <div class="actions">
-
         <button onclick="edit('${d.id}')">Edit</button>
-
         <button onclick="del('${d.id}')">Delete</button>
-
         <button class="sold-btn" onclick="toggleSold('${d.id}', ${p.sold})">
           ${p.sold ? "Unmark Sold" : "Mark Sold"}
         </button>
-
       </div>
     `;
 
