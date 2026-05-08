@@ -230,6 +230,15 @@
       transform: translateY(-6px);
     }
 
+    .product-card.is-sold {
+      border-color: #e5e7eb;
+    }
+
+    .product-card.is-sold:hover {
+      border-color: #9ca3af;
+      box-shadow: 0 15px 50px rgba(107, 114, 128, 0.2);
+    }
+
     .product-image {
       width: 100%;
       height: 200px;
@@ -298,22 +307,25 @@
 
     .product-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .edit-btn,
-    .delete-btn {
+    .delete-btn,
+    .sold-btn {
       flex: 1;
-      padding: 10px;
+      padding: 10px 6px;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      min-width: 60px;
     }
 
     .edit-btn {
@@ -334,6 +346,61 @@
     .delete-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 25px rgba(255, 107, 107, 0.5);
+    }
+
+    /* ===== SOLD BUTTON ===== */
+    .sold-btn {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .sold-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.5);
+    }
+
+    .sold-btn.active {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      box-shadow: 0 5px 15px rgba(107, 114, 128, 0.3);
+    }
+
+    .sold-btn.active:hover {
+      box-shadow: 0 10px 25px rgba(107, 114, 128, 0.5);
+    }
+
+    /* ===== SOLD OVERLAY ===== */
+    .sold-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.52);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      border-radius: 12px;
+      animation: fadeIn 0.3s ease;
+      pointer-events: none;
+    }
+
+    .sold-badge {
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      padding: 12px 32px;
+      border-radius: 6px;
+      transform: rotate(-8deg);
+      box-shadow: 
+        0 8px 30px rgba(239, 68, 68, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .empty-state {
@@ -374,6 +441,11 @@
       100% { transform: rotate(360deg); }
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     /* ===== EDIT MODAL ===== */
     .modal {
       display: none;
@@ -387,11 +459,6 @@
       backdrop-filter: blur(8px);
       animation: fadeIn 0.3s ease;
       overflow-y: auto;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     .modal-content {
@@ -637,12 +704,13 @@ async function loadProducts() {
 
     productsList.innerHTML = "";
     
-    querySnapshot.forEach((doc) => {
-      const product = doc.data();
-      const productId = doc.id;
+    querySnapshot.forEach((docSnap) => {
+      const product = docSnap.data();
+      const productId = docSnap.id;
+      const isSold = product.sold === true;
       
       const productCard = document.createElement("div");
-      productCard.className = "product-card";
+      productCard.className = `product-card${isSold ? ' is-sold' : ''}`;
       
       const firstImage = product.imageUrls && product.imageUrls.length > 0 
         ? product.imageUrls[0] 
@@ -653,8 +721,13 @@ async function loadProducts() {
              ${product.imageUrls.map(url => `<img src="${url}" alt="product" title="Click to view">`).join('')}
            </div>`
         : '';
+
+      const soldOverlayHTML = isSold
+        ? `<div class="sold-overlay"><div class="sold-badge">SOLD</div></div>`
+        : '';
       
       productCard.innerHTML = `
+        ${soldOverlayHTML}
         <img src="${firstImage}" alt="${product.name}" class="product-image">
         <div class="product-info">
           <div class="product-name">${product.name}</div>
@@ -664,6 +737,9 @@ async function loadProducts() {
           <div class="product-actions">
             <button class="edit-btn" data-product-id="${productId}">✏️ Edit</button>
             <button class="delete-btn" data-product-id="${productId}">🗑️ Delete</button>
+            <button class="sold-btn ${isSold ? 'active' : ''}" data-product-id="${productId}" data-sold="${isSold}">
+              ${isSold ? '↩️ Unsold' : '🏷️ Sold'}
+            </button>
           </div>
         </div>
       `;
@@ -671,7 +747,7 @@ async function loadProducts() {
       productsList.appendChild(productCard);
     });
 
-    // Add event listeners
+    /* ===== EDIT BUTTON LISTENERS ===== */
     document.querySelectorAll(".edit-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         const productId = e.target.dataset.productId;
@@ -679,6 +755,7 @@ async function loadProducts() {
       });
     });
 
+    /* ===== DELETE BUTTON LISTENERS ===== */
     document.querySelectorAll(".delete-btn").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         const productId = e.target.dataset.productId;
@@ -688,158 +765,8 @@ async function loadProducts() {
       });
     });
 
-  } catch (err) {
-    console.error("Error loading products:", err);
-    productsList.innerHTML = `
-      <div class="empty-state" style="grid-column: 1/-1;">
-        <p>Error loading products. Please refresh.</p>
-      </div>
-    `;
-  }
-}
-
-/* ===== OPEN EDIT MODAL ===== */
-async function openEditModal(productId) {
-  try {
-    const querySnapshot = await getDocs(collection(db, "products"));
-    let product = null;
-    
-    querySnapshot.forEach((doc) => {
-      if (doc.id === productId) {
-        product = doc.data();
-      }
-    });
-
-    if (product) {
-      currentEditingProductId = productId;
-      document.getElementById("editName").value = product.name;
-      document.getElementById("editPrice").value = product.price;
-      document.getElementById("editDesc").value = product.description;
-      editModal.style.display = "block";
-    }
-  } catch (err) {
-    console.error("Error opening edit modal:", err);
-  }
-}
-
-/* ===== CLOSE EDIT MODAL ===== */
-function closeEditModal() {
-  editModal.style.display = "none";
-  currentEditingProductId = null;
-}
-
-/* ===== SAVE EDIT ===== */
-saveEditBtn.addEventListener("click", async () => {
-  try {
-    const name = document.getElementById("editName").value.trim();
-    const price = document.getElementById("editPrice").value.trim();
-    const desc = document.getElementById("editDesc").value.trim();
-
-    if (!name || !price || !desc) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    await updateDoc(doc(db, "products", currentEditingProductId), {
-      name,
-      price: Number(price),
-      description: desc
-    });
-
-    alert("Product updated successfully!");
-    closeEditModal();
-    loadProducts();
-  } catch (err) {
-    console.error("Update Error:", err);
-    alert("Failed to update product. Check console.");
-  }
-});
-
-/* ===== DELETE PRODUCT ===== */
-async function deleteProduct(productId) {
-  try {
-    await deleteDoc(doc(db, "products", productId));
-    alert("Product deleted successfully!");
-    loadProducts();
-  } catch (err) {
-    console.error("Delete Error:", err);
-    alert("Failed to delete product. Check console.");
-  }
-}
-
-/* ===== UPLOAD PRODUCT ===== */
-document.getElementById("uploadBtn").addEventListener("click", async () => {
-  console.log("Upload clicked");
-  const name = document.getElementById("name").value.trim();
-  const price = document.getElementById("price").value.trim();
-  const desc = document.getElementById("desc").value.trim();
-  const files = imageInput.files;
-  let imageUrls = [];
-  
-  if (!name || !price || !desc) {
-    alert("Please fill all fields");
-    return;
-  }
-  if (!files || files.length === 0) {
-    alert("Please select at least one image");
-    return;
-  }
-  
-  try {
-    for (let i = 0; i < files.length; i++) {
-      const formData = new FormData();
-      formData.append("file", files[i]);
-      formData.append("upload_preset", "Tobifatai");
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-      const data = await res.json();
-      console.log("Uploaded:", data);
-      if (!data.secure_url) {
-        throw new Error("Image upload failed");
-      }
-      imageUrls.push(data.secure_url);
-    }
-
-    await addDoc(collection(db, "products"), {
-      name,
-      price: Number(price),
-      description: desc,
-      imageUrls,
-      createdAt: new Date()
-    });
-
-    alert("Product uploaded successfully!");
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("desc").value = "";
-    imageInput.value = "";
-    previewContainer.innerHTML = "";
-    
-    loadProducts();
-  } catch (err) {
-    console.error("Upload Error:", err);
-    alert("Upload failed. Check console.");
-  }
-});
-
-/* ===== MODAL CONTROLS ===== */
-closeModalBtn.addEventListener("click", closeEditModal);
-cancelEditBtn.addEventListener("click", closeEditModal);
-
-editModal.addEventListener("click", (e) => {
-  if (e.target === editModal) {
-    closeEditModal();
-  }
-});
-
-/* ===== INITIALIZE ===== */
-loadProducts();
-</script>
-
-</body>
-</html>
+    /* ===== SOLD BUTTON LISTENERS ===== */
+    document.querySelectorAll(".sold-btn").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        const productId = e.target.dataset.productId;
+        const isSold = 
