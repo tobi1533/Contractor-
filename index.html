@@ -6,17 +6,17 @@
   <title>Products - Shop</title>
 
   <meta property="og:title" content="Akeem Store">
-<meta property="og:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
-<meta property="og:image" content="https://tobi1533.github.io/Contractor-/akeemshop1533.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://tobi1533.github.io/Contractor-/products.html">
+  <meta property="og:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
+  <meta property="og:image" content="https://tobi1533.github.io/Contractor-/akeemshop1533.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tobi1533.github.io/Contractor-/products.html">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Akeem Store">
-<meta name="twitter:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
-<meta name="twitter:image" content="https://tobi1533.github.io/Contractor-/akeemshop1533.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Akeem Store">
+  <meta name="twitter:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
+  <meta name="twitter:image" content="https://tobi1533.github.io/Contractor-/akeemshop1533.png">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -27,7 +27,6 @@
       box-sizing: border-box;
     }
 
-    /* ===== ROOT COLOR VARIABLES ===== */
     :root {
       --primary: #FF6B35;
       --primary-dark: #E55100;
@@ -50,7 +49,6 @@
       color: white;
     }
 
-    /* ===== ANIMATED BACKGROUND ===== */
     body::before {
       content: '';
       position: fixed;
@@ -58,7 +56,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
+      background:
         radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 20%, rgba(46, 204, 113, 0.08) 0%, transparent 50%);
@@ -72,7 +70,6 @@
       50% { opacity: 1; }
     }
 
-    /* ===== BLUEPRINT GRID PATTERN ===== */
     body::after {
       content: '';
       position: fixed;
@@ -80,7 +77,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: 
+      background-image:
         linear-gradient(0deg, transparent 24%, rgba(52, 152, 219, 0.03) 25%, rgba(52, 152, 219, 0.03) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, 0.03) 75%, rgba(52, 152, 219, 0.03) 76%, transparent 77%, transparent),
         linear-gradient(90deg, transparent 24%, rgba(52, 152, 219, 0.03) 25%, rgba(52, 152, 219, 0.03) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, 0.03) 75%, rgba(52, 152, 219, 0.03) 76%, transparent 77%, transparent);
       background-size: 50px 50px;
@@ -88,7 +85,6 @@
       z-index: 0;
     }
 
-    /* ===== NAVIGATION BAR ===== */
     nav {
       position: fixed;
       top: 0;
@@ -105,18 +101,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 25px;
-      animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .nav-title {
@@ -131,7 +115,6 @@
       margin: 0;
     }
 
-    /* ===== HAMBURGER MENU BUTTON ===== */
     .hamburger {
       width: 50px;
       height: 50px;
@@ -143,15 +126,10 @@
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       border: none;
       border-radius: 10px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.3s ease;
       box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3);
       position: relative;
       z-index: 1001;
-    }
-
-    .hamburger:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
     }
 
     .hamburger span {
@@ -161,7 +139,7 @@
       margin: 5px 0;
       display: block;
       border-radius: 2px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.3s ease;
     }
 
     .hamburger.active span:nth-child(1) {
@@ -176,7 +154,6 @@
       transform: rotate(-45deg) translate(7px, -7px);
     }
 
-    /* ===== MOBILE MENU ===== */
     .mobile-menu {
       position: fixed;
       top: 70px;
@@ -188,7 +165,7 @@
       -webkit-backdrop-filter: blur(20px);
       border-left: 3px solid var(--primary);
       box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
-      transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: right 0.4s ease;
       z-index: 2000;
       padding: 30px 20px;
       overflow-y: auto;
@@ -212,7 +189,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.3s ease;
       text-align: center;
       font-size: 14px;
     }
@@ -220,20 +197,12 @@
     .menu-item:hover {
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       border-color: var(--primary);
-      transform: translateX(-5px);
-      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
     }
 
     .admin-login-btn {
       background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
       border-color: #E74C3C;
       margin-top: 20px;
-      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
-    }
-
-    .admin-login-btn:hover {
-      background: linear-gradient(135deg, #C0392B 0%, #A93226 100%);
-      box-shadow: 0 12px 35px rgba(231, 76, 60, 0.5);
     }
 
     .admin-label {
@@ -248,7 +217,6 @@
       font-weight: 700;
     }
 
-    /* ===== MAIN HEADING ===== */
     h2 {
       position: relative;
       z-index: 1;
@@ -257,28 +225,14 @@
       color: #fff;
       font-size: 48px;
       font-weight: 900;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       letter-spacing: 2px;
       font-family: 'Playfair Display', serif;
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ===== PRODUCTS GRID ===== */
     #products {
       position: relative;
       z-index: 1;
@@ -292,59 +246,27 @@
     .product {
       width: 300px;
       height: 480px;
-      padding: 0;
       border: 2px solid rgba(255, 107, 53, 0.3);
       display: flex;
       flex-direction: column;
       border-radius: 15px;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 250, 255, 0.9) 100%);
-      box-shadow: 
-        0 8px 16px rgba(0, 0, 0, 0.2), 
-        0 12px 24px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .product::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      z-index: 5;
-      pointer-events: none;
-    }
-
-    .product:hover::before {
-      opacity: 1;
-    }
-
     .product:hover {
-      transform: perspective(1000px) rotateX(8deg) rotateY(-12deg) translateZ(30px) scale(1.05);
-      box-shadow: 
-        0 25px 50px rgba(255, 107, 53, 0.3), 
-        0 20px 40px rgba(52, 152, 219, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      border-color: rgba(255, 107, 53, 0.6);
+      transform: scale(1.03);
     }
 
     .image-container {
       position: relative;
       width: 100%;
       height: 240px;
-      border-radius: 12px 12px 0 0;
       overflow: hidden;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #f0f0f0;
     }
 
@@ -353,19 +275,14 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.4s ease, filter 0.4s ease;
-    }
-
-    .product:hover .product-img {
-      transform: scale(1.08);
-      filter: brightness(1.1);
+      transition: 0.4s ease;
     }
 
     .image-counter {
       position: absolute;
       bottom: 10px;
       right: 10px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0,0,0,0.7);
       color: white;
       padding: 6px 12px;
       border-radius: 20px;
@@ -392,25 +309,20 @@
     .title {
       font-size: 18px;
       font-weight: 700;
-      margin: 0 0 8px 0;
       color: #1a1a2e;
-      letter-spacing: 0.5px;
-      line-height: 1.3;
     }
 
     .price {
       color: var(--primary);
       font-weight: 800;
       font-size: 20px;
-      margin: 8px 0 10px 0;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin: 8px 0;
     }
 
     .desc {
       font-size: 13px;
       color: #666;
       line-height: 1.5;
-      font-weight: 500;
       margin-bottom: 12px;
       flex-grow: 1;
     }
@@ -425,38 +337,48 @@
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: 0.3s ease;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+      text-decoration: none;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      text-decoration: none;
-      position: relative;
-      z-index: 20;
-      pointer-events: auto;
     }
 
     .order-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
-      background: linear-gradient(135deg, #20BA5A 0%, #1B9D4F 100%);
       color: white;
-      text-decoration: none;
     }
 
-    .order-btn:active {
-      transform: translateY(0);
+    .sold-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #E74C3C;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      z-index: 30;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
-    .order-btn svg {
-      width: 18px;
-      height: 18px;
+    .product.sold .product-img {
+      filter: grayscale(100%) brightness(0.7);
     }
 
-    /* ===== IMAGE GALLERY MODAL ===== */
+    .product.sold .order-btn {
+      background: #777;
+      cursor: not-allowed;
+      pointer-events: none;
+      box-shadow: none;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -465,14 +387,8 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
-      animation: fadeIn 0.3s ease;
+      background-color: rgba(0,0,0,0.95);
       backdrop-filter: blur(8px);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     .modal-content {
@@ -489,43 +405,23 @@
       max-height: 90%;
       object-fit: contain;
       border-radius: 10px;
-      animation: zoomIn 0.3s ease;
-      box-shadow: 0 0 50px rgba(255, 107, 53, 0.5);
-    }
-
-    @keyframes zoomIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
     }
 
     .modal-nav {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      background: var(--primary);
       color: white;
       border: none;
       padding: 15px 20px;
       cursor: pointer;
       font-size: 24px;
       border-radius: 8px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 10;
-      box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
     }
 
-    .modal-nav:hover {
-      transform: translateY(-50%) scale(1.15);
-      box-shadow: 0 10px 35px rgba(255, 107, 53, 0.6);
-    }
-
-    .modal-prev {
-      left: 20px;
-    }
-
-    .modal-next {
-      right: 20px;
-    }
+    .modal-prev { left: 20px; }
+    .modal-next { right: 20px; }
 
     .modal-close {
       position: absolute;
@@ -535,14 +431,6 @@
       font-size: 40px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 100;
-      text-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
-    }
-
-    .modal-close:hover {
-      transform: scale(1.3) rotate(90deg);
-      text-shadow: 0 0 40px rgba(255, 107, 53, 0.8);
     }
 
     .modal-counter {
@@ -550,198 +438,27 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0,0,0,0.8);
       color: white;
       padding: 10px 20px;
       border-radius: 20px;
       font-size: 14px;
-      z-index: 10;
     }
 
-    /* ===== FLOATING CONTACT ===== */
-    .floating-contact {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .contact-toggle {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-      border: none;
-      font-size: 32px;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .contact-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
-    }
-
-    .contact-toggle.active {
-      background: linear-gradient(135deg, var(--primary-dark) 0%, #2980b9 100%);
-    }
-
-    .social-links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px) scale(0.8);
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .social-links.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-    }
-
-    .social-link {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: white;
-      font-size: 24px;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .social-link::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: left 0.3s ease;
-      z-index: -1;
-    }
-
-    .social-link:hover::before {
-      left: 100%;
-    }
-
-    .social-link.whatsapp {
-      background: #25D366;
-    }
-
-    .social-link.whatsapp:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
-    }
-
-    .social-link.email {
-      background: #EA4335;
-    }
-
-    .social-link.email:hover {
-      transform: scale(1.15) rotate(360deg);
-      box-shadow: 0 10px 30px rgba(234, 67, 53, 0.4);
-    }
-
-    .contact-label {
-      color: white;
-      font-size: 14px;
-      font-weight: 700;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .floating-contact.active .contact-label {
-      opacity: 1;
-    }
-
-    /* ===== MOBILE RESPONSIVE ===== */
     @media (max-width: 768px) {
       h2 {
         font-size: 36px;
-        padding: 80px 20px 30px;
       }
 
       #products {
         flex-direction: column;
         align-items: center;
       }
-
-      .floating-contact {
-        right: 15px;
-        bottom: 15px;
-      }
-
-      .contact-toggle {
-        width: 60px;
-        height: 60px;
-        font-size: 28px;
-      }
-
-      .social-link {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-      }
     }
-
-    /* ===== SMOOTH SCROLLBAR ===== */
-    ::-webkit-scrollbar {
-      width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, var(--primary), var(--secondary));
-      border-radius: 6px;
-      box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      box-shadow: 0 0 25px rgba(255, 107, 53, 0.6);
-    }
-
   </style>
-
 </head>
 <body>
 
-<!-- NAVIGATION BAR -->
 <nav>
   <h1 class="nav-title">🛍️ AKEEM STORE</h1>
   <button class="hamburger" id="hamburger" title="Menu">
@@ -751,7 +468,6 @@
   </button>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="menu-item" onclick="location.href='index.html'">Home</div>
   <div class="admin-label">👨‍💼 Owner Panel</div>
@@ -762,7 +478,6 @@
 
 <div id="products"></div>
 
-<!-- Image Gallery Modal -->
 <div id="imageModal" class="modal">
   <div class="modal-content">
     <img id="modalImage" class="modal-image" src="" alt="Product image">
@@ -775,36 +490,12 @@
   </div>
 </div>
 
-<!-- Floating Contact Popup -->
-<div class="floating-contact" id="floatingContact">
-  <div class="contact-label">Contact Us</div>
-  <div class="social-links" id="socialLinks">
-    <a href="https://wa.me/2347034447700" target="_blank" class="social-link whatsapp" title="WhatsApp">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.678.735 5.309 2.126 7.591L2.457 24l8.13-2.132c2.204 1.201 4.694 1.833 7.26 1.833 5.441 0 9.752-4.355 9.752-9.753 0-2.602-.675-5.038-1.96-7.13-1.285-2.092-3.13-3.863-5.383-4.9-2.254-1.038-4.732-1.509-7.255-1.509zm0-2a11.885 11.885 0 018.472 3.593c2.26 2.014 3.685 4.72 3.685 7.574 0 6.513-5.327 11.815-11.873 11.815-2.352 0-4.671-.619-6.728-1.79l-7.616 2.001 2.04-7.46C1.708 16.989 1 14.677 1 12.363 1 5.85 6.327.548 12.873.548c2.352 0 4.671.619 6.728 1.79"/>
-      </svg>
-    </a>
-
-    <a href="mailto:akeemfatai@gmail.com" class="social-link email" title="Email">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-      </svg>
-    </a>
-  </div>
-
-  <button class="contact-toggle" id="contactToggle" title="Contact Us">
-    💬
-  </button>
-</div>
-
 <script type="module">
 import { db } from './firebase.js';
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// WhatsApp Phone Number (Owner)
 const OWNER_PHONE = "2347034447700";
 
-// ===== HAMBURGER MENU =====
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
@@ -813,7 +504,6 @@ hamburger.addEventListener('click', () => {
   mobileMenu.classList.toggle('active');
 });
 
-// Close menu when clicking outside
 document.addEventListener('click', (e) => {
   if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
     hamburger.classList.remove('active');
@@ -821,48 +511,6 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Close menu when a menu item is clicked
-document.querySelectorAll('.menu-item').forEach(item => {
-  item.addEventListener('click', () => {
-    setTimeout(() => {
-      hamburger.classList.remove('active');
-      mobileMenu.classList.remove('active');
-    }, 100);
-  });
-});
-
-// ===== FLOATING CONTACT FUNCTIONALITY =====
-const contactToggle = document.getElementById("contactToggle");
-const socialLinks = document.getElementById("socialLinks");
-const floatingContact = document.getElementById("floatingContact");
-
-contactToggle.addEventListener("click", () => {
-  socialLinks.classList.toggle("active");
-  contactToggle.classList.toggle("active");
-  floatingContact.classList.toggle("active");
-});
-
-// Close contact menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!floatingContact.contains(e.target)) {
-    socialLinks.classList.remove("active");
-    contactToggle.classList.remove("active");
-    floatingContact.classList.remove("active");
-  }
-});
-
-// Close contact menu when a social link is clicked
-document.querySelectorAll(".social-link").forEach(link => {
-  link.addEventListener("click", () => {
-    setTimeout(() => {
-      socialLinks.classList.remove("active");
-      contactToggle.classList.remove("active");
-      floatingContact.classList.remove("active");
-    }, 200);
-  });
-});
-
-// ===== IMAGE GALLERY =====
 const container = document.getElementById("products");
 const modal = document.getElementById("imageModal");
 const modalImage = document.getElementById("modalImage");
@@ -876,8 +524,8 @@ let currentImageIndex = 0;
 
 function openImageGallery(images, index = 0) {
   currentProductImages = images.filter(url => url && url.trim() !== '');
-  if (currentProductImages.length === 0) return;
-  
+  if (!currentProductImages.length) return;
+
   currentImageIndex = index;
   showImage();
   modal.style.display = "block";
@@ -891,11 +539,13 @@ function closeModal() {
 
 function changeImage(direction) {
   currentImageIndex += direction;
+
   if (currentImageIndex >= currentProductImages.length) {
     currentImageIndex = 0;
   } else if (currentImageIndex < 0) {
     currentImageIndex = currentProductImages.length - 1;
   }
+
   showImage();
 }
 
@@ -910,21 +560,20 @@ prevBtn.addEventListener("click", () => changeImage(-1));
 nextBtn.addEventListener("click", () => changeImage(1));
 closeBtn.addEventListener("click", closeModal);
 
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
     closeModal();
   }
 });
 
-document.addEventListener('keydown', (event) => {
+document.addEventListener("keydown", (e) => {
   if (modal.style.display === "block") {
-    if (event.key === "ArrowLeft") changeImage(-1);
-    if (event.key === "ArrowRight") changeImage(1);
-    if (event.key === "Escape") closeModal();
+    if (e.key === "ArrowLeft") changeImage(-1);
+    if (e.key === "ArrowRight") changeImage(1);
+    if (e.key === "Escape") closeModal();
   }
 });
 
-// ===== LOAD PRODUCTS =====
 async function loadProducts() {
   const querySnapshot = await getDocs(collection(db, "products"));
 
@@ -932,15 +581,19 @@ async function loadProducts() {
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
+    const isSold = data.sold === true;
+
+    let validImages = Array.isArray(data.imageUrls)
+      ? data.imageUrls.filter(url => url && url.trim() !== '')
+      : [];
 
     let mainImageHTML = "";
-    let hasImages = Array.isArray(data.imageUrls) && data.imageUrls.length > 0;
-    let validImages = hasImages ? data.imageUrls.filter(url => url && url.trim() !== '') : [];
 
     if (validImages.length > 0) {
       const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
+
       mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}" style="cursor: pointer;">
+        <div class="image-container" data-images="${imageDataJson}">
           <img src="${validImages[0]}" class="product-img" alt="${data.name || 'Product'}">
           ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} photos</div>` : ''}
         </div>
@@ -949,45 +602,52 @@ async function loadProducts() {
       mainImageHTML = `<div class="image-container"><div class="no-image">No image</div></div>`;
     }
 
-    // Create WhatsApp link with better message formatting
     const productName = data.name || "Product";
     const productPrice = data.price || 0;
-    
+
     const whatsappMessage = encodeURIComponent(
       `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
     );
-    
+
     const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
 
     container.innerHTML += `
-      <div class="product">
+      <div class="product ${isSold ? 'sold' : ''}">
+        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
         ${mainImageHTML}
+
         <div class="product-info">
           <div>
-            <div class="title">${productName || "No name"}</div>
+            <div class="title">${productName}</div>
             <div class="price">₦${productPrice}</div>
           </div>
+
           <div class="desc">${data.description || ""}</div>
-          <a
-            href="${whatsappLink}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="order-btn"
-            onclick="event.stopPropagation()"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.678.735 5.309 2.126 7.591L2.457 24l8.13-2.132c2.204 1.201 4.694 1.833 7.26 1.833 5.441 0 9.752-4.355 9.752-9.753 0-2.602-.675-5.038-1.96-7.13-1.285-2.092-3.13-3.863-5.383-4.9-2.254-1.038-4.732-1.509-7.255-1.509zm0-2a11.885 11.885 0 018.472 3.593c2.26 2.014 3.685 4.72 3.685 7.574 0 6.513-5.327 11.815-11.873 11.815-2.352 0-4.671-.619-6.728-1.79l-7.616 2.001 2.04-7.46C1.708 16.989 1 14.677 1 12.363 1 5.85 6.327.548 12.873.548c2.352 0 4.671.619 6.728 1.79"/>
-            </svg>
-            Order Now
-          </a>
+
+          ${
+            isSold
+              ? `<button class="order-btn" disabled>Sold Out</button>`
+              : `
+                <a
+                  href="${whatsappLink}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="order-btn"
+                  onclick="event.stopPropagation()"
+                >
+                  Order Now
+                </a>
+              `
+          }
         </div>
       </div>
     `;
   });
 
   document.querySelectorAll('.image-container').forEach((container) => {
-    container.addEventListener('click', (e) => {
+    container.addEventListener('click', () => {
       const imagesJson = container.getAttribute('data-images');
+
       if (imagesJson) {
         const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
         openImageGallery(images, 0);
