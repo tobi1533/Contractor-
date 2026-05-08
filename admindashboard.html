@@ -1,1092 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    /* ===== ROOT VARIABLES ===== */
-    :root {
-      --primary: #667eea;
-      --primary-dark: #5568d3;
-      --secondary: #764ba2;
-      --accent: #f093fb;
-      --success: #4ade80;
-      --danger: #ff6b6b;
-      --light: #f8f9ff;
-      --dark: #1e1e2e;
-      --glass: rgba(255, 255, 255, 0.08);
-    }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
-    }
-
-    /* ===== ANIMATED BACKGROUND ===== */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 50%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.12) 0%, transparent 50%);
-      z-index: -1;
-      animation: ambientPulse 15s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    @keyframes ambientPulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: 30px;
-      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ===== UPLOAD SECTION ===== */
-    .upload-section {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      height: fit-content;
-      position: sticky;
-      top: 20px;
-      border: 2px solid rgba(240, 147, 251, 0.2);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .upload-section:hover {
-      box-shadow: 
-        0 30px 80px rgba(102, 126, 234, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    .upload-section h2 {
-      font-family: 'Playfair Display', serif;
-      color: var(--primary);
-      margin-bottom: 25px;
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    textarea,
-    input[type="file"] {
-      width: 100%;
-      padding: 14px 16px;
-      margin-bottom: 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 14px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      background: rgba(248, 249, 255, 0.8);
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    textarea:focus,
-    input[type="file"]:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: white;
-      box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-      transform: translateY(-2px);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    #previewContainer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      padding: 15px;
-      background: rgba(102, 126, 234, 0.05);
-      border-radius: 10px;
-      border: 2px dashed var(--primary);
-    }
-
-    #previewContainer img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid var(--primary);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: pointer;
-    }
-
-    #previewContainer img:hover {
-      transform: scale(1.1);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    #uploadBtn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-    }
-
-    #uploadBtn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
-    }
-
-    #uploadBtn:active {
-      transform: translateY(-1px);
-    }
-
-    /* ===== PRODUCTS SECTION ===== */
-    .products-section {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      border: 2px solid rgba(240, 147, 251, 0.2);
-    }
-
-    .products-section h2 {
-      font-family: 'Playfair Display', serif;
-      color: var(--primary);
-      margin-bottom: 25px;
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
-
-    .products-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .product-card {
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      background: white;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-      position: relative;
-    }
-
-    .product-card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 15px 50px rgba(102, 126, 234, 0.2);
-      transform: translateY(-6px);
-    }
-
-    .product-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      background: #e0e0e0;
-      transition: transform 0.3s ease;
-    }
-
-    .product-card:hover .product-image {
-      transform: scale(1.05);
-    }
-
-    .product-info {
-      padding: 18px;
-    }
-
-    .product-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 8px;
-      word-break: break-word;
-    }
-
-    .product-price {
-      font-size: 22px;
-      color: var(--primary);
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .product-desc {
-      font-size: 13px;
-      color: #666;
-      line-height: 1.4;
-      margin-bottom: 12px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .product-images-gallery {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 12px;
-      overflow-x: auto;
-      padding-bottom: 5px;
-    }
-
-    .product-images-gallery img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border-radius: 6px;
-      flex-shrink: 0;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.3s;
-    }
-
-    .product-images-gallery img:hover {
-      border-color: var(--primary);
-      transform: scale(1.1);
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .edit-btn,
-    .delete-btn {
-      flex: 1;
-      padding: 10px;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 14px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .edit-btn {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .edit-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
-    }
-
-    .delete-btn {
-      background: linear-gradient(135deg, var(--danger) 0%, #fa5252 100%);
-      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-    }
-
-    .delete-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.5);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #999;
-    }
-
-    .empty-state-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-    }
-
-    .empty-state p {
-      font-size: 16px;
-      font-weight: 500;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: var(--primary);
-      font-size: 16px;
-    }
-
-    .spinner {
-      border: 3px solid #e0e0e0;
-      border-top: 3px solid var(--primary);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 15px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* ===== EDIT MODAL ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      animation: fadeIn 0.3s ease;
-      overflow-y: auto;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .modal-content {
-      background: white;
-      margin: 50px auto;
-      padding: 40px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
-      border: 2px solid var(--primary);
-      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 15px;
-    }
-
-    .modal-header h2 {
-      font-family: 'Playfair Display', serif;
-      color: var(--primary);
-      font-size: 26px;
-      font-weight: 900;
-      margin: 0;
-    }
-
-    .modal-close {
-      font-size: 32px;
-      cursor: pointer;
-      color: var(--danger);
-      transition: all 0.3s ease;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: rgba(255, 107, 107, 0.1);
-    }
-
-    .modal-close:hover {
-      transform: rotate(90deg) scale(1.15);
-      background: rgba(255, 107, 107, 0.2);
-    }
-
-    .modal-form input,
-    .modal-form textarea,
-    .modal-form select {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 15px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .modal-form input:focus,
-    .modal-form textarea:focus,
-    .modal-form select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 25px;
-    }
-
-    .modal-save,
-    .modal-cancel {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-size: 14px;
-    }
-
-    .modal-save {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-    }
-
-    .modal-save:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
-    }
-
-    .modal-cancel {
-      background: #f0f0f0;
-      color: var(--dark);
-      border: 2px solid #e0e0e0;
-    }
-
-    .modal-cancel:hover {
-      background: #e0e0e0;
-      transform: translateY(-2px);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-
-      .upload-section {
-        position: static;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .products-list {
-        grid-template-columns: 1fr;
-      }
-
-      .upload-section,
-      .products-section {
-        padding: 20px;
-      }
-
-      .modal-content {
-        width: 95%;
-        margin: 100px auto;
-        padding: 25px;
-      }
-    }
-  </style>
-
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body { font-family: Montserrat; background:#f5f6ff; margin:0; padding:20px; }
+.container { display:grid; grid-template-columns:1fr 1.5fr; gap:20px; }
+
+.box { background:white; padding:20px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.1); }
+
+input, textarea {
+  width:100%; padding:10px; margin:8px 0;
+  border:1px solid #ddd; border-radius:8px;
+}
+
+button {
+  padding:12px; border:none; border-radius:8px;
+  cursor:pointer; background:#667eea; color:white;
+  font-weight:bold;
+}
+
+.product {
+  border:1px solid #eee; padding:10px; margin:10px 0;
+  border-radius:10px;
+}
+
+img { width:80px; height:80px; object-fit:cover; margin:5px; border-radius:6px; }
+.gallery { display:flex; flex-wrap:wrap; }
+
+.actions button { margin-right:5px; }
+</style>
 </head>
+
 <body>
 
 <div class="container">
-  <!-- UPLOAD SECTION -->
-  <div class="upload-section">
-    <h2>Add Product</h2>
-    <input id="name" placeholder="Product Name" type="text">
-    <input id="price" placeholder="Price" type="number">
-    <textarea id="desc" placeholder="Description"></textarea>
-    <input type="file" id="images" multiple>
-    <div id="previewContainer"></div>
-    <button id="uploadBtn">📤 Upload Product</button>
-  </div>
 
-  <!-- PRODUCTS LIST SECTION -->
-  <div class="products-section">
-    <h2>Your Products</h2>
-    <div id="productsList" class="products-list">
-      <div class="loading">
-        <div class="spinner"></div>
-        <p>Loading products...</p>
-      </div>
-    </div>
-  </div>
+<!-- UPLOAD -->
+<div class="box">
+<h2>Upload Product</h2>
+
+<input id="name" placeholder="Name">
+<input id="price" placeholder="Price" type="number">
+<textarea id="desc" placeholder="Description"></textarea>
+
+<input type="file" id="images" multiple>
+
+<div id="preview"></div>
+
+<button id="uploadBtn">Upload</button>
 </div>
 
-<!-- EDIT MODAL -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Edit Product</h2>
-      <span class="modal-close" id="closeModal">&times;</span>
-    </div>
-    <form class="modal-form" id="editForm">
-      <input type="text" id="editName" placeholder="Product Name" required>
-      <input type="number" id="editPrice" placeholder="Price" required>
-      <textarea id="editDesc" placeholder="Description" required></textarea>
-      <div class="modal-actions">
-        <button type="button" class="modal-save" id="saveEditBtn">💾 Save Changes</button>
-        <button type="button" class="modal-cancel" id="cancelEditBtn">Cancel</button>
-      </div>
-    </form>
-  </div>
+<!-- PRODUCTS -->
+<div class="box">
+<h2>Products</h2>
+<div id="list"></div>
+</div>
+
+</div>
+
+<!-- EDIT -->
+<div id="editBox" class="box" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); width:400px;">
+<h3>Edit Product</h3>
+<input id="e_name">
+<input id="e_price">
+<textarea id="e_desc"></textarea>
+
+<input type="file" id="e_images" multiple>
+
+<button id="saveEdit">Save</button>
+<button onclick="document.getElementById('editBox').style.display='none'">Close</button>
 </div>
 
 <script type="module">
-
 import { db } from './firebase.js';
-
 import {
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  updateDoc
+  collection, addDoc, getDocs,
+  deleteDoc, doc, updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* =========================
-   ELEMENTS
-========================= */
-
-const previewContainer =
-document.getElementById("previewContainer");
-
-const imageInput =
-document.getElementById("images");
-
-const productsList =
-document.getElementById("productsList");
-
-const uploadBtn =
-document.getElementById("uploadBtn");
-
-const editModal =
-document.getElementById("editModal");
-
-const closeModalBtn =
-document.getElementById("closeModal");
-
-const cancelEditBtn =
-document.getElementById("cancelEditBtn");
-
-const saveEditBtn =
-document.getElementById("saveEditBtn");
-
-let currentEditingProductId = null;
-
-/* =========================
-   IMAGE PREVIEW
-========================= */
-
-imageInput.addEventListener("change", (e) => {
-
-  previewContainer.innerHTML = "";
-
-  const files = e.target.files;
-
-  for (let i = 0; i < files.length; i++) {
-
-    const img = document.createElement("img");
-
-    img.src = URL.createObjectURL(files[i]);
-
-    previewContainer.appendChild(img);
-
-  }
-
-});
-
-/* =========================
-   LOAD PRODUCTS
-========================= */
-
-async function loadProducts() {
-
-  try {
-
-    productsList.innerHTML = `
-      <div class="loading">
-        <div class="spinner"></div>
-        <p>Loading products...</p>
-      </div>
-    `;
-
-    const querySnapshot =
-    await getDocs(collection(db, "products"));
-
-    if (querySnapshot.empty) {
-
-      productsList.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <div class="empty-state-icon">📦</div>
-          <p>No products uploaded yet</p>
-        </div>
-      `;
-
-      return;
-
-    }
-
-    productsList.innerHTML = "";
-
-    querySnapshot.forEach((productDoc) => {
-
-      const product = productDoc.data();
-
-      const productId = productDoc.id;
-
-      const card = document.createElement("div");
-
-      card.className = "product-card";
-
-      const firstImage =
-      product.imageUrls &&
-      product.imageUrls.length > 0
-      ? product.imageUrls[0]
-      : "https://via.placeholder.com/300x200?text=No+Image";
-
-      let galleryHTML = "";
-
-      if (
-        product.imageUrls &&
-        product.imageUrls.length > 0
-      ) {
-
-        galleryHTML = `
-          <div class="product-images-gallery">
-            ${product.imageUrls.map(url => `
-              <img src="${url}" alt="product">
-            `).join("")}
-          </div>
-        `;
-
-      }
-
-      card.innerHTML = `
-
-        <img
-          src="${firstImage}"
-          class="product-image"
-        >
-
-        <div class="product-info">
-
-          <div class="product-name">
-            ${product.name}
-          </div>
-
-          <div class="product-price">
-            ₦${Number(product.price).toLocaleString()}
-          </div>
-
-          <div class="product-desc">
-            ${product.description}
-          </div>
-
-          ${galleryHTML}
-
-          <div class="product-actions">
-
-            <button
-              class="edit-btn"
-              data-id="${productId}"
-            >
-              ✏️ Edit
-            </button>
-
-            <button
-              class="delete-btn"
-              data-id="${productId}"
-            >
-              🗑️ Delete
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-
-      productsList.appendChild(card);
-
-    });
-
-    /* =========================
-       EDIT BUTTONS
-    ========================= */
-
-    document
-    .querySelectorAll(".edit-btn")
-    .forEach(btn => {
-
-      btn.addEventListener("click", async () => {
-
-        currentEditingProductId =
-        btn.dataset.id;
-
-        const querySnapshot =
-        await getDocs(collection(db, "products"));
-
-        querySnapshot.forEach((d) => {
-
-          if (d.id === currentEditingProductId) {
-
-            const product = d.data();
-
-            document.getElementById("editName").value =
-            product.name;
-
-            document.getElementById("editPrice").value =
-            product.price;
-
-            document.getElementById("editDesc").value =
-            product.description;
-
-          }
-
-        });
-
-        editModal.style.display = "block";
-
-      });
-
-    });
-
-    /* =========================
-       DELETE BUTTONS
-    ========================= */
-
-    document
-    .querySelectorAll(".delete-btn")
-    .forEach(btn => {
-
-      btn.addEventListener("click", async () => {
-
-        const productId =
-        btn.dataset.id;
-
-        const confirmDelete =
-        confirm("Delete this product?");
-
-        if (!confirmDelete) return;
-
-        await deleteDoc(
-          doc(db, "products", productId)
-        );
-
-        alert("Product deleted");
-
-        loadProducts();
-
-      });
-
-    });
-
-  } catch (err) {
-
-    console.error(err);
-
-    productsList.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <p>Failed to load products</p>
-      </div>
-    `;
-
-  }
-
+const CLOUD_NAME = "dpaltarvh";
+const UPLOAD_PRESET = "Tobifatai";
+
+let editId = null;
+let editOldImages = [];
+
+/* ================= CLOUDINARY ================= */
+async function uploadImage(file){
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", UPLOAD_PRESET);
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    { method:"POST", body:form }
+  );
+
+  const data = await res.json();
+  return data.secure_url;
 }
 
-/* =========================
-   UPLOAD PRODUCT
-========================= */
+/* ================= PREVIEW ================= */
+document.getElementById("images").onchange = (e)=>{
+  const preview = document.getElementById("preview");
+  preview.innerHTML = "";
+  [...e.target.files].forEach(f=>{
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(f);
+    preview.appendChild(img);
+  });
+};
 
-uploadBtn.addEventListener("click", async () => {
+/* ================= UPLOAD ================= */
+document.getElementById("uploadBtn").onclick = async ()=>{
+  const name = name.value;
+  const price = price.value;
+  const desc = desc.value;
+  const files = images.files;
 
-  try {
+  if(!name || !price || !desc) return alert("Fill all fields");
 
-    uploadBtn.innerHTML = "Uploading...";
-    uploadBtn.disabled = true;
-
-    const name =
-    document.getElementById("name")
-    .value
-    .trim();
-
-    const price =
-    document.getElementById("price")
-    .value
-    .trim();
-
-    const desc =
-    document.getElementById("desc")
-    .value
-    .trim();
-
-    const files =
-    imageInput.files;
-
-    if (!name || !price || !desc) {
-
-      alert("Please fill all fields");
-
-      uploadBtn.innerHTML =
-      "📤 Upload Product";
-
-      uploadBtn.disabled = false;
-
-      return;
-
-    }
-
-    let imageUrls = [];
-
-    /* =========================
-       CLOUDINARY UPLOAD
-    ========================= */
-
-    if (files.length > 0) {
-
-      for (let i = 0; i < files.length; i++) {
-
-        const formData = new FormData();
-
-        formData.append(
-          "file",
-          files[i]
-        );
-
-        formData.append(
-          "upload_preset",
-          "Tobifatai"
-        );
-
-        const response =
-        await fetch(
-          "https://api.cloudinary.com/v1_1/dpaltarvh/image/upload",
-          {
-            method: "POST",
-            body: formData
-          }
-        );
-
-        const data =
-        await response.json();
-
-        console.log(data);
-
-        if (data.secure_url) {
-
-          imageUrls.push(
-            data.secure_url
-          );
-
-        }
-
-      }
-
-    }
-
-    /* =========================
-       SAVE TO FIRESTORE
-    ========================= */
-
-    await addDoc(
-      collection(db, "products"),
-      {
-        name,
-        price: Number(price),
-        description: desc,
-        imageUrls,
-        createdAt: new Date()
-      }
-    );
-
-    alert("Product uploaded successfully");
-
-    /* =========================
-       RESET FORM
-    ========================= */
-
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("desc").value = "";
-
-    imageInput.value = "";
-
-    previewContainer.innerHTML = "";
-
-    uploadBtn.innerHTML =
-    "📤 Upload Product";
-
-    uploadBtn.disabled = false;
-
-    loadProducts();
-
-  } catch (err) {
-
-    console.error(err);
-
-    alert("Upload failed. Check console.");
-
-    uploadBtn.innerHTML =
-    "📤 Upload Product";
-
-    uploadBtn.disabled = false;
-
+  let urls = [];
+  for(let f of files){
+    urls.push(await uploadImage(f));
   }
 
-});
+  await addDoc(collection(db,"products"),{
+    name, price, description:desc,
+    imageUrls: urls,
+    createdAt: Date.now()
+  });
 
-/* =========================
-   SAVE EDIT
-========================= */
+  alert("Uploaded!");
+  load();
+};
 
-saveEditBtn.addEventListener("click", async () => {
+/* ================= LOAD ================= */
+async function load(){
+  const list = document.getElementById("list");
+  list.innerHTML = "Loading...";
 
-  try {
+  const snap = await getDocs(collection(db,"products"));
+  list.innerHTML = "";
 
-    const name =
-    document.getElementById("editName")
-    .value
-    .trim();
+  snap.forEach(d=>{
+    const p = d.data();
 
-    const price =
-    document.getElementById("editPrice")
-    .value
-    .trim();
+    const div = document.createElement("div");
+    div.className="product";
 
-    const desc =
-    document.getElementById("editDesc")
-    .value
-    .trim();
+    div.innerHTML = `
+      <b>${p.name}</b><br>
+      ₦${p.price}<br>
+      <p>${p.description}</p>
 
-    if (!name || !price || !desc) {
+      <div class="gallery">
+        ${(p.imageUrls||[]).map(u=>`<img src="${u}">`).join("")}
+      </div>
 
-      alert("Please fill all fields");
+      <div class="actions">
+        <button onclick="edit('${d.id}')">Edit</button>
+        <button onclick="del('${d.id}')">Delete</button>
+      </div>
+    `;
 
-      return;
+    list.appendChild(div);
+  });
+}
 
+/* ================= DELETE ================= */
+window.del = async (id)=>{
+  await deleteDoc(doc(db,"products",id));
+  load();
+};
+
+/* ================= EDIT ================= */
+window.edit = async (id)=>{
+  editId = id;
+
+  const snap = await getDocs(collection(db,"products"));
+  snap.forEach(d=>{
+    if(d.id===id){
+      const p = d.data();
+      document.getElementById("e_name").value = p.name;
+      document.getElementById("e_price").value = p.price;
+      document.getElementById("e_desc").value = p.description;
+      editOldImages = p.imageUrls || [];
     }
+  });
 
-    await updateDoc(
-      doc(
-        db,
-        "products",
-        currentEditingProductId
-      ),
-      {
-        name,
-        price: Number(price),
-        description: desc
-      }
-    );
+  document.getElementById("editBox").style.display="block";
+};
 
-    alert("Product updated");
+/* ================= SAVE EDIT ================= */
+document.getElementById("saveEdit").onclick = async ()=>{
+  const name = e_name.value;
+  const price = e_price.value;
+  const desc = e_desc.value;
+  const files = e_images.files;
 
-    editModal.style.display = "none";
+  let newImages = [...editOldImages];
 
-    loadProducts();
-
-  } catch (err) {
-
-    console.error(err);
-
-    alert("Failed to update");
-
+  for(let f of files){
+    newImages.push(await uploadImage(f));
   }
 
-});
+  await updateDoc(doc(db,"products",editId),{
+    name, price, description:desc,
+    imageUrls: newImages
+  });
 
-/* =========================
-   CLOSE MODAL
-========================= */
+  alert("Updated!");
+  document.getElementById("editBox").style.display="none";
+  load();
+};
 
-closeModalBtn.addEventListener("click", () => {
-
-  editModal.style.display = "none";
-
-});
-
-cancelEditBtn.addEventListener("click", () => {
-
-  editModal.style.display = "none";
-
-});
-
-window.addEventListener("click", (e) => {
-
-  if (e.target === editModal) {
-
-    editModal.style.display = "none";
-
-  }
-
-});
-
-/* =========================
-   INITIAL LOAD
-========================= */
-
-loadProducts();
-
+load();
 </script>
+
+</body>
+</html>
