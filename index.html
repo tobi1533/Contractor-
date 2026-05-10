@@ -466,8 +466,50 @@
       }
 
       #products {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 40px 10px 80px;
+        gap: 15px;
+      }
+
+      .product {
+        width: 160px;
+        height: 280px;
+        border-radius: 12px;
+      }
+
+      .image-container {
+        height: 120px;
+      }
+
+      .product-info {
+        padding: 8px 8px;
+      }
+
+      .title {
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .price {
+        font-size: 14px;
+        margin: 2px 0;
+      }
+
+      .desc {
+        font-size: 10px;
+        margin-bottom: 6px;
+        -webkit-line-clamp: 1;
+      }
+
+      .order-btn {
+        padding: 8px 8px;
+        font-size: 10px;
+      }
+
+      .image-counter {
+        padding: 4px 8px;
+        font-size: 10px;
       }
 
       .contact-popup {
@@ -658,7 +700,7 @@
     💬
     <span class="contact-label">WhatsApp</span>
   </a>
-  <a href="mailto:akeemfatai@gmail.com" class="contact-btn email-btn" title="Send Email">
+  <a href="mail to:akeem.fatai@gmail.com" class="contact-btn email-btn" title="Send Email">
     ✉️
     <span class="contact-label">Email</span>
   </a>
