@@ -658,7 +658,7 @@
     💬
     <span class="contact-label">WhatsApp</span>
   </a>
-  <a href="mailto:akeemstore@gmail.com" class="contact-btn email-btn" title="Send Email">
+  <a href="mailto:akeemfatai@gmail.com" class="contact-btn email-btn" title="Send Email">
     ✉️
     <span class="contact-label">Email</span>
   </a>
@@ -812,17 +812,23 @@ async function loadProducts() {
     if (validImages.length > 0) {
       const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
       const firstMedia = validImages[0];
-      const isVideo = firstMedia.includes('.mp4') || firstMedia.includes('video') || (firstMedia.includes('/v') && !firstMedia.includes('.jpg') && !firstMedia.includes('.png') && !firstMedia.includes('.gif'));
+      // Better video detection - check for Cloudinary video resource type
+      const isVideo = firstMedia.toLowerCase().includes('video') || 
+                     (firstMedia.includes('.mp4') || firstMedia.includes('.webm') || 
+                      firstMedia.includes('.mov') || firstMedia.includes('.avi'));
       
       let mediaHTML = '';
       if (isVideo) {
-        mediaHTML = `<video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;" muted></video><div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.7);color:white;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:600;">🎥 VIDEO</div>`;
+        mediaHTML = `
+          <video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;background:#000;" muted preload="metadata"></video>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.8);color:white;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:700;">🎥 VIDEO</div>
+        `;
       } else {
-        mediaHTML = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}">`;
+        mediaHTML = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}" style="width:100%;height:100%;object-fit:cover;">`;
       }
 
       mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}">
+        <div class="image-container" data-images="${imageDataJson}" style="position:relative;">
           ${mediaHTML}
           ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
         </div>
@@ -1030,17 +1036,23 @@ function filterProducts(searchTerm) {
     if (validImages.length > 0) {
       const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
       const firstMedia = validImages[0];
-      const isVideo = firstMedia.includes('.mp4') || firstMedia.includes('video') || (firstMedia.includes('/v') && !firstMedia.includes('.jpg') && !firstMedia.includes('.png') && !firstMedia.includes('.gif'));
+      // Better video detection - check for Cloudinary video resource type
+      const isVideo = firstMedia.toLowerCase().includes('video') || 
+                     (firstMedia.includes('.mp4') || firstMedia.includes('.webm') || 
+                      firstMedia.includes('.mov') || firstMedia.includes('.avi'));
       
       let mediaHTML = '';
       if (isVideo) {
-        mediaHTML = `<video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;" muted></video><div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.7);color:white;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:600;">🎥 VIDEO</div>`;
+        mediaHTML = `
+          <video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;background:#000;" muted preload="metadata"></video>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.8);color:white;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:700;">🎥 VIDEO</div>
+        `;
       } else {
-        mediaHTML = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}">`;
+        mediaHTML = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}" style="width:100%;height:100%;object-fit:cover;">`;
       }
 
       mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}">
+        <div class="image-container" data-images="${imageDataJson}" style="position:relative;">
           ${mediaHTML}
           ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
         </div>
@@ -1056,7 +1068,40 @@ function filterProducts(searchTerm) {
       `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
     );
 
-    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
+    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage};
+
+    container.innerHTML += `
+      <div class="product ${isSold ? 'sold' : ''}">
+        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
+        ${mainImageHTML}
+
+        <div class="product-info">
+          <div>
+            <div class="title">${productName}</div>
+            <div class="price">₦${productPrice}</div>
+          </div>
+
+          <div class="desc">${data.description || ""}</div>
+
+          ${
+            isSold
+              ? `<button class="order-btn" disabled>Sold Out</button>`
+              : `
+                <a
+                  href="${whatsappLink}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="order-btn"
+                  onclick="event.stopPropagation()"
+                >
+                  Order Now
+                </a>
+              `
+          }
+        </div>
+      </div>
+    `;
+  });
 
     container.innerHTML += `
       <div class="product ${isSold ? 'sold' : ''}">
