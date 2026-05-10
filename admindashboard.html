@@ -286,7 +286,7 @@ button {
 <input id="price" placeholder="Price">
 <textarea id="desc" placeholder="Description"></textarea>
 
-<input type="file" id="images" multiple accept="image/*">
+<input type="file" id="images" multiple accept="image/*,video/*">
 
 <div id="preview" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;"></div>
 
@@ -328,7 +328,7 @@ button {
 <input id="e_price" placeholder="Price">
 <textarea id="e_desc" placeholder="Description"></textarea>
 
-<input type="file" id="e_images" multiple accept="image/*">
+<input type="file" id="e_images" multiple accept="image/*,video/*">
 
 <div id="e_preview" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;"></div>
 
@@ -402,6 +402,11 @@ async function uploadImage(file, progressCallback){
   const form = new FormData();
   form.append("file", file);
   form.append("upload_preset", UPLOAD_PRESET);
+  
+  // Set resource type for videos
+  if (file.type.startsWith('video/')) {
+    form.append("resource_type", "video");
+  }
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -427,7 +432,7 @@ async function uploadImage(file, progressCallback){
       reject(new Error("Upload error"));
     });
 
-    xhr.open("POST", `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+    xhr.open("POST", `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`);
     xhr.send(form);
   });
 }
@@ -437,13 +442,44 @@ document.getElementById("images").onchange = (e)=>{
   const preview = document.getElementById("preview");
   preview.innerHTML = "";
   [...e.target.files].forEach(f=>{
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(f);
-    img.style.width = "80px";
-    img.style.height = "80px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "8px";
-    preview.appendChild(img);
+    const isVideo = f.type.startsWith('video/');
+    
+    if (isVideo) {
+      const video = document.createElement("div");
+      video.style.position = "relative";
+      video.style.width = "80px";
+      video.style.height = "80px";
+      
+      const videoElement = document.createElement("video");
+      videoElement.src = URL.createObjectURL(f);
+      videoElement.style.width = "80px";
+      videoElement.style.height = "80px";
+      videoElement.style.objectFit = "cover";
+      videoElement.style.borderRadius = "8px";
+      
+      const badge = document.createElement("div");
+      badge.innerHTML = "🎥";
+      badge.style.position = "absolute";
+      badge.style.top = "4px";
+      badge.style.right = "4px";
+      badge.style.background = "rgba(0,0,0,0.7)";
+      badge.style.color = "white";
+      badge.style.padding = "2px 4px";
+      badge.style.borderRadius = "4px";
+      badge.style.fontSize = "12px";
+      
+      video.appendChild(videoElement);
+      video.appendChild(badge);
+      preview.appendChild(video);
+    } else {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(f);
+      img.style.width = "80px";
+      img.style.height = "80px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "8px";
+      preview.appendChild(img);
+    }
   });
 };
 
@@ -451,13 +487,44 @@ document.getElementById("e_images").onchange = (e)=>{
   const preview = document.getElementById("e_preview");
   preview.innerHTML = "";
   [...e.target.files].forEach(f=>{
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(f);
-    img.style.width = "80px";
-    img.style.height = "80px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "8px";
-    preview.appendChild(img);
+    const isVideo = f.type.startsWith('video/');
+    
+    if (isVideo) {
+      const video = document.createElement("div");
+      video.style.position = "relative";
+      video.style.width = "80px";
+      video.style.height = "80px";
+      
+      const videoElement = document.createElement("video");
+      videoElement.src = URL.createObjectURL(f);
+      videoElement.style.width = "80px";
+      videoElement.style.height = "80px";
+      videoElement.style.objectFit = "cover";
+      videoElement.style.borderRadius = "8px";
+      
+      const badge = document.createElement("div");
+      badge.innerHTML = "🎥";
+      badge.style.position = "absolute";
+      badge.style.top = "4px";
+      badge.style.right = "4px";
+      badge.style.background = "rgba(0,0,0,0.7)";
+      badge.style.color = "white";
+      badge.style.padding = "2px 4px";
+      badge.style.borderRadius = "4px";
+      badge.style.fontSize = "12px";
+      
+      video.appendChild(videoElement);
+      video.appendChild(badge);
+      preview.appendChild(video);
+    } else {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(f);
+      img.style.width = "80px";
+      img.style.height = "80px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "8px";
+      preview.appendChild(img);
+    }
   });
 };
 
@@ -557,7 +624,13 @@ async function load(){
       ${soldBadge}
 
       <div class="gallery">
-        ${(p.imageUrls||[]).map(u=>`<img src="${u}">`).join("")}
+        ${(p.imageUrls||[]).map(u=>{
+          const isVideo = u.includes('.mp4') || u.includes('video') || u.includes('/v') && u.includes('.') && !u.includes('.jpg') && !u.includes('.png') && !u.includes('.gif');
+          if (isVideo) {
+            return `<div style="position:relative;width:45px;height:45px;border-radius:6px;overflow:hidden;"><video src="${u}" style="width:100%;height:100%;object-fit:cover;"></video><div style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);color:white;padding:2px 3px;border-radius:3px;font-size:10px;">🎥</div></div>`;
+          }
+          return `<img src="${u}">`;
+        }).join("")}
       </div>
 
       <div>
