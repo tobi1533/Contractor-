@@ -548,6 +548,91 @@
       border-radius: 20px;
       font-size: 14px;
     }
+
+    /* Search Section Styles */
+    .search-container {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: 2px solid rgba(255, 107, 53, 0.5);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1a1a2e;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 6px 25px rgba(255, 107, 53, 0.3);
+    }
+
+    .search-box::placeholder {
+      color: #999;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 35px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      pointer-events: none;
+      color: var(--primary);
+    }
+
+    .clear-search {
+      position: absolute;
+      right: 35px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #999;
+      transition: all 0.3s ease;
+      display: none;
+      padding: 0;
+    }
+
+    .clear-search:hover {
+      color: var(--primary);
+    }
+
+    .search-box:not(:placeholder-shown) ~ .clear-search {
+      display: block;
+    }
+
+    .search-box:not(:placeholder-shown) ~ .search-icon {
+      display: none;
+    }
+
+    .no-results {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 18px;
+    }
+
+    .no-results-emoji {
+      font-size: 48px;
+      margin-bottom: 20px;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -573,13 +658,26 @@
     💬
     <span class="contact-label">WhatsApp</span>
   </a>
-  <a href="mailto:akeemfatai@gmail.com" class="contact-btn email-btn" title="Send Email">
+  <a href="mailto:akeemstore@gmail.com" class="contact-btn email-btn" title="Send Email">
     ✉️
     <span class="contact-label">Email</span>
   </a>
 </div>
 
 <h2>Products</h2>
+
+<!-- Search Section -->
+<div class="search-container">
+  <input 
+    type="text" 
+    id="searchBox" 
+    class="search-box" 
+    placeholder="🔍 Search for products... (name, type, price)"
+    autocomplete="off"
+  >
+  <span class="search-icon">🔍</span>
+  <button class="clear-search" id="clearSearchBtn" title="Clear search">✕</button>
+</div>
 
 <div id="products"></div>
 
@@ -596,8 +694,19 @@
 </div>
 
 <script type="module">
-import { db } from './firebase.js';
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+let db = null;
+let collection = null;
+let getDocs = null;
+
+try {
+  const firebaseModule = await import('./firebase.js');
+  db = firebaseModule.db;
+  const firestoreModule = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+  collection = firestoreModule.collection;
+  getDocs = firestoreModule.getDocs;
+} catch (error) {
+  console.warn('Firebase not loaded - menu will still work:', error);
+}
 
 const OWNER_PHONE = "2347034447700";
 
@@ -680,6 +789,12 @@ document.addEventListener("keydown", (e) => {
 });
 
 async function loadProducts() {
+  if (!db || !getDocs || !collection) {
+    console.warn('Firebase not available - products cannot load');
+    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Please check Firebase configuration</p>';
+    return;
+  }
+
   const querySnapshot = await getDocs(collection(db, "products"));
 
   container.innerHTML = "";
@@ -761,7 +876,227 @@ async function loadProducts() {
   });
 }
 
-loadProducts();
+// Search functionality
+const searchBox = document.getElementById('searchBox');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+let allProducts = []; // Store all products for searching
+
+// Store products during load
+const originalLoadProducts = loadProducts;
+loadProducts = async function() {
+  if (!db || !getDocs || !collection) {
+    console.warn('Firebase not available - products cannot load');
+    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Please check Firebase configuration</p>';
+    return;
+  }
+
+  const querySnapshot = await getDocs(collection(db, "products"));
+  allProducts = []; // Reset products array
+
+  container.innerHTML = "";
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    allProducts.push(data); // Store product data
+    const isSold = data.sold === true;
+
+    let validImages = Array.isArray(data.imageUrls)
+      ? data.imageUrls.filter(url => url && url.trim() !== '')
+      : [];
+
+    let mainImageHTML = "";
+
+    if (validImages.length > 0) {
+      const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
+
+      mainImageHTML = `
+        <div class="image-container" data-images="${imageDataJson}">
+          <img src="${validImages[0]}" class="product-img" alt="${data.name || 'Product'}">
+          ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} photos</div>` : ''}
+        </div>
+      `;
+    } else {
+      mainImageHTML = `<div class="image-container"><div class="no-image">No image</div></div>`;
+    }
+
+    const productName = data.name || "Product";
+    const productPrice = data.price || 0;
+
+    const whatsappMessage = encodeURIComponent(
+      `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
+    );
+
+    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
+
+    container.innerHTML += `
+      <div class="product ${isSold ? 'sold' : ''}">
+        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
+        ${mainImageHTML}
+
+        <div class="product-info">
+          <div>
+            <div class="title">${productName}</div>
+            <div class="price">₦${productPrice}</div>
+          </div>
+
+          <div class="desc">${data.description || ""}</div>
+
+          ${
+            isSold
+              ? `<button class="order-btn" disabled>Sold Out</button>`
+              : `
+                <a
+                  href="${whatsappLink}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="order-btn"
+                  onclick="event.stopPropagation()"
+                >
+                  Order Now
+                </a>
+              `
+          }
+        </div>
+      </div>
+    `;
+  });
+
+  document.querySelectorAll('.image-container').forEach((container) => {
+    container.addEventListener('click', () => {
+      const imagesJson = container.getAttribute('data-images');
+
+      if (imagesJson) {
+        const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
+        openImageGallery(images, 0);
+      }
+    });
+  });
+};
+
+// Search filter function
+function filterProducts(searchTerm) {
+  const searchLower = searchTerm.toLowerCase().trim();
+
+  if (!searchLower) {
+    // Show all products if search is empty
+    loadProducts();
+    return;
+  }
+
+  const filteredProducts = allProducts.filter((product) => {
+    const name = (product.name || "").toLowerCase();
+    const desc = (product.description || "").toLowerCase();
+    const price = (product.price || "").toString();
+
+    return (
+      name.includes(searchLower) ||
+      desc.includes(searchLower) ||
+      price.includes(searchLower)
+    );
+  });
+
+  // Display filtered results
+  container.innerHTML = "";
+
+  if (filteredProducts.length === 0) {
+    container.innerHTML = `
+      <div class="no-results">
+        <span class="no-results-emoji">🔍</span>
+        <p>No products found for "<strong>${searchTerm}</strong>"</p>
+        <p style="font-size: 14px; margin-top: 10px;">Try searching with different keywords</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredProducts.forEach((data) => {
+    const isSold = data.sold === true;
+
+    let validImages = Array.isArray(data.imageUrls)
+      ? data.imageUrls.filter(url => url && url.trim() !== '')
+      : [];
+
+    let mainImageHTML = "";
+
+    if (validImages.length > 0) {
+      const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
+
+      mainImageHTML = `
+        <div class="image-container" data-images="${imageDataJson}">
+          <img src="${validImages[0]}" class="product-img" alt="${data.name || 'Product'}">
+          ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} photos</div>` : ''}
+        </div>
+      `;
+    } else {
+      mainImageHTML = `<div class="image-container"><div class="no-image">No image</div></div>`;
+    }
+
+    const productName = data.name || "Product";
+    const productPrice = data.price || 0;
+
+    const whatsappMessage = encodeURIComponent(
+      `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
+    );
+
+    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
+
+    container.innerHTML += `
+      <div class="product ${isSold ? 'sold' : ''}">
+        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
+        ${mainImageHTML}
+
+        <div class="product-info">
+          <div>
+            <div class="title">${productName}</div>
+            <div class="price">₦${productPrice}</div>
+          </div>
+
+          <div class="desc">${data.description || ""}</div>
+
+          ${
+            isSold
+              ? `<button class="order-btn" disabled>Sold Out</button>`
+              : `
+                <a
+                  href="${whatsappLink}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="order-btn"
+                  onclick="event.stopPropagation()"
+                >
+                  Order Now
+                </a>
+              `
+          }
+        </div>
+      </div>
+    `;
+  });
+
+  // Re-attach image gallery listeners
+  document.querySelectorAll('.image-container').forEach((container) => {
+    container.addEventListener('click', () => {
+      const imagesJson = container.getAttribute('data-images');
+
+      if (imagesJson) {
+        const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
+        openImageGallery(images, 0);
+      }
+    });
+  });
+}
+
+// Search event listener
+searchBox.addEventListener('input', (e) => {
+  filterProducts(e.target.value);
+});
+
+// Clear search button
+clearSearchBtn.addEventListener('click', () => {
+  searchBox.value = '';
+  searchBox.focus();
+  filterProducts('');
+});
 </script>
 
 </body>
