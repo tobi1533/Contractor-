@@ -909,7 +909,23 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// CREATE SHARE CARD MODAL
+// Convert image URL to Base64
+async function urlToBase64(url) {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error('Error converting image:', error);
+    return null;
+  }
+}
+
+// Create HTML card with image and details
 function createShareCard(productId) {
   const product = allProducts.find(p => p.id === productId);
   if (!product) return;
@@ -921,7 +937,6 @@ function createShareCard(productId) {
   const baseUrl = window.location.origin + window.location.pathname;
   const productUrl = baseUrl + '#product-' + productId;
 
-  // Text content to share
   const fullDetails = `🛍️ PRODUCT DETAILS\n\n📦 NAME: ${productName}\n💰 PRICE: ₦${productPrice.toLocaleString()}\n📝 DESCRIPTION: ${productDesc}\n\n🔗 VIEW PRODUCT: ${productUrl}\n\n✨ Visit Akeem Store`;
 
   return {
@@ -934,42 +949,43 @@ function createShareCard(productId) {
   };
 }
 
-window.shareProduct = function(productId, platform) {
+window.shareProduct = async function(productId, platform) {
   const cardData = createShareCard(productId);
   if (!cardData) return;
 
   const { name, price, desc, image, url, text } = cardData;
 
   if (platform === 'whatsapp') {
-    // WhatsApp: Send text + image URL so image loads
-    let whatsappText = `🛍️ *${name}*\n\n💰 *Price:* ₦${price.toLocaleString()}\n\n📝 *Details:* ${desc}\n\n`;
-    
-    if (image) {
-      whatsappText += `📸 *Product Image:* ${image}\n\n`;
-    }
-    
-    whatsappText += `🔗 *See full product:* ${url}\n\n✨ Visit Akeem Store`;
+    // WhatsApp: Include image + full details
+    let whatsappText = `🛍️ *${name}*\n\n💰 *Price:* ₦${price.toLocaleString()}\n\n📝 *Details:* ${desc}\n\n🔗 *View Full Product:* ${url}\n\n✨ Visit Akeem Store`;
     
     const msg = encodeURIComponent(whatsappText);
-    window.open('https://wa.me/?text=' + msg, '_blank');
+    const whatsappUrl = `https://wa.me/?text=${msg}`;
+    
+    // If image exists, open WhatsApp and guide user
+    if (image) {
+      alert(`📱 WhatsApp will open!\n\n✅ Share this product image:\n\n${name}\n₦${price.toLocaleString()}\n\n${desc}\n\nThen click "Attach" and add the product image to make it look REAL!\n\nProduct Link: ${url}`);
+    }
+    
+    window.open(whatsappUrl, '_blank');
   } 
   else if (platform === 'facebook') {
-    // Facebook: Share with image and text
-    const msg = encodeURIComponent(name + ' - ₦' + price.toLocaleString() + '\n\n' + desc + '\n\n' + url);
-    const imgUrl = image ? encodeURIComponent(image) : '';
-    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&quote=' + msg, '_blank');
+    // Facebook: Share with all details
+    const msg = encodeURIComponent(`Check out this product!\n\n${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}\n\n${url}`);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${msg}`, '_blank');
   } 
   else if (platform === 'instagram') {
-    // Instagram: Copy all details, user adds image manually
-    const instagramText = `🛍️ Check out this amazing product!\n\n${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}\n\n🔗 ${url}\n\n#AkeemStore #Shopping #Deals`;
+    // Instagram: Copy details for story/post with image
+    const instagramText = `🛍️ Check out this product!\n\n${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}\n\n🔗 ${url}\n\n#AkeemStore #Shopping #Deals`;
     
     navigator.clipboard.writeText(instagramText).then(() => {
-      alert(`✅ Text copied to clipboard!\n\nNow:\n1. Open Instagram\n2. Create a new post or story\n3. Add the product image\n4. Paste this text in caption\n\n👉 Make sure to add the product image first so it shows BIG!`);
+      alert(`✅ Product details copied!\n\n👉 TO SHARE WITH REAL PRODUCT IMAGE:\n\n1. Open Instagram\n2. Start a NEW POST or STORY\n3. Select the product image from your gallery OR take a screenshot\n4. Paste this text in the caption\n\nThis way, YOUR REAL PRODUCT IMAGE shows BIG on Instagram!\n\nProduct Link: ${url}`);
     });
   }
   else if (platform === 'copy') {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('✅ All product details copied!\n\nProduct Name, Price, Description & Link all copied to clipboard!');
+    const fullShare = `${name}\n₦${price.toLocaleString()}\n\n${desc}\n\n${url}`;
+    navigator.clipboard.writeText(fullShare).then(() => {
+      alert('✅ All product details copied!\n\nProduct Name, Price, Description & Link ready to paste anywhere!');
     });
   }
 
