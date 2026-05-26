@@ -516,6 +516,88 @@
       transition: all 0.3s ease;
     }
 
+    /* SHARE BUTTON */
+    .share-button {
+      position: absolute;
+      bottom: 60px;
+      left: 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 25;
+    }
+
+    .share-button:hover {
+      transform: scale(1.15);
+      background: white;
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    }
+
+    /* SHARE MENU */
+    .share-menu {
+      position: absolute;
+      bottom: 55px;
+      left: 0;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 12px;
+      padding: 10px;
+      z-index: 26;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .share-menu.active {
+      display: flex;
+    }
+
+    .share-option {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .share-option:hover {
+      transform: scale(1.15);
+    }
+
+    .share-option.whatsapp {
+      background: #25D366;
+    }
+
+    .share-option.facebook {
+      background: #1877F2;
+    }
+
+    .share-option.instagram {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .share-option.copy {
+      background: #FF6B35;
+    }
+
     .product-info {
       padding: 12px 10px;
       flex-grow: 1;
@@ -1162,6 +1244,99 @@ function updateStats(products) {
   document.getElementById('totalLikesStat').textContent = totalLikes;
 }
 
+// Toggle share menu
+function toggleShareMenu(event) {
+  event.stopPropagation();
+  const productId = event.currentTarget.getAttribute('data-product-id');
+  const shareMenu = document.querySelector(`.share-menu[data-product-id="${productId}"]`);
+  
+  // Close other open menus
+  document.querySelectorAll('.share-menu.active').forEach(menu => {
+    if (menu.getAttribute('data-product-id') !== productId) {
+      menu.classList.remove('active');
+    }
+  });
+  
+  shareMenu.classList.toggle('active');
+}
+
+// Share product function
+function shareProduct(event, platform) {
+  event.stopPropagation();
+  const productId = event.currentTarget.getAttribute('data-product-id');
+  const product = allProducts.find(p => p.id === productId);
+  
+  if (!product) return;
+
+  const productName = product.name || "Product";
+  const productPrice = product.price || 0;
+  const productImage = Array.isArray(product.imageUrls) && product.imageUrls[0] ? product.imageUrls[0] : '';
+  
+  // Create product URL with anchor to product
+  const baseUrl = window.location.origin + window.location.pathname;
+  const productUrl = `${baseUrl}#product-${productId}`;
+  
+  const productText = `📦 ${productName}\n💰 ₦${productPrice}\n\n🔗 View on Akeem Store: ${productUrl}`;
+
+  if (platform === 'whatsapp') {
+    const whatsappMessage = encodeURIComponent(productText);
+    const whatsappUrl = `https://wa.me/?text=${whatsappMessage}`;
+    window.open(whatsappUrl, '_blank');
+  } 
+  else if (platform === 'facebook') {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}&quote=${encodeURIComponent(`Check out ${productName} - ₦${productPrice} on Akeem Store!`)}`;
+    window.open(facebookUrl, '_blank');
+  } 
+  else if (platform === 'instagram') {
+    // Instagram doesn't have a direct share API, so we'll guide the user
+    if (productImage) {
+      const instagramText = `Check out this amazing product on Akeem Store!\n\n📦 ${productName}\n💰 ₦${productPrice}\n\nClick here: ${productUrl}`;
+      alert(`Share on Instagram:\n\n${instagramText}\n\nCopy this text and share with the image to your Instagram story!`);
+      copyToClipboard(instagramText);
+    } else {
+      const instagramText = `Check out this amazing product on Akeem Store!\n\n📦 ${productName}\n💰 ₦${productPrice}\n\nClick here: ${productUrl}`;
+      alert(`Share on Instagram:\n\n${instagramText}`);
+      copyToClipboard(instagramText);
+    }
+  }
+  else if (platform === 'copy') {
+    copyToClipboard(productText);
+    showCopyNotification(event.currentTarget);
+  }
+  
+  // Close share menu
+  const shareMenu = document.querySelector(`.share-menu[data-product-id="${productId}"]`);
+  shareMenu.classList.remove('active');
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    console.log('Copied to clipboard');
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
+}
+
+function showCopyNotification(button) {
+  const originalText = button.textContent;
+  button.textContent = '✓';
+  button.style.background = '#2ECC71';
+  
+  setTimeout(() => {
+    button.textContent = originalText;
+    button.style.background = '';
+  }, 2000);
+}
+
+// Close share menu when clicking elsewhere
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.share-button') && !e.target.closest('.share-menu') && !e.target.closest('.share-option')) {
+    document.querySelectorAll('.share-menu.active').forEach(menu => {
+      menu.classList.remove('active');
+    });
+  }
+});
+
 // Handle like button click
 async function handleLike(productId, likeButton, likeCountElement) {
   try {
@@ -1310,6 +1485,16 @@ function renderProducts(productsData) {
           ${userLikes[productId] ? '❤️' : '🤍'}
         </button>
         <div class="like-count" data-product-id="${productId}">❤️ ${likes}</div>
+
+        <button class="share-button" title="Share this product" data-product-id="${productId}" onclick="toggleShareMenu(event)">
+          📤
+        </button>
+        <div class="share-menu" data-product-id="${productId}">
+          <button class="share-option whatsapp" title="Share on WhatsApp" data-type="whatsapp" data-product-id="${productId}" onclick="shareProduct(event, 'whatsapp')">📱</button>
+          <button class="share-option facebook" title="Share on Facebook" data-type="facebook" data-product-id="${productId}" onclick="shareProduct(event, 'facebook')">f</button>
+          <button class="share-option instagram" title="Share on Instagram" data-type="instagram" data-product-id="${productId}" onclick="shareProduct(event, 'instagram')">📷</button>
+          <button class="share-option copy" title="Copy link" data-type="copy" data-product-id="${productId}" onclick="shareProduct(event, 'copy')">🔗</button>
+        </div>
 
         <div class="product-info">
           <div>
