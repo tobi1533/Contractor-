@@ -3,27 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Products - Shop</title>
+  <title>Products - Akeem Store</title>
 
-<meta property="og:title" content="Akeem Store">
-<meta property="og:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
-<meta property="og:image" content="https://tobi1533.github.io/Contractor-/Akeemstore1.jpg">
-<meta property="og:image:secure_url" content="https://tobi1533.github.io/Contractor-/Akeemstore1.jpg">
-<meta property="og:image:type" content="image/jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://tobi1533.github.io/Contractor-/products.html">
+  <meta property="og:title" content="Akeem Store">
+  <meta property="og:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
+  <meta property="og:image" content="https://tobi1533.github.io/Contractor-/Akeemstore1.jpg">
+  <meta property="og:type" content="website">
 
-  <meta name="image" content="https://tobi1533.github.io/Contractor-/Akeemstore1.jpg">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Akeem Store">
-<meta name="twitter:description" content="Akeem Store — contractor for cars, houses, hotels, scrap ships, tractors, generators and more.">
-<meta name="twitter:image" content="https://tobi1533.github.io/Contractor-/Akeemstore1.jpg">
-
-  
-   <link rel="preload" as="image" href="https://tobi1533.github.io/Contractor-/Akeemstore1.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -101,7 +87,7 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 2px solid rgba(255, 107, 53, 0.3);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -118,7 +104,6 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       letter-spacing: 1px;
-      margin: 0;
     }
 
     .hamburger {
@@ -193,7 +178,6 @@
       text-decoration: none;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: center;
@@ -205,30 +189,11 @@
       border-color: var(--primary);
     }
 
-    .admin-login-btn {
-      background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
-      border-color: #E74C3C;
-      margin-top: 20px;
-    }
-
-    .admin-label {
-      display: block;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 12px;
-      margin-top: 25px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 700;
-    }
-
     h2 {
       position: relative;
       z-index: 1;
       text-align: center;
       padding: 100px 20px 40px;
-      color: #fff;
       font-size: 48px;
       font-weight: 900;
       letter-spacing: 2px;
@@ -239,7 +204,7 @@
       background-clip: text;
     }
 
-    /* LIVE ACTIVITY FEED SECTION */
+    /* ACTIVITY FEED */
     .activity-feed-section {
       position: relative;
       z-index: 1;
@@ -254,7 +219,6 @@
       border-radius: 15px;
       padding: 20px;
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       max-height: 300px;
       overflow-y: auto;
       box-shadow: 0 8px 32px rgba(255, 107, 53, 0.2);
@@ -282,14 +246,8 @@
     }
 
     @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-        box-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
-      }
-      50% {
-        opacity: 0.5;
-        box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
-      }
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(255, 107, 53, 0.8); }
+      50% { opacity: 0.5; box-shadow: 0 0 20px rgba(255, 107, 53, 0.4); }
     }
 
     .activity-item {
@@ -304,25 +262,8 @@
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    .activity-item strong {
-      color: var(--primary);
-    }
-
-    .activity-item .time {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 11px;
-      margin-top: 4px;
-      display: block;
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
 
     /* STATS BAR */
@@ -344,14 +285,7 @@
       padding: 15px;
       text-align: center;
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       transition: all 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary);
-      background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(52, 152, 219, 0.1) 100%);
     }
 
     .stat-value {
@@ -369,6 +303,34 @@
       font-weight: 600;
     }
 
+    .search-container {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: 2px solid rgba(255, 107, 53, 0.5);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1a1a2e;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 6px 25px rgba(255, 107, 53, 0.3);
+    }
+
     #products {
       position: relative;
       z-index: 1;
@@ -381,7 +343,7 @@
 
     .product {
       width: 220px;
-      height: 380px;
+      height: 420px;
       border: 2px solid rgba(255, 107, 53, 0.3);
       display: flex;
       flex-direction: column;
@@ -414,27 +376,6 @@
       transition: 0.4s ease;
     }
 
-    .image-counter {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      z-index: 10;
-    }
-
-    .no-image {
-      padding: 20px;
-      color: #999;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    /* VIEW COUNT + WATCHERS + LIKES */
     .product-stats {
       position: absolute;
       top: 10px;
@@ -454,72 +395,25 @@
       font-size: 11px;
       font-weight: 600;
       backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
     }
 
-    .stat-badge:hover {
-      background: rgba(0, 0, 0, 0.9);
-    }
-
-    .hot-badge {
-      background: linear-gradient(135deg, var(--primary) 0%, #FF8C42 100%);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    /* LIKE BUTTON */
-    .like-button {
+    .image-counter {
       position: absolute;
-      bottom: 60px;
+      bottom: 10px;
       right: 10px;
-      width: 40px;
-      height: 40px;
-      border: none;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.95);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      z-index: 25;
-    }
-
-    .like-button:hover {
-      transform: scale(1.15);
-      background: white;
-      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-    }
-
-    .like-button.liked {
-      animation: likeAnim 0.6s ease;
-    }
-
-    @keyframes likeAnim {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
-
-    .like-count {
-      position: absolute;
-      bottom: 12px;
-      right: 55px;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0,0,0,0.7);
       color: white;
-      padding: 4px 10px;
-      border-radius: 15px;
-      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 600;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
+      z-index: 10;
     }
 
     /* SHARE BUTTON */
     .share-button {
       position: absolute;
-      bottom: 60px;
+      bottom: 100px;
       left: 10px;
       width: 40px;
       height: 40px;
@@ -545,7 +439,7 @@
     /* SHARE MENU */
     .share-menu {
       position: absolute;
-      bottom: 55px;
+      bottom: 95px;
       left: 0;
       display: none;
       flex-direction: column;
@@ -596,6 +490,55 @@
 
     .share-option.copy {
       background: #FF6B35;
+    }
+
+    /* LIKE BUTTON */
+    .like-button {
+      position: absolute;
+      bottom: 100px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 25;
+    }
+
+    .like-button:hover {
+      transform: scale(1.15);
+      background: white;
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    }
+
+    .like-button.liked {
+      animation: likeAnim 0.6s ease;
+    }
+
+    @keyframes likeAnim {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .like-count {
+      position: absolute;
+      bottom: 58px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
     }
 
     .product-info {
@@ -667,7 +610,6 @@
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.5px;
       z-index: 30;
       text-transform: uppercase;
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -681,10 +623,9 @@
       background: #777;
       cursor: not-allowed;
       pointer-events: none;
-      box-shadow: none;
     }
 
-    /* Contact Popup Styles */
+    /* Contact Popup */
     .contact-popup {
       position: fixed;
       bottom: 30px;
@@ -720,128 +661,12 @@
       color: white;
     }
 
-    .whatsapp-btn:hover {
-      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
-    }
-
     .email-btn {
       background: linear-gradient(135deg, #FF6B35 0%, #E55100 100%);
       color: white;
     }
 
-    .email-btn:hover {
-      box-shadow: 0 6px 25px rgba(255, 107, 53, 0.4);
-    }
-
-    .contact-label {
-      position: absolute;
-      right: 80px;
-      white-space: nowrap;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 8px 15px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .contact-btn:hover .contact-label {
-      opacity: 1;
-    }
-
-    @media (max-width: 768px) {
-      h2 {
-        font-size: 36px;
-      }
-
-      .activity-feed-section {
-        margin: -20px auto 30px;
-      }
-
-      .activity-feed {
-        max-height: 250px;
-      }
-
-      .stats-bar {
-        margin: 0 auto 30px;
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      #products {
-        flex-direction: row;
-        align-items: flex-start;
-        padding: 40px 10px 80px;
-        gap: 15px;
-      }
-
-      .product {
-        width: 160px;
-        height: 300px;
-        border-radius: 12px;
-      }
-
-      .image-container {
-        height: 120px;
-      }
-
-      .product-info {
-        padding: 8px 8px;
-      }
-
-      .title {
-        font-size: 13px;
-        line-height: 1.2;
-      }
-
-      .price {
-        font-size: 14px;
-        margin: 2px 0;
-      }
-
-      .desc {
-        font-size: 10px;
-        margin-bottom: 6px;
-        -webkit-line-clamp: 1;
-      }
-
-      .order-btn {
-        padding: 8px 8px;
-        font-size: 10px;
-      }
-
-      .image-counter {
-        padding: 4px 8px;
-        font-size: 10px;
-      }
-
-      .like-button {
-        width: 35px;
-        height: 35px;
-        font-size: 16px;
-      }
-
-      .like-count {
-        font-size: 9px;
-      }
-
-      .contact-popup {
-        bottom: 20px;
-        right: 20px;
-        gap: 12px;
-      }
-
-      .contact-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 24px;
-      }
-    }
-
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -896,88 +721,6 @@
       cursor: pointer;
     }
 
-    .modal-counter {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.8);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
-
-    /* Search Section Styles */
-    .search-container {
-      position: relative;
-      z-index: 1;
-      max-width: 600px;
-      margin: 0 auto 50px;
-      padding: 0 20px;
-    }
-
-    .search-box {
-      width: 100%;
-      padding: 14px 20px;
-      font-size: 16px;
-      border: 2px solid rgba(255, 107, 53, 0.5);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #1a1a2e;
-      transition: all 0.3s ease;
-      font-family: 'Montserrat', sans-serif;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .search-box:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: white;
-      box-shadow: 0 6px 25px rgba(255, 107, 53, 0.3);
-    }
-
-    .search-box::placeholder {
-      color: #999;
-    }
-
-    .search-icon {
-      position: absolute;
-      right: 35px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 20px;
-      pointer-events: none;
-      color: var(--primary);
-    }
-
-    .clear-search {
-      position: absolute;
-      right: 35px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: #999;
-      transition: all 0.3s ease;
-      display: none;
-      padding: 0;
-    }
-
-    .clear-search:hover {
-      color: var(--primary);
-    }
-
-    .search-box:not(:placeholder-shown) ~ .clear-search {
-      display: block;
-    }
-
-    .search-box:not(:placeholder-shown) ~ .search-icon {
-      display: none;
-    }
-
     .no-results {
       position: relative;
       z-index: 1;
@@ -987,10 +730,11 @@
       font-size: 18px;
     }
 
-    .no-results-emoji {
-      font-size: 48px;
-      margin-bottom: 20px;
-      display: block;
+    @media (max-width: 768px) {
+      h2 { font-size: 36px; }
+      .product { width: 160px; height: 340px; }
+      .image-container { height: 120px; }
+      .share-button, .like-button { width: 35px; height: 35px; font-size: 16px; }
     }
   </style>
 </head>
@@ -1007,20 +751,13 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <div class="menu-item" onclick="location.href='index.html'">Home</div>
-  <div class="admin-label">👨‍💼 Owner Panel</div>
-  <a href="login.html" class="menu-item admin-login-btn">🔐 Admin Login</a>
+  <a href="login.html" class="menu-item admin-login-btn" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); border-color: #E74C3C; margin-top: 20px;">🔐 Admin Login</a>
 </div>
 
 <!-- Contact Popup -->
 <div class="contact-popup">
-  <a href="https://wa.me/2347034447700" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp-btn" title="Chat on WhatsApp">
-    💬
-    <span class="contact-label">WhatsApp</span>
-  </a>
-  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=akeemfatai@gmail.com&su=Interested%20in%20Your%20Products&body=Hello%2C%0A%0AI%20am%20interested%20in%20your%20products.%0A%0APlease%20provide%20more%20information." target="_blank" class="contact-btn email-btn" title="Send Email">
-    ✉️
-    <span class="contact-label">Email</span>
-  </a>
+  <a href="https://wa.me/2347034447700" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp-btn" title="Chat on WhatsApp">💬</a>
+  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=akeemfatai@gmail.com" target="_blank" class="contact-btn email-btn" title="Send Email">✉️</a>
 </div>
 
 <h2>Products</h2>
@@ -1035,7 +772,7 @@
     <div id="activityList">
       <div class="activity-item">
         <strong>Marketplace initializing...</strong>
-        <span class="time">Just now</span>
+        <span style="color: rgba(255, 255, 255, 0.5); font-size: 11px; margin-top: 4px; display: block;">Just now</span>
       </div>
     </div>
   </div>
@@ -1067,11 +804,9 @@
     type="text" 
     id="searchBox" 
     class="search-box" 
-    placeholder="🔍 Search for products... (name, type, price)"
+    placeholder="🔍 Search for products..."
     autocomplete="off"
   >
-  <span class="search-icon">🔍</span>
-  <button class="clear-search" id="clearSearchBtn" title="Clear search">✕</button>
 </div>
 
 <div id="products"></div>
@@ -1082,9 +817,6 @@
     <button class="modal-nav modal-prev" id="prevBtn">&#10094;</button>
     <button class="modal-nav modal-next" id="nextBtn">&#10095;</button>
     <span class="modal-close" id="closeBtn">&times;</span>
-    <div class="modal-counter">
-      <span id="modalCounter"></span>
-    </div>
   </div>
 </div>
 
@@ -1106,7 +838,7 @@ try {
   doc = firestoreModule.doc;
   increment = firestoreModule.increment;
 } catch (error) {
-  console.warn('Firebase not loaded - menu will still work:', error);
+  console.warn('Firebase not available:', error);
 }
 
 const OWNER_PHONE = "2347034447700";
@@ -1129,20 +861,22 @@ document.addEventListener('click', (e) => {
 const container = document.getElementById("products");
 const modal = document.getElementById("imageModal");
 const modalImage = document.getElementById("modalImage");
-const modalCounter = document.getElementById("modalCounter");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const closeBtn = document.getElementById("closeBtn");
 
 let currentProductImages = [];
 let currentImageIndex = 0;
+let allProducts = [];
+let productStats = {};
+let userLikes = {};
 
 function openImageGallery(images, index = 0) {
   currentProductImages = images.filter(url => url && url.trim() !== '');
   if (!currentProductImages.length) return;
 
   currentImageIndex = index;
-  showImage();
+  modalImage.src = currentProductImages[currentImageIndex];
   modal.style.display = "block";
   document.body.style.overflow = "hidden";
 }
@@ -1154,21 +888,9 @@ function closeModal() {
 
 function changeImage(direction) {
   currentImageIndex += direction;
-
-  if (currentImageIndex >= currentProductImages.length) {
-    currentImageIndex = 0;
-  } else if (currentImageIndex < 0) {
-    currentImageIndex = currentProductImages.length - 1;
-  }
-
-  showImage();
-}
-
-function showImage() {
-  if (currentProductImages.length > 0) {
-    modalImage.src = currentProductImages[currentImageIndex];
-    modalCounter.textContent = `${currentImageIndex + 1} / ${currentProductImages.length}`;
-  }
+  if (currentImageIndex >= currentProductImages.length) currentImageIndex = 0;
+  if (currentImageIndex < 0) currentImageIndex = currentProductImages.length - 1;
+  modalImage.src = currentProductImages[currentImageIndex];
 }
 
 prevBtn.addEventListener("click", () => changeImage(-1));
@@ -1176,9 +898,7 @@ nextBtn.addEventListener("click", () => changeImage(1));
 closeBtn.addEventListener("click", closeModal);
 
 modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    closeModal();
-  }
+  if (e.target === modal) closeModal();
 });
 
 document.addEventListener("keydown", (e) => {
@@ -1189,423 +909,266 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ACTIVITY FEED DATA
-const activityMessages = [
-  "just placed a bid on a generator",
-  "started watching a truck",
-  "purchased a hotel property",
-  "placed a bid on heavy equipment",
-  "just viewed factory machinery",
-  "watching an auction",
-  "started following a seller",
-  "placed highest bid on a property",
-  "shared a listing with friends",
-  "watched a bank liquidation asset",
-  "❤️ liked a product",
-  "🔍 viewed a listing"
-];
-
-const locations = ["Lagos", "Abuja", "Port Harcourt", "Kano", "Ibadan", "Benin", "Enugu"];
-
-let userLikes = {}; // Track which products user has liked
-let allProducts = [];
-let productStats = {};
-
-function generateActivityFeed() {
-  const activityList = document.getElementById('activityList');
-  activityList.innerHTML = '';
-
-  for (let i = 0; i < 5; i++) {
-    const location = locations[Math.floor(Math.random() * locations.length)];
-    const message = activityMessages[Math.floor(Math.random() * activityMessages.length)];
-
-    const div = document.createElement('div');
-    div.className = 'activity-item';
-    
-    const time = Math.floor(Math.random() * 59) + 1;
-    div.innerHTML = `
-      <strong>Person from ${location}</strong> ${message}
-      <span class="time">${time} minutes ago</span>
-    `;
-    
-    activityList.appendChild(div);
-  }
-}
-
-function updateStats(products) {
-  const totalProducts = products.length;
-  const totalViews = Object.values(productStats).reduce((sum, p) => sum + (p.views || 0), 0);
-  const totalLikes = Object.values(productStats).reduce((sum, p) => sum + (p.likes || 0), 0);
-  const onlineNow = Math.floor(Math.random() * 20) + 5;
-
-  document.getElementById('totalProductsStat').textContent = totalProducts;
-  document.getElementById('totalViewsStat').textContent = totalViews.toLocaleString();
-  document.getElementById('onlineNowStat').textContent = onlineNow;
-  document.getElementById('totalLikesStat').textContent = totalLikes;
-}
-
-// Toggle share menu
-function toggleShareMenu(event) {
-  event.stopPropagation();
-  const productId = event.currentTarget.getAttribute('data-product-id');
-  const shareMenu = document.querySelector(`.share-menu[data-product-id="${productId}"]`);
-  
-  // Close other open menus
-  document.querySelectorAll('.share-menu.active').forEach(menu => {
-    if (menu.getAttribute('data-product-id') !== productId) {
-      menu.classList.remove('active');
-    }
-  });
-  
-  shareMenu.classList.toggle('active');
-}
-
-// Share product function
-function shareProduct(event, platform) {
-  event.stopPropagation();
-  const productId = event.currentTarget.getAttribute('data-product-id');
+// CREATE SHARE CARD MODAL
+function createShareCard(productId) {
   const product = allProducts.find(p => p.id === productId);
-  
   if (!product) return;
 
   const productName = product.name || "Product";
   const productPrice = product.price || 0;
+  const productDesc = product.description || "";
   const productImage = Array.isArray(product.imageUrls) && product.imageUrls[0] ? product.imageUrls[0] : '';
-  
-  // Create product URL with anchor to product
   const baseUrl = window.location.origin + window.location.pathname;
-  const productUrl = `${baseUrl}#product-${productId}`;
-  
-  const productText = `📦 ${productName}\n💰 ₦${productPrice}\n\n🔗 View on Akeem Store: ${productUrl}`;
+  const productUrl = baseUrl + '#product-' + productId;
+
+  // Text content to share
+  const fullDetails = `🛍️ PRODUCT DETAILS\n\n📦 NAME: ${productName}\n💰 PRICE: ₦${productPrice.toLocaleString()}\n📝 DESCRIPTION: ${productDesc}\n\n🔗 VIEW PRODUCT: ${productUrl}\n\n✨ Visit Akeem Store`;
+
+  return {
+    name: productName,
+    price: productPrice,
+    desc: productDesc,
+    image: productImage,
+    url: productUrl,
+    text: fullDetails
+  };
+}
+
+window.shareProduct = function(productId, platform) {
+  const cardData = createShareCard(productId);
+  if (!cardData) return;
+
+  const { name, price, desc, image, url, text } = cardData;
 
   if (platform === 'whatsapp') {
-    const whatsappMessage = encodeURIComponent(productText);
-    const whatsappUrl = `https://wa.me/?text=${whatsappMessage}`;
-    window.open(whatsappUrl, '_blank');
+    // WhatsApp: Send text + image URL so image loads
+    let whatsappText = `🛍️ *${name}*\n\n💰 *Price:* ₦${price.toLocaleString()}\n\n📝 *Details:* ${desc}\n\n`;
+    
+    if (image) {
+      whatsappText += `📸 *Product Image:* ${image}\n\n`;
+    }
+    
+    whatsappText += `🔗 *See full product:* ${url}\n\n✨ Visit Akeem Store`;
+    
+    const msg = encodeURIComponent(whatsappText);
+    window.open('https://wa.me/?text=' + msg, '_blank');
   } 
   else if (platform === 'facebook') {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}&quote=${encodeURIComponent(`Check out ${productName} - ₦${productPrice} on Akeem Store!`)}`;
-    window.open(facebookUrl, '_blank');
+    // Facebook: Share with image and text
+    const msg = encodeURIComponent(name + ' - ₦' + price.toLocaleString() + '\n\n' + desc + '\n\n' + url);
+    const imgUrl = image ? encodeURIComponent(image) : '';
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&quote=' + msg, '_blank');
   } 
   else if (platform === 'instagram') {
-    // Instagram doesn't have a direct share API, so we'll guide the user
-    if (productImage) {
-      const instagramText = `Check out this amazing product on Akeem Store!\n\n📦 ${productName}\n💰 ₦${productPrice}\n\nClick here: ${productUrl}`;
-      alert(`Share on Instagram:\n\n${instagramText}\n\nCopy this text and share with the image to your Instagram story!`);
-      copyToClipboard(instagramText);
-    } else {
-      const instagramText = `Check out this amazing product on Akeem Store!\n\n📦 ${productName}\n💰 ₦${productPrice}\n\nClick here: ${productUrl}`;
-      alert(`Share on Instagram:\n\n${instagramText}`);
-      copyToClipboard(instagramText);
-    }
-  }
-  else if (platform === 'copy') {
-    copyToClipboard(productText);
-    showCopyNotification(event.currentTarget);
-  }
-  
-  // Close share menu
-  const shareMenu = document.querySelector(`.share-menu[data-product-id="${productId}"]`);
-  shareMenu.classList.remove('active');
-}
-
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    console.log('Copied to clipboard');
-  }).catch(err => {
-    console.error('Failed to copy:', err);
-  });
-}
-
-function showCopyNotification(button) {
-  const originalText = button.textContent;
-  button.textContent = '✓';
-  button.style.background = '#2ECC71';
-  
-  setTimeout(() => {
-    button.textContent = originalText;
-    button.style.background = '';
-  }, 2000);
-}
-
-// Close share menu when clicking elsewhere
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.share-button') && !e.target.closest('.share-menu') && !e.target.closest('.share-option')) {
-    document.querySelectorAll('.share-menu.active').forEach(menu => {
-      menu.classList.remove('active');
+    // Instagram: Copy all details, user adds image manually
+    const instagramText = `🛍️ Check out this amazing product!\n\n${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}\n\n🔗 ${url}\n\n#AkeemStore #Shopping #Deals`;
+    
+    navigator.clipboard.writeText(instagramText).then(() => {
+      alert(`✅ Text copied to clipboard!\n\nNow:\n1. Open Instagram\n2. Create a new post or story\n3. Add the product image\n4. Paste this text in caption\n\n👉 Make sure to add the product image first so it shows BIG!`);
     });
   }
-});
+  else if (platform === 'copy') {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('✅ All product details copied!\n\nProduct Name, Price, Description & Link all copied to clipboard!');
+    });
+  }
 
-// Handle like button click
-async function handleLike(productId, likeButton, likeCountElement) {
+  // Close menu
+  const menu = document.querySelector(`.share-menu[data-product-id="${productId}"]`);
+  if (menu) menu.classList.remove('active');
+};
+
+// TOGGLE SHARE MENU
+window.toggleShareMenu = function(productId, event) {
+  event.stopPropagation();
+  const menu = document.querySelector(`.share-menu[data-product-id="${productId}"]`);
+  document.querySelectorAll('.share-menu.active').forEach(m => {
+    if (m.getAttribute('data-product-id') !== productId) m.classList.remove('active');
+  });
+  menu.classList.toggle('active');
+};
+
+// LIKE FUNCTION
+window.handleLike = async function(productId) {
   try {
     if (!db || !updateDoc || !doc || !increment) {
-      console.warn('Firebase not available');
       userLikes[productId] = !userLikes[productId];
-      likeButton.classList.toggle('liked');
+      updateLikeUI(productId);
       return;
     }
 
     if (userLikes[productId]) {
-      // Unlike
       userLikes[productId] = false;
-      likeButton.classList.remove('liked');
       await updateDoc(doc(db, "products", productId), {
         likes: increment(-1)
       });
       productStats[productId].likes--;
     } else {
-      // Like
       userLikes[productId] = true;
-      likeButton.classList.add('liked');
       await updateDoc(doc(db, "products", productId), {
         likes: increment(1)
       });
       productStats[productId].likes++;
     }
 
-    updateStats(allProducts);
-    likeCountElement.textContent = `❤️ ${productStats[productId].likes}`;
+    updateLikeUI(productId);
+    updateStats();
   } catch (error) {
     console.error('Error updating like:', error);
   }
+};
+
+function updateLikeUI(productId) {
+  const btn = document.querySelector(`.like-button[data-product-id="${productId}"]`);
+  const count = document.querySelector(`.like-count[data-product-id="${productId}"]`);
+  if (btn && count) {
+    btn.textContent = userLikes[productId] ? '❤️' : '🤍';
+    btn.classList.toggle('liked');
+    count.textContent = '❤️ ' + (productStats[productId]?.likes || 0);
+  }
 }
 
-// Track views
+// ACTIVITY FEED
+const messages = ["❤️ liked a product", "👁 viewed a listing", "📤 shared a product", "🎯 interested in"];
+const locations = ["Lagos", "Abuja", "Port Harcourt", "Kano", "Ibadan"];
+
+function updateActivityFeed() {
+  const list = document.getElementById('activityList');
+  list.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const div = document.createElement('div');
+    div.className = 'activity-item';
+    const time = Math.floor(Math.random() * 59) + 1;
+    div.innerHTML = `<strong>${locations[Math.floor(Math.random() * locations.length)]}</strong> ${messages[Math.floor(Math.random() * messages.length)]}<span style="color: rgba(255, 255, 255, 0.5); font-size: 11px; margin-top: 4px; display: block;">${time} min ago</span>`;
+    list.appendChild(div);
+  }
+}
+
+function updateStats() {
+  const views = Object.values(productStats).reduce((sum, p) => sum + (p.views || 0), 0);
+  const likes = Object.values(productStats).reduce((sum, p) => sum + (p.likes || 0), 0);
+  document.getElementById('totalProductsStat').textContent = allProducts.length;
+  document.getElementById('totalViewsStat').textContent = views.toLocaleString();
+  document.getElementById('onlineNowStat').textContent = (Math.floor(Math.random() * 20) + 5);
+  document.getElementById('totalLikesStat').textContent = likes;
+}
+
+// TRACK VIEW
 async function trackView(productId) {
   try {
     if (!db || !updateDoc || !doc || !increment) return;
-
-    await updateDoc(doc(db, "products", productId), {
-      views: increment(1)
-    });
+    await updateDoc(doc(db, "products", productId), { views: increment(1) });
     productStats[productId].views++;
-    updateStats(allProducts);
+    updateStats();
   } catch (error) {
     console.error('Error tracking view:', error);
   }
 }
 
+// RENDER PRODUCTS
+function renderProducts(products) {
+  container.innerHTML = "";
+  products.forEach((product) => {
+    const productId = product.id;
+    const isSold = product.sold === true;
+    const views = productStats[productId]?.views || 0;
+    const likes = productStats[productId]?.likes || 0;
+    const isHot = likes > 5;
+
+    const images = Array.isArray(product.imageUrls) ? product.imageUrls.filter(url => url && url.trim() !== '') : [];
+    const firstImage = images[0] || '';
+
+    const imageHTML = firstImage 
+      ? `<div class="image-container" onclick="openProductImage('${productId}')"><img src="${firstImage}" class="product-img" alt="${product.name}"><div class="product-stats"><span class="stat-badge">👁 ${views}</span></div>${images.length > 1 ? `<div class="image-counter">${images.length} items</div>` : ''}</div>`
+      : `<div class="image-container" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><span style="color: #999;">No image</span></div>`;
+
+    const price = product.price || 0;
+    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(`I'm interested in: ${product.name} - ₦${price}`)}`;
+
+    container.innerHTML += `
+      <div class="product ${isSold ? 'sold' : ''}" data-product-id="${productId}">
+        ${isSold ? '<div class="sold-badge">SOLD</div>' : ''}
+        ${imageHTML}
+        
+        <button class="share-button" onclick="toggleShareMenu('${productId}', event)" title="Share">📤</button>
+        <div class="share-menu" data-product-id="${productId}">
+          <button class="share-option whatsapp" onclick="shareProduct('${productId}', 'whatsapp')" title="WhatsApp">📱</button>
+          <button class="share-option facebook" onclick="shareProduct('${productId}', 'facebook')" title="Facebook">f</button>
+          <button class="share-option instagram" onclick="shareProduct('${productId}', 'instagram')" title="Instagram">📷</button>
+          <button class="share-option copy" onclick="shareProduct('${productId}', 'copy')" title="Copy">🔗</button>
+        </div>
+
+        <button class="like-button ${userLikes[productId] ? 'liked' : ''}" onclick="handleLike('${productId}')" data-product-id="${productId}" title="Like">
+          ${userLikes[productId] ? '❤️' : '🤍'}
+        </button>
+        <div class="like-count" data-product-id="${productId}">❤️ ${likes}</div>
+
+        <div class="product-info">
+          <div>
+            <div class="title">${product.name}</div>
+            <div class="price">₦${price.toLocaleString()}</div>
+          </div>
+          <div class="desc">${product.description || ""}</div>
+          ${isSold ? `<button class="order-btn" disabled>Sold Out</button>` : `<a href="${whatsappLink}" target="_blank" class="order-btn">Order Now</a>`}
+        </div>
+      </div>
+    `;
+  });
+}
+
+window.openProductImage = function(productId) {
+  const product = allProducts.find(p => p.id === productId);
+  if (product && product.imageUrls) {
+    const images = product.imageUrls.filter(url => url && url.trim() !== '');
+    if (images.length > 0) {
+      openImageGallery(images, 0);
+      trackView(productId);
+    }
+  }
+};
+
+// SEARCH
+const searchBox = document.getElementById('searchBox');
+searchBox.addEventListener('input', (e) => {
+  const search = e.target.value.toLowerCase();
+  if (!search) {
+    renderProducts(allProducts);
+    return;
+  }
+  const filtered = allProducts.filter(p => 
+    (p.name || "").toLowerCase().includes(search) ||
+    (p.description || "").toLowerCase().includes(search) ||
+    (p.price || "").toString().includes(search)
+  );
+  renderProducts(filtered.length ? filtered : allProducts);
+});
+
+// LOAD PRODUCTS
 async function loadProducts() {
   if (!db || !getDocs || !collection) {
-    console.warn('Firebase not available - products cannot load');
-    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Please check Firebase configuration</p>';
+    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Firebase not configured</p>';
     return;
   }
 
-  const querySnapshot = await getDocs(collection(db, "products"));
+  const snap = await getDocs(collection(db, "products"));
   allProducts = [];
   productStats = {};
 
-  querySnapshot.forEach((docSnapshot) => {
-    const data = docSnapshot.data();
-    const productId = docSnapshot.id;
-    
-    allProducts.push({ ...data, id: productId });
-    productStats[productId] = {
+  snap.forEach((docSnap) => {
+    const data = docSnap.data();
+    allProducts.push({ ...data, id: docSnap.id });
+    productStats[docSnap.id] = {
       views: data.views || 0,
       likes: data.likes || 0
     };
   });
 
-  updateStats(allProducts);
-  generateActivityFeed();
+  updateStats();
+  updateActivityFeed();
   renderProducts(allProducts);
-
-  document.querySelectorAll('.image-container').forEach((container) => {
-    container.addEventListener('click', () => {
-      const imagesJson = container.getAttribute('data-images');
-
-      if (imagesJson) {
-        const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
-        openImageGallery(images, 0);
-      }
-    });
-  });
 }
 
-function renderProducts(productsData) {
-  container.innerHTML = "";
-
-  productsData.forEach((data) => {
-    const productId = data.id;
-    const isSold = data.sold === true;
-    const views = productStats[productId]?.views || 0;
-    const likes = productStats[productId]?.likes || 0;
-    const isHot = likes > 5;
-
-    let validImages = Array.isArray(data.imageUrls)
-      ? data.imageUrls.filter(url => url && url.trim() !== '')
-      : [];
-
-    let mainImageHTML = "";
-
-    if (validImages.length > 0) {
-      const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
-      const firstMedia = validImages[0];
-      const isVideo = firstMedia.includes('.mp4') || firstMedia.includes('.webm') || firstMedia.includes('video');
-      
-      let mediaContent = '';
-      if (isVideo) {
-        mediaContent = `<video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;" muted controls></video>`;
-      } else {
-        mediaContent = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}">`;
-      }
-
-      mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}" data-product-id="${productId}">
-          ${mediaContent}
-          <div class="product-stats">
-            ${isHot ? '<span class="stat-badge hot-badge">🔥 HOT</span>' : ''}
-            <span class="stat-badge">👁 ${views}</span>
-          </div>
-          ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
-        </div>
-      `;
-    } else {
-      mainImageHTML = `<div class="image-container"><div class="no-image">No image</div></div>`;
-    }
-
-    const productName = data.name || "Product";
-    const productPrice = data.price || 0;
-
-    const whatsappMessage = encodeURIComponent(
-      `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
-    );
-
-    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
-
-    container.innerHTML += `
-      <div class="product ${isSold ? 'sold' : ''}" data-product-id="${productId}">
-        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
-        ${mainImageHTML}
-
-        <button class="like-button ${userLikes[productId] ? 'liked' : ''}" title="Like this product" data-product-id="${productId}">
-          ${userLikes[productId] ? '❤️' : '🤍'}
-        </button>
-        <div class="like-count" data-product-id="${productId}">❤️ ${likes}</div>
-
-        <button class="share-button" title="Share this product" data-product-id="${productId}" onclick="toggleShareMenu(event)">
-          📤
-        </button>
-        <div class="share-menu" data-product-id="${productId}">
-          <button class="share-option whatsapp" title="Share on WhatsApp" data-type="whatsapp" data-product-id="${productId}" onclick="shareProduct(event, 'whatsapp')">📱</button>
-          <button class="share-option facebook" title="Share on Facebook" data-type="facebook" data-product-id="${productId}" onclick="shareProduct(event, 'facebook')">f</button>
-          <button class="share-option instagram" title="Share on Instagram" data-type="instagram" data-product-id="${productId}" onclick="shareProduct(event, 'instagram')">📷</button>
-          <button class="share-option copy" title="Copy link" data-type="copy" data-product-id="${productId}" onclick="shareProduct(event, 'copy')">🔗</button>
-        </div>
-
-        <div class="product-info">
-          <div>
-            <div class="title">${productName}</div>
-            <div class="price">₦${productPrice}</div>
-          </div>
-
-          <div class="desc">${data.description || ""}</div>
-
-          ${
-            isSold
-              ? `<button class="order-btn" disabled>Sold Out</button>`
-              : `
-                <a
-                  href="${whatsappLink}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="order-btn"
-                  onclick="event.stopPropagation()"
-                >
-                  Order Now
-                </a>
-              `
-          }
-        </div>
-      </div>
-    `;
-  });
-
-  // Attach event listeners
-  document.querySelectorAll('.image-container').forEach((container) => {
-    container.addEventListener('click', () => {
-      const productId = container.getAttribute('data-product-id');
-      trackView(productId);
-      
-      const imagesJson = container.getAttribute('data-images');
-      if (imagesJson) {
-        const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
-        openImageGallery(images, 0);
-      }
-    });
-  });
-
-  // Like button listeners
-  document.querySelectorAll('.like-button').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const productId = btn.getAttribute('data-product-id');
-      const likeCountElement = document.querySelector(`.like-count[data-product-id="${productId}"]`);
-      handleLike(productId, btn, likeCountElement);
-    });
-  });
-}
-
-// Search functionality
-const searchBox = document.getElementById('searchBox');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
-
-function filterProducts(searchTerm) {
-  const searchLower = searchTerm.toLowerCase().trim();
-
-  if (!searchLower) {
-    renderProducts(allProducts);
-    return;
-  }
-
-  const filteredProducts = allProducts.filter((product) => {
-    const name = (product.name || "").toLowerCase();
-    const desc = (product.description || "").toLowerCase();
-    const price = (product.price || "").toString();
-
-    return (
-      name.includes(searchLower) ||
-      desc.includes(searchLower) ||
-      price.includes(searchLower)
-    );
-  });
-
-  container.innerHTML = "";
-
-  if (filteredProducts.length === 0) {
-    container.innerHTML = `
-      <div class="no-results">
-        <span class="no-results-emoji">🔍</span>
-        <p>No products found for "<strong>${searchTerm}</strong>"</p>
-        <p style="font-size: 14px; margin-top: 10px;">Try searching with different keywords</p>
-      </div>
-    `;
-    return;
-  }
-
-  renderProducts(filteredProducts);
-}
-
-searchBox.addEventListener('input', (e) => {
-  filterProducts(e.target.value);
-});
-
-clearSearchBtn.addEventListener('click', () => {
-  searchBox.value = '';
-  searchBox.focus();
-  filterProducts('');
-});
-
-// Refresh activity feed every 15 seconds
-setInterval(() => {
-  if (document.hidden === false) {
-    generateActivityFeed();
-  }
-}, 15000);
-
+setInterval(updateActivityFeed, 15000);
 loadProducts();
 </script>
 
