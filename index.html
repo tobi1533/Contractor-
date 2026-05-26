@@ -702,10 +702,23 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 15px 20px;
+      padding: 20px 25px;
       cursor: pointer;
-      font-size: 24px;
+      font-size: 30px;
       border-radius: 8px;
+      z-index: 100;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-nav:hover {
+      background: var(--primary-dark);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-nav:active {
+      transform: translateY(-50%) scale(0.95);
     }
 
     .modal-prev { left: 20px; }
@@ -887,10 +900,23 @@ function closeModal() {
 }
 
 function changeImage(direction) {
+  console.log('Before:', 'currentImageIndex=' + currentImageIndex, 'total images=' + currentProductImages.length);
+  
   currentImageIndex += direction;
-  if (currentImageIndex >= currentProductImages.length) currentImageIndex = 0;
-  if (currentImageIndex < 0) currentImageIndex = currentProductImages.length - 1;
-  modalImage.src = currentProductImages[currentImageIndex];
+  
+  // Loop around
+  if (currentImageIndex >= currentProductImages.length) {
+    currentImageIndex = 0;
+  }
+  if (currentImageIndex < 0) {
+    currentImageIndex = currentProductImages.length - 1;
+  }
+  
+  console.log('After:', 'currentImageIndex=' + currentImageIndex, 'image=' + currentProductImages[currentImageIndex]);
+  
+  if (currentProductImages[currentImageIndex]) {
+    modalImage.src = currentProductImages[currentImageIndex];
+  }
 }
 
 prevBtn.addEventListener("click", () => changeImage(-1));
@@ -1172,10 +1198,20 @@ function renderProducts(products) {
 window.openProductImage = function(productId) {
   const product = allProducts.find(p => p.id === productId);
   if (product && product.imageUrls) {
-    const images = product.imageUrls.filter(url => url && url.trim() !== '');
+    // Filter to only include image files, not videos
+    const images = product.imageUrls.filter(url => {
+      if (!url || !url.trim()) return false;
+      // Exclude video files
+      if (url.includes('.mp4') || url.includes('.webm') || url.includes('video')) return false;
+      return true;
+    });
+    
     if (images.length > 0) {
+      console.log('Opening gallery with', images.length, 'images:', images);
       openImageGallery(images, 0);
       trackView(productId);
+    } else {
+      console.warn('No images found for product', productId);
     }
   }
 };
