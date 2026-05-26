@@ -953,54 +953,66 @@ window.shareProduct = async function(productId, platform) {
   const cardData = createShareCard(productId);
   if (!cardData) return;
 
-  const { name, price, desc, image, url, text } = cardData;
+  const { name, price, desc, image, url } = cardData;
 
   if (platform === 'whatsapp') {
-    // WhatsApp: Send with actual image if available
-    let whatsappText = `🛍️ *${name}*\n\n💰 *Price:* ₦${price.toLocaleString()}\n\n📝 *Details:* ${desc}\n\n🔗 *View Full Product:* ${url}\n\n✨ *Visit Akeem Store*`;
+    // WhatsApp: Send formatted message with image URL embedded
+    let whatsappText = `🛍️ *AMAZING PRODUCT!*\n\n`;
+    whatsappText += `📦 *${name}*\n`;
+    whatsappText += `💰 *Price: ₦${price.toLocaleString()}*\n\n`;
+    whatsappText += `📝 *Description:*\n${desc}\n\n`;
+    
+    if (image) {
+      whatsappText += `📸 *See Full Product Image:*\n${image}\n\n`;
+    }
+    
+    whatsappText += `🔗 *View on Store:*\n${url}\n\n`;
+    whatsappText += `✨ *Akeem Store - Quality Products*`;
     
     const msg = encodeURIComponent(whatsappText);
-    
-    // If image exists, include it in the share
-    if (image) {
-      // Open WhatsApp with text + guide to add image
-      const whatsappUrl = `https://wa.me/?text=${msg}`;
-      window.open(whatsappUrl, '_blank');
-      
-      // Show notification about the image
-      setTimeout(() => {
-        alert(`✅ WhatsApp opened!\n\n📸 NEXT STEP:\n\nWhatsApp will open with product details.\n\nNow click the ATTACH/CLIP icon and select:\n\n🖼️ The actual product image:\n${image}\n\nThis way the REAL product image shows BIG on their WhatsApp status!\n\nThe image will look much more professional with all the details below it.`);
-      }, 500);
-    } else {
-      window.open(`https://wa.me/?text=${msg}`, '_blank');
-    }
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
   } 
   else if (platform === 'facebook') {
-    // Facebook: Share with product link (auto-fetches image)
-    const shareText = `📦 ${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}`;
-    const msg = encodeURIComponent(shareText);
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${msg}`;
+    // Facebook: Share with all details
+    let facebookText = `🛍️ Check out this amazing product!\n\n`;
+    facebookText += `📦 ${name}\n`;
+    facebookText += `💰 Price: ₦${price.toLocaleString()}\n\n`;
+    facebookText += `${desc}\n\n`;
+    if (image) {
+      facebookText += `View product image: ${image}\n\n`;
+    }
+    facebookText += `Visit Akeem Store: ${url}`;
     
-    window.open(facebookUrl, '_blank');
-    
-    setTimeout(() => {
-      alert(`✅ Facebook share opened!\n\nFacebook will automatically fetch the REAL product image from the link and show it BIG!\n\nYour product will look professional with:\n📸 Real Image\n📦 Name\n💰 Price\n📝 Details`);
-    }, 500);
+    const msg = encodeURIComponent(facebookText);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${msg}`, '_blank');
   } 
   else if (platform === 'instagram') {
-    // Instagram: Direct user to share with actual image file
-    const instagramText = `🛍️ Check out this amazing product!\n\n${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}\n\n🔗 See more: ${url}\n\n#AkeemStore #Shopping #Deals`;
+    // Instagram: Copy formatted text with image instructions
+    let instagramText = `🛍️ CHECK THIS OUT! 🛍️\n\n`;
+    instagramText += `📦 ${name}\n`;
+    instagramText += `💰 ₦${price.toLocaleString()}\n\n`;
+    instagramText += `${desc}\n\n`;
+    instagramText += `🔗 Link: ${url}\n\n`;
+    instagramText += `#AkeemStore #Shopping #Deals #BestPrice`;
     
     navigator.clipboard.writeText(instagramText).then(() => {
-      alert(`✅ Text copied to clipboard!\n\n👉 SHARE WITH REAL PRODUCT IMAGE:\n\n1️⃣ Open INSTAGRAM\n2️⃣ Click CREATE POST (not story)\n3️⃣ Click SELECT PHOTO\n4️⃣ Pick the ACTUAL PRODUCT IMAGE FILE\n5️⃣ Click NEXT\n6️⃣ PASTE the text in CAPTION\n7️⃣ Click SHARE\n\n📸 The REAL product image will show BIG at the top!\n\nYour followers will see:\n🖼️ LARGE PRODUCT IMAGE\n📝 All details below\n🔗 Link to your store`);
+      alert(`✅ Product details copied!\n\n📸 TO SHARE WITH IMAGE:\n\n1️⃣ Open Instagram\n2️⃣ Click CREATE POST\n3️⃣ SELECT THE PRODUCT IMAGE:\n${image}\n4️⃣ PASTE text in CAPTION\n5️⃣ SHARE\n\n✨ The BIG product image will show first, then all details below it!`);
     });
   }
   else if (platform === 'copy') {
-    // Copy everything including image link
-    const fullShare = `🛍️ PRODUCT DETAILS\n\n${name}\n💰 ₦${price.toLocaleString()}\n\n${desc}\n\n📸 Product Image:\n${image}\n\n🔗 View Full Product:\n${url}\n\n✨ Akeem Store`;
+    // Copy everything formatted
+    let fullText = `🛍️ PRODUCT SHARE\n\n`;
+    fullText += `📦 Name: ${name}\n`;
+    fullText += `💰 Price: ₦${price.toLocaleString()}\n\n`;
+    fullText += `📝 Description:\n${desc}\n\n`;
+    if (image) {
+      fullText += `📸 Product Image: ${image}\n\n`;
+    }
+    fullText += `🔗 View Full Product: ${url}\n\n`;
+    fullText += `✨ From Akeem Store`;
     
-    navigator.clipboard.writeText(fullShare).then(() => {
-      alert(`✅ All product details copied!\n\nIncludes:\n✓ Product Name\n✓ Price  \n✓ Description\n✓ ACTUAL PRODUCT IMAGE LINK\n✓ Direct link to product\n\nYou can now paste anywhere and the REAL IMAGE will load!`);
+    navigator.clipboard.writeText(fullText).then(() => {
+      alert(`✅ ALL PRODUCT DETAILS COPIED!\n\nIncludes:\n✓ Product Name\n✓ Price\n✓ Full Description\n✓ Product Image Link\n✓ Direct Store Link\n\nPaste anywhere and share!`);
     });
   }
 
@@ -1108,10 +1120,20 @@ function renderProducts(products) {
 
     const images = Array.isArray(product.imageUrls) ? product.imageUrls.filter(url => url && url.trim() !== '') : [];
     const firstImage = images[0] || '';
+    
+    // Check if it's a video
+    const isVideo = firstImage && (firstImage.includes('.mp4') || firstImage.includes('.webm') || firstImage.includes('video'));
 
-    const imageHTML = firstImage 
-      ? `<div class="image-container" onclick="openProductImage('${productId}')"><img src="${firstImage}" class="product-img" alt="${product.name}"><div class="product-stats"><span class="stat-badge">👁 ${views}</span></div>${images.length > 1 ? `<div class="image-counter">${images.length} items</div>` : ''}</div>`
-      : `<div class="image-container" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><span style="color: #999;">No image</span></div>`;
+    let imageHTML = '';
+    if (firstImage) {
+      if (isVideo) {
+        imageHTML = `<div class="image-container" style="background: #000;"><video src="${firstImage}" class="product-img" style="width:100%;height:100%;object-fit:cover;" controls></video><div class="product-stats"><span class="stat-badge">👁 ${views}</span></div>${images.length > 1 ? `<div class="image-counter">${images.length} items</div>` : ''}</div>`;
+      } else {
+        imageHTML = `<div class="image-container" onclick="openProductImage('${productId}')"><img src="${firstImage}" class="product-img" alt="${product.name}" onerror="this.src='https://via.placeholder.com/220x160?text=No+Image'"><div class="product-stats"><span class="stat-badge">👁 ${views}</span></div>${images.length > 1 ? `<div class="image-counter">${images.length} items</div>` : ''}</div>`;
+      }
+    } else {
+      imageHTML = `<div class="image-container" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><span style="color: #999;">No image</span></div>`;
+    }
 
     const price = product.price || 0;
     const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(`I'm interested in: ${product.name} - ₦${price}`)}`;
