@@ -239,6 +239,136 @@
       background-clip: text;
     }
 
+    /* LIVE ACTIVITY FEED SECTION */
+    .activity-feed-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: -20px auto 50px;
+      padding: 0 20px;
+    }
+
+    .activity-feed {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(52, 152, 219, 0.1) 100%);
+      border: 2px solid rgba(255, 107, 53, 0.4);
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(255, 107, 53, 0.2);
+    }
+
+    .activity-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+    }
+
+    .live-indicator {
+      width: 10px;
+      height: 10px;
+      background: #FF6B35;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+      }
+      50% {
+        opacity: 0.5;
+        box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+      }
+    }
+
+    .activity-item {
+      padding: 12px;
+      margin: 8px 0;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .activity-item strong {
+      color: var(--primary);
+    }
+
+    .activity-item .time {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 11px;
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(52, 152, 219, 0.05) 100%);
+      border: 2px solid rgba(255, 107, 53, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(52, 152, 219, 0.1) 100%);
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+    }
+
     #products {
       position: relative;
       z-index: 1;
@@ -302,6 +432,54 @@
       color: #999;
       text-align: center;
       font-size: 14px;
+    }
+
+    /* VIEW COUNT + WATCHERS */
+    .product-stats {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+    }
+
+    .stat-badge {
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    .hot-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, #FF8C42 100%);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* HEAT INDICATOR */
+    .heat-indicator {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      display: flex;
+      gap: 3px;
+      z-index: 15;
+    }
+
+    .heat-flame {
+      font-size: 14px;
+      animation: flicker 0.5s ease-in-out infinite;
+    }
+
+    .heat-flame:nth-child(2) { animation-delay: 0.1s; }
+    .heat-flame:nth-child(3) { animation-delay: 0.2s; }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.95); }
     }
 
     .product-info {
@@ -463,6 +641,19 @@
     @media (max-width: 768px) {
       h2 {
         font-size: 36px;
+      }
+
+      .activity-feed-section {
+        margin: -20px auto 30px;
+      }
+
+      .activity-feed {
+        max-height: 250px;
+      }
+
+      .stats-bar {
+        margin: 0 auto 30px;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       #products {
@@ -708,6 +899,42 @@
 
 <h2>Products</h2>
 
+<!-- LIVE ACTIVITY FEED -->
+<div class="activity-feed-section">
+  <div class="activity-feed" id="activityFeed">
+    <div class="activity-header">
+      <span class="live-indicator"></span>
+      Live Activity
+    </div>
+    <div id="activityList">
+      <div class="activity-item">
+        <strong>Marketplace initializing...</strong>
+        <span class="time">Just now</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-value" id="totalProductsStat">0</div>
+    <div class="stat-label">Active Listings</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="totalViewsStat">0</div>
+    <div class="stat-label">Total Views</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="onlineNowStat">0</div>
+    <div class="stat-label">Browsing Now</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="soldTodayStat">0</div>
+    <div class="stat-label">Sold Today</div>
+  </div>
+</div>
+
 <!-- Search Section -->
 <div class="search-container">
   <input 
@@ -830,6 +1057,73 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+// ACTIVITY FEED DATA
+const activityMessages = [
+  "just placed a bid on a generator",
+  "started watching a truck",
+  "purchased a hotel property",
+  "placed a bid on heavy equipment",
+  "just viewed factory machinery",
+  "watching an auction",
+  "started following a seller",
+  "placed highest bid on a property",
+  "shared a listing with friends",
+  "watched a bank liquidation asset"
+];
+
+const locations = ["Lagos", "Abuja", "Port Harcourt", "Kano", "Ibadan", "Benin", "Enugu"];
+
+let productViewCounts = {};
+let totalSoldToday = 0;
+
+function generateActivityFeed() {
+  const activityList = document.getElementById('activityList');
+  activityList.innerHTML = '';
+
+  for (let i = 0; i < 5; i++) {
+    const location = locations[Math.floor(Math.random() * locations.length)];
+    const message = activityMessages[Math.floor(Math.random() * activityMessages.length)];
+    const amount = Math.floor(Math.random() * 30) + 1;
+
+    const div = document.createElement('div');
+    div.className = 'activity-item';
+    
+    const time = Math.floor(Math.random() * 59) + 1;
+    div.innerHTML = `
+      <strong>Person from ${location}</strong> ${message}
+      <span class="time">${time} minutes ago</span>
+    `;
+    
+    activityList.appendChild(div);
+  }
+}
+
+function updateStats(products) {
+  const totalProducts = products.length;
+  const totalViews = Object.values(productViewCounts).reduce((a, b) => a + b, 0) + Math.floor(Math.random() * 1000) + 2000;
+  const onlineNow = Math.floor(Math.random() * 20) + 5;
+
+  document.getElementById('totalProductsStat').textContent = totalProducts;
+  document.getElementById('totalViewsStat').textContent = totalViews.toLocaleString();
+  document.getElementById('onlineNowStat').textContent = onlineNow;
+  document.getElementById('soldTodayStat').textContent = Math.floor(Math.random() * 8) + 2;
+}
+
+function getRandomViews(productId) {
+  if (!productViewCounts[productId]) {
+    productViewCounts[productId] = Math.floor(Math.random() * 5000) + 500;
+  }
+  return productViewCounts[productId];
+}
+
+function getRandomWatchers() {
+  return Math.floor(Math.random() * 50) + 1;
+}
+
+function isHotItem() {
+  return Math.random() > 0.7;
+}
+
 async function loadProducts() {
   if (!db || !getDocs || !collection) {
     console.warn('Firebase not available - products cannot load');
@@ -838,82 +1132,16 @@ async function loadProducts() {
   }
 
   const querySnapshot = await getDocs(collection(db, "products"));
-
-  container.innerHTML = "";
+  let allProductsData = [];
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
-    const isSold = data.sold === true;
-
-    let validImages = Array.isArray(data.imageUrls)
-      ? data.imageUrls.filter(url => url && url.trim() !== '')
-      : [];
-
-    let mainImageHTML = "";
-
-    if (validImages.length > 0) {
-      const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
-      const firstMedia = validImages[0];
-      const isVideo = firstMedia.includes('.mp4') || firstMedia.includes('.webm') || firstMedia.includes('video');
-      
-      let mediaContent = '';
-      if (isVideo) {
-        mediaContent = `<video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;" muted controls></video>`;
-      } else {
-        mediaContent = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}">`;
-      }
-
-      mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}">
-          ${mediaContent}
-          ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
-        </div>
-      `;
-    } else {
-      mainImageHTML = `<div class="image-container"><div class="no-image">No image</div></div>`;
-    }
-
-    const productName = data.name || "Product";
-    const productPrice = data.price || 0;
-
-    const whatsappMessage = encodeURIComponent(
-      `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
-    );
-
-    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
-
-    container.innerHTML += `
-      <div class="product ${isSold ? 'sold' : ''}">
-        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
-        ${mainImageHTML}
-
-        <div class="product-info">
-          <div>
-            <div class="title">${productName}</div>
-            <div class="price">₦${productPrice}</div>
-          </div>
-
-          <div class="desc">${data.description || ""}</div>
-
-          ${
-            isSold
-              ? `<button class="order-btn" disabled>Sold Out</button>`
-              : `
-                <a
-                  href="${whatsappLink}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="order-btn"
-                  onclick="event.stopPropagation()"
-                >
-                  Order Now
-                </a>
-              `
-          }
-        </div>
-      </div>
-    `;
+    allProductsData.push(data);
   });
+
+  updateStats(allProductsData);
+  generateActivityFeed();
+  renderProducts(allProductsData);
 
   document.querySelectorAll('.image-container').forEach((container) => {
     container.addEventListener('click', () => {
@@ -927,29 +1155,14 @@ async function loadProducts() {
   });
 }
 
-// Search functionality
-const searchBox = document.getElementById('searchBox');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
-let allProducts = []; // Store all products for searching
-
-// Store products during load
-const originalLoadProducts = loadProducts;
-loadProducts = async function() {
-  if (!db || !getDocs || !collection) {
-    console.warn('Firebase not available - products cannot load');
-    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Please check Firebase configuration</p>';
-    return;
-  }
-
-  const querySnapshot = await getDocs(collection(db, "products"));
-  allProducts = []; // Reset products array
-
+function renderProducts(productsData) {
   container.innerHTML = "";
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    allProducts.push(data); // Store product data
+  productsData.forEach((data, index) => {
     const isSold = data.sold === true;
+    const views = getRandomViews(index);
+    const watchers = getRandomWatchers();
+    const isHot = isHotItem();
 
     let validImages = Array.isArray(data.imageUrls)
       ? data.imageUrls.filter(url => url && url.trim() !== '')
@@ -972,7 +1185,15 @@ loadProducts = async function() {
       mainImageHTML = `
         <div class="image-container" data-images="${imageDataJson}">
           ${mediaContent}
+          <div class="product-stats">
+            ${isHot ? '<span class="stat-badge hot-badge">🔥 HOT</span>' : ''}
+            <span class="stat-badge">👁 ${views}</span>
+            <span class="stat-badge">❤️ ${watchers}</span>
+          </div>
           ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
+          <div class="heat-indicator">
+            ${isHot ? '<span class="heat-flame">🔥</span><span class="heat-flame">🔥</span><span class="heat-flame">🔥</span>' : ''}
+          </div>
         </div>
       `;
     } else {
@@ -1020,6 +1241,32 @@ loadProducts = async function() {
       </div>
     `;
   });
+}
+
+// Search functionality
+const searchBox = document.getElementById('searchBox');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+let allProducts = [];
+
+const originalLoadProducts = loadProducts;
+loadProducts = async function() {
+  if (!db || !getDocs || !collection) {
+    console.warn('Firebase not available - products cannot load');
+    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Please check Firebase configuration</p>';
+    return;
+  }
+
+  const querySnapshot = await getDocs(collection(db, "products"));
+  allProducts = [];
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    allProducts.push(data);
+  });
+
+  updateStats(allProducts);
+  generateActivityFeed();
+  renderProducts(allProducts);
 
   document.querySelectorAll('.image-container').forEach((container) => {
     container.addEventListener('click', () => {
@@ -1033,13 +1280,11 @@ loadProducts = async function() {
   });
 };
 
-// Search filter function
 function filterProducts(searchTerm) {
   const searchLower = searchTerm.toLowerCase().trim();
 
   if (!searchLower) {
-    // Show all products if search is empty
-    loadProducts();
+    renderProducts(allProducts);
     return;
   }
 
@@ -1055,7 +1300,6 @@ function filterProducts(searchTerm) {
     );
   });
 
-  // Display filtered results
   container.innerHTML = "";
 
   if (filteredProducts.length === 0) {
@@ -1069,80 +1313,8 @@ function filterProducts(searchTerm) {
     return;
   }
 
-  filteredProducts.forEach((data) => {
-    const isSold = data.sold === true;
+  renderProducts(filteredProducts);
 
-    let validImages = Array.isArray(data.imageUrls)
-      ? data.imageUrls.filter(url => url && url.trim() !== '')
-      : [];
-
-    let mainImageHTML = "";
-
-    if (validImages.length > 0) {
-      const imageDataJson = JSON.stringify(validImages).replace(/"/g, '&quot;');
-      const firstMedia = validImages[0];
-      const isVideo = firstMedia.includes('.mp4') || firstMedia.includes('.webm') || firstMedia.includes('video');
-      
-      let mediaContent = '';
-      if (isVideo) {
-        mediaContent = `<video src="${firstMedia}" style="width:100%;height:100%;object-fit:cover;" muted controls></video>`;
-      } else {
-        mediaContent = `<img src="${firstMedia}" class="product-img" alt="${data.name || 'Product'}">`;
-      }
-
-      mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}">
-          ${mediaContent}
-          ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
-        </div>
-      `;
-    } else {
-      mainImageHTML = `<div class="image-container"><div class="no-image">No image</div></div>`;
-    }
-
-    const productName = data.name || "Product";
-    const productPrice = data.price || 0;
-
-    const whatsappMessage = encodeURIComponent(
-      `Hello, I'm interested in this product:\n\n📦 Product: ${productName}\n💰 Price: ₦${productPrice}\n\nPlease I would like to know more details.`
-    );
-
-    const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
-
-    container.innerHTML += `
-      <div class="product ${isSold ? 'sold' : ''}">
-        ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
-        ${mainImageHTML}
-
-        <div class="product-info">
-          <div>
-            <div class="title">${productName}</div>
-            <div class="price">₦${productPrice}</div>
-          </div>
-
-          <div class="desc">${data.description || ""}</div>
-
-          ${
-            isSold
-              ? `<button class="order-btn" disabled>Sold Out</button>`
-              : `
-                <a
-                  href="${whatsappLink}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="order-btn"
-                  onclick="event.stopPropagation()"
-                >
-                  Order Now
-                </a>
-              `
-          }
-        </div>
-      </div>
-    `;
-  });
-
-  // Re-attach image gallery listeners
   document.querySelectorAll('.image-container').forEach((container) => {
     container.addEventListener('click', () => {
       const imagesJson = container.getAttribute('data-images');
@@ -1155,19 +1327,23 @@ function filterProducts(searchTerm) {
   });
 }
 
-// Search event listener
 searchBox.addEventListener('input', (e) => {
   filterProducts(e.target.value);
 });
 
-// Clear search button
 clearSearchBtn.addEventListener('click', () => {
   searchBox.value = '';
   searchBox.focus();
   filterProducts('');
 });
 
-// Load products on page load
+// Refresh activity feed every 15 seconds
+setInterval(() => {
+  if (document.hidden === false) {
+    generateActivityFeed();
+  }
+}, 15000);
+
 loadProducts();
 </script>
 
