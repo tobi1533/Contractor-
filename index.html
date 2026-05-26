@@ -381,7 +381,7 @@
 
     .product {
       width: 220px;
-      height: 360px;
+      height: 380px;
       border: 2px solid rgba(255, 107, 53, 0.3);
       display: flex;
       flex-direction: column;
@@ -434,7 +434,7 @@
       font-size: 14px;
     }
 
-    /* VIEW COUNT + WATCHERS */
+    /* VIEW COUNT + WATCHERS + LIKES */
     .product-stats {
       position: absolute;
       top: 10px;
@@ -442,6 +442,8 @@
       display: flex;
       gap: 8px;
       z-index: 20;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .stat-badge {
@@ -452,6 +454,11 @@
       font-size: 11px;
       font-weight: 600;
       backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .stat-badge:hover {
+      background: rgba(0, 0, 0, 0.9);
     }
 
     .hot-badge {
@@ -459,27 +466,54 @@
       animation: pulse 2s ease-in-out infinite;
     }
 
-    /* HEAT INDICATOR */
-    .heat-indicator {
+    /* LIKE BUTTON */
+    .like-button {
       position: absolute;
-      bottom: 10px;
-      left: 10px;
+      bottom: 60px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      cursor: pointer;
       display: flex;
-      gap: 3px;
-      z-index: 15;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 25;
     }
 
-    .heat-flame {
-      font-size: 14px;
-      animation: flicker 0.5s ease-in-out infinite;
+    .like-button:hover {
+      transform: scale(1.15);
+      background: white;
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
     }
 
-    .heat-flame:nth-child(2) { animation-delay: 0.1s; }
-    .heat-flame:nth-child(3) { animation-delay: 0.2s; }
+    .like-button.liked {
+      animation: likeAnim 0.6s ease;
+    }
 
-    @keyframes flicker {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(0.95); }
+    @keyframes likeAnim {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .like-count {
+      position: absolute;
+      bottom: 12px;
+      right: 55px;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
     }
 
     .product-info {
@@ -665,7 +699,7 @@
 
       .product {
         width: 160px;
-        height: 280px;
+        height: 300px;
         border-radius: 12px;
       }
 
@@ -701,6 +735,16 @@
       .image-counter {
         padding: 4px 8px;
         font-size: 10px;
+      }
+
+      .like-button {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+
+      .like-count {
+        font-size: 9px;
       }
 
       .contact-popup {
@@ -930,8 +974,8 @@
     <div class="stat-label">Browsing Now</div>
   </div>
   <div class="stat-card">
-    <div class="stat-value" id="soldTodayStat">0</div>
-    <div class="stat-label">Sold Today</div>
+    <div class="stat-value" id="totalLikesStat">0</div>
+    <div class="stat-label">Total Likes</div>
   </div>
 </div>
 
@@ -966,6 +1010,9 @@
 let db = null;
 let collection = null;
 let getDocs = null;
+let updateDoc = null;
+let doc = null;
+let increment = null;
 
 try {
   const firebaseModule = await import('./firebase.js');
@@ -973,6 +1020,9 @@ try {
   const firestoreModule = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
   collection = firestoreModule.collection;
   getDocs = firestoreModule.getDocs;
+  updateDoc = firestoreModule.updateDoc;
+  doc = firestoreModule.doc;
+  increment = firestoreModule.increment;
 } catch (error) {
   console.warn('Firebase not loaded - menu will still work:', error);
 }
@@ -1068,13 +1118,16 @@ const activityMessages = [
   "started following a seller",
   "placed highest bid on a property",
   "shared a listing with friends",
-  "watched a bank liquidation asset"
+  "watched a bank liquidation asset",
+  "❤️ liked a product",
+  "🔍 viewed a listing"
 ];
 
 const locations = ["Lagos", "Abuja", "Port Harcourt", "Kano", "Ibadan", "Benin", "Enugu"];
 
-let productViewCounts = {};
-let totalSoldToday = 0;
+let userLikes = {}; // Track which products user has liked
+let allProducts = [];
+let productStats = {};
 
 function generateActivityFeed() {
   const activityList = document.getElementById('activityList');
@@ -1083,7 +1136,6 @@ function generateActivityFeed() {
   for (let i = 0; i < 5; i++) {
     const location = locations[Math.floor(Math.random() * locations.length)];
     const message = activityMessages[Math.floor(Math.random() * activityMessages.length)];
-    const amount = Math.floor(Math.random() * 30) + 1;
 
     const div = document.createElement('div');
     div.className = 'activity-item';
@@ -1100,28 +1152,64 @@ function generateActivityFeed() {
 
 function updateStats(products) {
   const totalProducts = products.length;
-  const totalViews = Object.values(productViewCounts).reduce((a, b) => a + b, 0) + Math.floor(Math.random() * 1000) + 2000;
+  const totalViews = Object.values(productStats).reduce((sum, p) => sum + (p.views || 0), 0);
+  const totalLikes = Object.values(productStats).reduce((sum, p) => sum + (p.likes || 0), 0);
   const onlineNow = Math.floor(Math.random() * 20) + 5;
 
   document.getElementById('totalProductsStat').textContent = totalProducts;
   document.getElementById('totalViewsStat').textContent = totalViews.toLocaleString();
   document.getElementById('onlineNowStat').textContent = onlineNow;
-  document.getElementById('soldTodayStat').textContent = Math.floor(Math.random() * 8) + 2;
+  document.getElementById('totalLikesStat').textContent = totalLikes;
 }
 
-function getRandomViews(productId) {
-  if (!productViewCounts[productId]) {
-    productViewCounts[productId] = Math.floor(Math.random() * 5000) + 500;
+// Handle like button click
+async function handleLike(productId, likeButton, likeCountElement) {
+  try {
+    if (!db || !updateDoc || !doc || !increment) {
+      console.warn('Firebase not available');
+      userLikes[productId] = !userLikes[productId];
+      likeButton.classList.toggle('liked');
+      return;
+    }
+
+    if (userLikes[productId]) {
+      // Unlike
+      userLikes[productId] = false;
+      likeButton.classList.remove('liked');
+      await updateDoc(doc(db, "products", productId), {
+        likes: increment(-1)
+      });
+      productStats[productId].likes--;
+    } else {
+      // Like
+      userLikes[productId] = true;
+      likeButton.classList.add('liked');
+      await updateDoc(doc(db, "products", productId), {
+        likes: increment(1)
+      });
+      productStats[productId].likes++;
+    }
+
+    updateStats(allProducts);
+    likeCountElement.textContent = `❤️ ${productStats[productId].likes}`;
+  } catch (error) {
+    console.error('Error updating like:', error);
   }
-  return productViewCounts[productId];
 }
 
-function getRandomWatchers() {
-  return Math.floor(Math.random() * 50) + 1;
-}
+// Track views
+async function trackView(productId) {
+  try {
+    if (!db || !updateDoc || !doc || !increment) return;
 
-function isHotItem() {
-  return Math.random() > 0.7;
+    await updateDoc(doc(db, "products", productId), {
+      views: increment(1)
+    });
+    productStats[productId].views++;
+    updateStats(allProducts);
+  } catch (error) {
+    console.error('Error tracking view:', error);
+  }
 }
 
 async function loadProducts() {
@@ -1132,16 +1220,23 @@ async function loadProducts() {
   }
 
   const querySnapshot = await getDocs(collection(db, "products"));
-  let allProductsData = [];
+  allProducts = [];
+  productStats = {};
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    allProductsData.push(data);
+  querySnapshot.forEach((docSnapshot) => {
+    const data = docSnapshot.data();
+    const productId = docSnapshot.id;
+    
+    allProducts.push({ ...data, id: productId });
+    productStats[productId] = {
+      views: data.views || 0,
+      likes: data.likes || 0
+    };
   });
 
-  updateStats(allProductsData);
+  updateStats(allProducts);
   generateActivityFeed();
-  renderProducts(allProductsData);
+  renderProducts(allProducts);
 
   document.querySelectorAll('.image-container').forEach((container) => {
     container.addEventListener('click', () => {
@@ -1158,11 +1253,12 @@ async function loadProducts() {
 function renderProducts(productsData) {
   container.innerHTML = "";
 
-  productsData.forEach((data, index) => {
+  productsData.forEach((data) => {
+    const productId = data.id;
     const isSold = data.sold === true;
-    const views = getRandomViews(index);
-    const watchers = getRandomWatchers();
-    const isHot = isHotItem();
+    const views = productStats[productId]?.views || 0;
+    const likes = productStats[productId]?.likes || 0;
+    const isHot = likes > 5;
 
     let validImages = Array.isArray(data.imageUrls)
       ? data.imageUrls.filter(url => url && url.trim() !== '')
@@ -1183,17 +1279,13 @@ function renderProducts(productsData) {
       }
 
       mainImageHTML = `
-        <div class="image-container" data-images="${imageDataJson}">
+        <div class="image-container" data-images="${imageDataJson}" data-product-id="${productId}">
           ${mediaContent}
           <div class="product-stats">
             ${isHot ? '<span class="stat-badge hot-badge">🔥 HOT</span>' : ''}
             <span class="stat-badge">👁 ${views}</span>
-            <span class="stat-badge">❤️ ${watchers}</span>
           </div>
           ${validImages.length > 1 ? `<div class="image-counter">${validImages.length} items</div>` : ''}
-          <div class="heat-indicator">
-            ${isHot ? '<span class="heat-flame">🔥</span><span class="heat-flame">🔥</span><span class="heat-flame">🔥</span>' : ''}
-          </div>
         </div>
       `;
     } else {
@@ -1210,9 +1302,14 @@ function renderProducts(productsData) {
     const whatsappLink = `https://wa.me/${OWNER_PHONE}?text=${whatsappMessage}`;
 
     container.innerHTML += `
-      <div class="product ${isSold ? 'sold' : ''}">
+      <div class="product ${isSold ? 'sold' : ''}" data-product-id="${productId}">
         ${isSold ? `<div class="sold-badge">Sold</div>` : ''}
         ${mainImageHTML}
+
+        <button class="like-button ${userLikes[productId] ? 'liked' : ''}" title="Like this product" data-product-id="${productId}">
+          ${userLikes[productId] ? '❤️' : '🤍'}
+        </button>
+        <div class="like-count" data-product-id="${productId}">❤️ ${likes}</div>
 
         <div class="product-info">
           <div>
@@ -1241,44 +1338,35 @@ function renderProducts(productsData) {
       </div>
     `;
   });
-}
 
-// Search functionality
-const searchBox = document.getElementById('searchBox');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
-let allProducts = [];
-
-const originalLoadProducts = loadProducts;
-loadProducts = async function() {
-  if (!db || !getDocs || !collection) {
-    console.warn('Firebase not available - products cannot load');
-    container.innerHTML = '<p style="text-align:center; color:white; padding:50px;">Please check Firebase configuration</p>';
-    return;
-  }
-
-  const querySnapshot = await getDocs(collection(db, "products"));
-  allProducts = [];
-
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    allProducts.push(data);
-  });
-
-  updateStats(allProducts);
-  generateActivityFeed();
-  renderProducts(allProducts);
-
+  // Attach event listeners
   document.querySelectorAll('.image-container').forEach((container) => {
     container.addEventListener('click', () => {
+      const productId = container.getAttribute('data-product-id');
+      trackView(productId);
+      
       const imagesJson = container.getAttribute('data-images');
-
       if (imagesJson) {
         const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
         openImageGallery(images, 0);
       }
     });
   });
-};
+
+  // Like button listeners
+  document.querySelectorAll('.like-button').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const productId = btn.getAttribute('data-product-id');
+      const likeCountElement = document.querySelector(`.like-count[data-product-id="${productId}"]`);
+      handleLike(productId, btn, likeCountElement);
+    });
+  });
+}
+
+// Search functionality
+const searchBox = document.getElementById('searchBox');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
 
 function filterProducts(searchTerm) {
   const searchLower = searchTerm.toLowerCase().trim();
@@ -1314,17 +1402,6 @@ function filterProducts(searchTerm) {
   }
 
   renderProducts(filteredProducts);
-
-  document.querySelectorAll('.image-container').forEach((container) => {
-    container.addEventListener('click', () => {
-      const imagesJson = container.getAttribute('data-images');
-
-      if (imagesJson) {
-        const images = JSON.parse(imagesJson.replace(/&quot;/g, '"'));
-        openImageGallery(images, 0);
-      }
-    });
-  });
 }
 
 searchBox.addEventListener('input', (e) => {
