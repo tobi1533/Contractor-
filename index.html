@@ -734,6 +734,19 @@
       cursor: pointer;
     }
 
+    .modal-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
     .no-results {
       position: relative;
       z-index: 1;
@@ -830,6 +843,7 @@
     <button class="modal-nav modal-prev" id="prevBtn">&#10094;</button>
     <button class="modal-nav modal-next" id="nextBtn">&#10095;</button>
     <span class="modal-close" id="closeBtn">&times;</span>
+    <div class="modal-counter" id="imageCounter"></div>
   </div>
 </div>
 
@@ -877,6 +891,7 @@ const modalImage = document.getElementById("modalImage");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const closeBtn = document.getElementById("closeBtn");
+const imageCounter = document.getElementById("imageCounter");
 
 let currentProductImages = [];
 let currentImageIndex = 0;
@@ -886,12 +901,17 @@ let userLikes = {};
 
 function openImageGallery(images, index = 0) {
   currentProductImages = images.filter(url => url && url.trim() !== '');
-  if (!currentProductImages.length) return;
+  if (!currentProductImages.length) {
+    console.warn('No valid images to display');
+    return;
+  }
 
   currentImageIndex = index;
   modalImage.src = currentProductImages[currentImageIndex];
+  updateImageCounter();
   modal.style.display = "block";
   document.body.style.overflow = "hidden";
+  console.log(`Gallery opened with ${currentProductImages.length} images`);
 }
 
 function closeModal() {
@@ -899,8 +919,24 @@ function closeModal() {
   document.body.style.overflow = "auto";
 }
 
+function updateImageCounter() {
+  if (currentProductImages.length > 1) {
+    imageCounter.textContent = `${currentImageIndex + 1} / ${currentProductImages.length}`;
+    imageCounter.style.display = 'block';
+    prevBtn.style.display = 'block';
+    nextBtn.style.display = 'block';
+  } else {
+    imageCounter.style.display = 'none';
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+  }
+}
+
 function changeImage(direction) {
-  console.log('Before:', 'currentImageIndex=' + currentImageIndex, 'total images=' + currentProductImages.length);
+  if (currentProductImages.length <= 1) {
+    console.warn('Only one image available or no images loaded');
+    return;
+  }
   
   currentImageIndex += direction;
   
@@ -912,15 +948,24 @@ function changeImage(direction) {
     currentImageIndex = currentProductImages.length - 1;
   }
   
-  console.log('After:', 'currentImageIndex=' + currentImageIndex, 'image=' + currentProductImages[currentImageIndex]);
+  console.log(`Changed to image ${currentImageIndex + 1}/${currentProductImages.length}: ${currentProductImages[currentImageIndex]}`);
   
   if (currentProductImages[currentImageIndex]) {
     modalImage.src = currentProductImages[currentImageIndex];
+    updateImageCounter();
   }
 }
 
-prevBtn.addEventListener("click", () => changeImage(-1));
-nextBtn.addEventListener("click", () => changeImage(1));
+prevBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  changeImage(-1);
+});
+
+nextBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  changeImage(1);
+});
+
 closeBtn.addEventListener("click", closeModal);
 
 modal.addEventListener("click", (e) => {
@@ -1212,6 +1257,7 @@ window.openProductImage = function(productId) {
       trackView(productId);
     } else {
       console.warn('No images found for product', productId);
+      alert('No images available for this product.');
     }
   }
 };
