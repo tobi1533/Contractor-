@@ -947,7 +947,7 @@ function changeImage(direction) {
   
   // Prevent rapid clicking while loading
   if (isLoadingImage) {
-    console.warn('Image still loading, please wait...');
+    console.warn('⏳ Image still loading, please wait...');
     return;
   }
   
@@ -967,37 +967,26 @@ function changeImage(direction) {
   
   if (nextImageUrl) {
     isLoadingImage = true;
-    modalImage.style.opacity = '0.5';
+    modalImage.style.opacity = '0.4';
+    updateImageCounter(); // Update counter immediately
     
-    // Create a new image to preload and check when it's ready
+    // Create a new image to preload
     const testImg = new Image();
+    testImg.crossOrigin = 'anonymous';
     
     testImg.onload = () => {
-      console.log('✅ Image loaded, displaying now...');
+      console.log('✅ Image fully loaded! Displaying now...');
       modalImage.src = nextImageUrl;
       modalImage.style.opacity = '1';
       isLoadingImage = false;
-      updateImageCounter();
     };
     
     testImg.onerror = () => {
-      console.warn('⚠️ Image slow or failed, trying anyway...');
+      console.error('❌ Image failed to load');
       modalImage.src = nextImageUrl;
       modalImage.style.opacity = '1';
       isLoadingImage = false;
-      updateImageCounter();
     };
-    
-    // Set timeout in case image is very slow
-    const loadTimeout = setTimeout(() => {
-      if (isLoadingImage) {
-        console.warn('⏱️ Image taking too long, moving forward anyway...');
-        modalImage.src = nextImageUrl;
-        modalImage.style.opacity = '1';
-        isLoadingImage = false;
-        updateImageCounter();
-      }
-    }, 5000); // 5 second timeout
     
     testImg.src = nextImageUrl;
   }
