@@ -840,7 +840,7 @@
 
 <div id="imageModal" class="modal">
   <div class="modal-content">
-    <img id="modalImage" class="modal-image" src="" alt="Product image">
+    <img id="modalImage" class="modal-image" src="" alt="Product image" crossorigin="anonymous">
     <button class="modal-nav modal-prev" id="prevBtn">&#10094;</button>
     <button class="modal-nav modal-next" id="nextBtn">&#10095;</button>
     <span class="modal-close" id="closeBtn">&times;</span>
@@ -950,25 +950,13 @@ function changeImage(direction) {
   }
   
   const nextImageUrl = currentProductImages[currentImageIndex];
-  console.log(`Array contents:`, currentProductImages);
-  console.log(`Current index: ${currentImageIndex}, Total images: ${currentProductImages.length}`);
-  console.log(`Next image URL: ${nextImageUrl}`);
-  console.log(`Modal image element:`, modalImage);
+  console.log(`Image ${currentImageIndex + 1}/${currentProductImages.length}: ${nextImageUrl}`);
   
   if (nextImageUrl) {
-    // Clear src first to force reload
-    modalImage.src = '';
-    
-    // Wait a tiny moment then set new src
-    setTimeout(() => {
-      modalImage.src = nextImageUrl;
-      console.log('✅ Image src updated to:', nextImageUrl);
-      console.log('✅ Modal image src is now:', modalImage.src);
-    }, 50);
-    
+    // Simple direct assignment - let the browser handle it
+    modalImage.src = nextImageUrl;
+    console.log('✅ Image set');
     updateImageCounter();
-  } else {
-    console.error('❌ Next image URL is empty or undefined');
   }
 }
 
