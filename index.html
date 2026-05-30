@@ -950,27 +950,25 @@ function changeImage(direction) {
   }
   
   const nextImageUrl = currentProductImages[currentImageIndex];
-  console.log(`Changed to image ${currentImageIndex + 1}/${currentProductImages.length}: ${nextImageUrl}`);
+  console.log(`Array contents:`, currentProductImages);
+  console.log(`Current index: ${currentImageIndex}, Total images: ${currentProductImages.length}`);
+  console.log(`Next image URL: ${nextImageUrl}`);
+  console.log(`Modal image element:`, modalImage);
   
   if (nextImageUrl) {
-    // Force image reload by clearing src first
-    modalImage.style.opacity = '0.5';
+    // Clear src first to force reload
+    modalImage.src = '';
     
-    // Create a new image object to preload
-    const img = new Image();
-    img.onload = () => {
+    // Wait a tiny moment then set new src
+    setTimeout(() => {
       modalImage.src = nextImageUrl;
-      modalImage.style.opacity = '1';
-      console.log('Image loaded successfully');
-    };
-    img.onerror = () => {
-      console.error('Failed to load image:', nextImageUrl);
-      modalImage.src = nextImageUrl;
-      modalImage.style.opacity = '1';
-    };
-    img.src = nextImageUrl;
+      console.log('✅ Image src updated to:', nextImageUrl);
+      console.log('✅ Modal image src is now:', modalImage.src);
+    }, 50);
     
     updateImageCounter();
+  } else {
+    console.error('❌ Next image URL is empty or undefined');
   }
 }
 
