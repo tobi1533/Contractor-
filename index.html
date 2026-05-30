@@ -693,6 +693,7 @@
       max-height: 90%;
       object-fit: contain;
       border-radius: 10px;
+      transition: opacity 0.3s ease-in-out;
     }
 
     .modal-nav {
@@ -948,10 +949,27 @@ function changeImage(direction) {
     currentImageIndex = currentProductImages.length - 1;
   }
   
-  console.log(`Changed to image ${currentImageIndex + 1}/${currentProductImages.length}: ${currentProductImages[currentImageIndex]}`);
+  const nextImageUrl = currentProductImages[currentImageIndex];
+  console.log(`Changed to image ${currentImageIndex + 1}/${currentProductImages.length}: ${nextImageUrl}`);
   
-  if (currentProductImages[currentImageIndex]) {
-    modalImage.src = currentProductImages[currentImageIndex];
+  if (nextImageUrl) {
+    // Force image reload by clearing src first
+    modalImage.style.opacity = '0.5';
+    
+    // Create a new image object to preload
+    const img = new Image();
+    img.onload = () => {
+      modalImage.src = nextImageUrl;
+      modalImage.style.opacity = '1';
+      console.log('Image loaded successfully');
+    };
+    img.onerror = () => {
+      console.error('Failed to load image:', nextImageUrl);
+      modalImage.src = nextImageUrl;
+      modalImage.style.opacity = '1';
+    };
+    img.src = nextImageUrl;
+    
     updateImageCounter();
   }
 }
